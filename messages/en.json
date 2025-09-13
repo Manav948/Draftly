@@ -38,6 +38,9 @@
                 "GOOGLE": "Sign in with Google",
                 "APPALE": "Sign in with Apple",
                 "GITHUB": "Sign in with GitHub"
+            },
+            "PENDING" : {
+                "LOADING" : "Please wait..."
             }
         }
     }

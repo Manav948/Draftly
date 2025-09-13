@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "credentials",
             credentials: {
-                name: { label: "Name", type: "text", placeholder: "Name" },
+                username: { label: "Username", type: "text", placeholder: "Username" },
                 email: { label: "Email", type: "text", placeholder: "Email" },
                 password: { label: "Password", type: "password", placeholder: "Password" }
             },
@@ -60,6 +60,7 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async session({ session, token }) {
+            console.log('Token', token)
             if (token) {
                 session.user.id = token.id as string
                 session.user.name = token.name
@@ -67,15 +68,16 @@ export const authOptions: NextAuthOptions = {
                 session.user.image = token.picture
                 session.user.username = token.username as string | null
             }
-            const user = await db.user.findUnique({
-                where: {
-                    id: token.id as string
-                }
-            })
-            if (user) {
-                session.user.image = user.image ?? session.user.image;
-                session.user.name = user.name.toLowerCase() ?? session.user.name;
-            }
+            // const user = await db.user.findUnique({
+            //     where: {
+            //         id: token.id as string
+            //     }
+            // })
+            // if (user) {
+            //     session.user.image = user.image ?? session.user.image;
+            //     session.user.name = user.name.toLowerCase() ?? session.user.name;
+            // }
+            console.log('Session', session)
             return session
         },
         async jwt({ token, user }) {
@@ -90,7 +92,7 @@ export const authOptions: NextAuthOptions = {
             }
             return {
                 id: dbUser.id,
-                name: dbUser.name,
+                username: dbUser.username,
                 email: dbUser.email,
                 picture: dbUser.image
             };

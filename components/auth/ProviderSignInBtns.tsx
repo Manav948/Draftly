@@ -1,29 +1,43 @@
-import { useTranslations } from "next-intl";;
-import { boolean } from "zod";
-import { ProviderSignInBtn } from "./ProviderSignInBtn";
+import Image from "next/image"
+import { ProviderSignInBtn } from "./ProviderSignInBtn"
+import { useTranslations } from "next-intl"
 
 export const ProviderSignInBtns = ({
-    SignInCard,
+  SignInCard,
+  disabled,
 }: {
-    SignInCard?: boolean;
-
+  SignInCard?: boolean
+  disabled?: boolean
 }) => {
-    const t = useTranslations("Auth")
-    return (
-        <div className="flex flex-col gap-2">
-            <ProviderSignInBtn
-                className="w-full rounded-[1.9rem] border text-sm h-12 sm:h-10 sm:text-base"
-            >
-                {SignInCard ? t("SIGN_IN.PROVIDERS.GOOGLE") : t("SIGN_UP.PROVIDERS.GOOGLE")}
-            </ProviderSignInBtn>
+  const t = useTranslations("Auth")
 
-            {/* <ProviderSignInBtn className="w-full  bg-black/90 text-white dark:bg-black/70 hover:bg-black/80 dark:hover:bg-black/50 rounded-[1.9rem] border">
-                {SignInCard ? t("SIGN_IN.PROVIDERS.APPALE") : t("SIGN_UP.PROVIDERS.APPALE")}
-            </ProviderSignInBtn> */}
+  return (
+    <div className="flex flex-col gap-2">
+      <ProviderSignInBtn
+        disabled={disabled}
+        className="w-full flex items-center gap-2 rounded-[1.9rem] border text-sm h-12 sm:h-10 sm:text-base"
+      >
+        <Image
+          src="/google.svg"
+          alt="Google"
+          width={20}
+          height={20}
+        />
+        {SignInCard ? t("SIGN_IN.PROVIDERS.GOOGLE") : t("SIGN_UP.PROVIDERS.GOOGLE")}
+      </ProviderSignInBtn>
 
-            <ProviderSignInBtn className="w-full rounded-[1.9rem] border text-sm h-12 sm:h-10 sm:text-base">
-                {SignInCard ? t("SIGN_IN.PROVIDERS.GITHUB") : t("SIGN_UP.PROVIDERS.GITHUB")}
-            </ProviderSignInBtn>
-        </div>
-    )
+      <ProviderSignInBtn
+        disabled={disabled}
+        className="w-full flex items-center gap-2 rounded-[1.9rem] border text-sm h-12 sm:h-10 sm:text-base"
+      >
+        <Image
+          src="/github.png"
+          alt="GitHub"
+          width={20}
+          height={20}
+        />
+        {SignInCard ? t("SIGN_IN.PROVIDERS.GITHUB") : t("SIGN_UP.PROVIDERS.GITHUB")}
+      </ProviderSignInBtn>
+    </div>
+  )
 }

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { CardContent } from "../ui/card";
 import {
   Form,
@@ -17,10 +17,16 @@ import { useTranslations } from "next-intl";
 import { Button } from "../ui/button";
 import { z } from "zod";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { LoadingState } from "../ui/LoadingState";
 
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 const SignUpCardContent = () => {
+  const [loading, setLoading] = useState(false); 
+  const router = useRouter();
   const t = useTranslations("Auth");
 
   const form = useForm<SignUpValues>({
@@ -32,9 +38,39 @@ const SignUpCardContent = () => {
     },
   });
 
+  const onSubmit = async (values: SignUpValues) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/auth/register`, {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-  const onSubmit = (values: SignUpValues) => {
-    console.log("Form Submitted:", values);
+      if (!res.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const signUPInfo = await res.json();
+      if (res.status === 200) {
+        toast.success("Sign-Up Successfully");
+      }
+
+      await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.error("Error during sign-up", error);
+      toast.error("Error In Sign-Up function");
+    } finally {
+      setLoading(false); 
+    }
   };
 
   return (
@@ -44,7 +80,6 @@ const SignUpCardContent = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-6"
         >
-
           <ProviderSignInBtns />
 
           {/* Inputs */}
@@ -105,8 +140,16 @@ const SignUpCardContent = () => {
 
           <div className="space-y-3">
             {/* Submit Button */}
-            <Button className="w-full font-medium">
-              {t("SIGN_UP.SUBMIT")}
+            <Button
+              disabled={loading}
+              className="w-full font-bold text-black"
+              type="submit"
+            >
+              {loading ? (
+                <LoadingState loadingText={t("PENDING.LOADING")} /> 
+              ) : (
+                t("SIGN_UP.SUBMIT")
+              )}
             </Button>
 
             {/* Terms & Conditions */}
