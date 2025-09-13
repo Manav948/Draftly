@@ -1,0 +1,44 @@
+{
+    "Index": {
+        "title": "Welcome to Super Productivity"
+    },
+    "Auth": {
+        "EMAIL": "Email",
+        "PASSWORD": "Password",
+        "USERNAME": "Username",
+        "SIGN_IN": {
+            "TITLE": "Sign In",
+            "DESC": "Welcome back to ....",
+            "SUBMIT": "Sign In",
+            "FORGOT_PASSWORD": "Forgot password?",
+            "DON'T_HAVE_ACCOUNT": {
+                "FIRST": "Don't have an account?",
+                "SECOND": " Sign Up"
+            },
+            "PROVIDERS": {
+                "GOOGLE": "Sign in with Google",
+                "APPALE": "Sign in with Apple",
+                "GITHUB": "Sign in with GitHub"
+            }
+        },
+        "SIGN_UP": {
+            "TITLE": "Sign Up",
+            "DESC": "Create your account to get started",
+            "SUBMIT": "Sign Up",
+            "FORGOT_PASSWORD": "Forgot your password?",
+            "HAVE_ACCOUNT": {
+                "FIRST": "Already have an account?",
+                "SECOND": " Sign In"
+            },
+            "TERMS": {
+                "FIRST": "By signing up, you agree to our",
+                "SECOND": "Terms of Service"
+            },
+            "PROVIDERS": {
+                "GOOGLE": "Sign in with Google",
+                "APPALE": "Sign in with Apple",
+                "GITHUB": "Sign in with GitHub"
+            }
+        }
+    }
+}
