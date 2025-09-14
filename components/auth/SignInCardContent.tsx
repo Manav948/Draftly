@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { CardContent } from "../ui/card";
 import {
     Form,
@@ -17,6 +17,9 @@ import { Button } from "../ui/button";
 import { z } from "zod";
 import Link from "next/link";
 import { signInSchema } from "@/schema/siginInSchema";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import toast from "react-hot-toast"
 
 type SignInValues = z.infer<typeof signInSchema>;
 
@@ -31,9 +34,31 @@ const SignInCardContent = () => {
         },
     });
 
+    const [loading, isLoading] = useState(false)
+    const router = useRouter();
 
-    const onSubmit = (values: SignInValues) => {
-        console.log("Form Submitted:", values);
+
+
+    const onSubmit = async (values: signInSchema) => {
+        isLoading(true)
+        try {
+            const account = await signIn("credentials", {
+                email: values.email,
+                password: values.password,
+                redirect: false
+            })
+            if (!account) throw new Error("Something went wrong!")
+            if (account.error) {
+                toast.error("Error occur During sign-in, please try again")
+            }
+            router.push("/onboarding");
+            router.refresh()
+        } catch (error) {
+            console.log("Error in sign-in handler : ", error)
+            toast.error("Error in sign-in function, try it again")
+        } finally {
+            isLoading(false)
+        }
     };
 
     return (
@@ -44,7 +69,7 @@ const SignInCardContent = () => {
                     className="flex flex-col gap-6"
                 >
 
-                    <ProviderSignInBtns SignInCard />
+                    <ProviderSignInBtns SignInCard onLoading={isLoading} />
 
                     {/* Inputs */}
                     <div className="flex flex-col gap-4">

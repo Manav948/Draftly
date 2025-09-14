@@ -7,6 +7,7 @@ import GithubProvider from "next-auth/providers/github";
 import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt"
+import { generateFromEmail } from "unique-username-generator"
 
 export const authOptions: NextAuthOptions = {
     session: {
@@ -20,7 +21,18 @@ export const authOptions: NextAuthOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            async profile(profile) {
+                const username = generateFromEmail(profile.email, 5)
+                return {
+                    id: profile.sub,
+                    username,
+                    name: profile.given_name ? profile.given_name : profile.name,
+                    surname: profile.family_name ? profile.family_name : "",
+                    email: profile.email,
+                    image: profile.picture
+                }
+            },
         }),
         GithubProvider({
             clientId: process.env.GITHUB_ID!,
@@ -49,7 +61,7 @@ export const authOptions: NextAuthOptions = {
                 if (!user || !user?.hashedPassword) {
                     throw new Error("User was not found, Please enter Valid email")
                 }
-                const PasswordMatch = await bcrypt.compare(credentials.password, user.passoword)
+                const PasswordMatch = await bcrypt.compare(credentials.password, user.hashedPassword)
                 if (!PasswordMatch) {
                     throw new Error("Entered password is incorrect, please enter correct one")
                 }
@@ -68,15 +80,15 @@ export const authOptions: NextAuthOptions = {
                 session.user.image = token.picture
                 session.user.username = token.username as string | null
             }
-            // const user = await db.user.findUnique({
-            //     where: {
-            //         id: token.id as string
-            //     }
-            // })
-            // if (user) {
-            //     session.user.image = user.image ?? session.user.image;
-            //     session.user.name = user.name.toLowerCase() ?? session.user.name;
-            // }
+            const user = await db.user.findUnique({
+                where: {
+                    id: token.id as string
+                }
+            })
+            if (user) {
+                session.user.image = user.image ?? session.user.image;
+                session.user.completeOnboarding = user.completeOnboarding
+            }
             console.log('Session', session)
             return session
         },

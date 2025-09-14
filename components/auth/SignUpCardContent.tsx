@@ -55,7 +55,7 @@ const SignUpCardContent = () => {
 
       const signUPInfo = await res.json();
       if (res.status === 200) {
-        toast.success("Sign-Up Successfully");
+        toast.success("Sign-Up Successfully ! Please sign-in");
       }
 
       await signIn("credentials", {
@@ -64,7 +64,7 @@ const SignUpCardContent = () => {
         redirect: false,
       });
 
-      router.push("/");
+      router.push("/sign-in");
     } catch (error) {
       console.error("Error during sign-up", error);
       toast.error("Error In Sign-Up function");
@@ -78,8 +78,7 @@ const SignUpCardContent = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-6"
-        >
+          className="flex flex-col gap-3">
           <ProviderSignInBtns />
 
           {/* Inputs */}
@@ -142,7 +141,7 @@ const SignUpCardContent = () => {
             {/* Submit Button */}
             <Button
               disabled={loading}
-              className="w-full font-bold text-black"
+              className="w-full font-bold"
               type="submit"
             >
               {loading ? (

@@ -8,7 +8,7 @@ import { ReactNode } from "react";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { Toaster } from "react-hot-toast"
 
-const locales = ["en"];
+const locales = ["en", "hi"];
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

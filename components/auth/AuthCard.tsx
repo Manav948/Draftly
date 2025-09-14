@@ -30,10 +30,10 @@ export const AuthCard = ({ SignInCard }: Props) => {
             height={56}
             src={"https://github.com/shadcn.png"}
           />
-          <CardTitle className="text-xl font-semibold">
+          <CardTitle className="text-xl font-bold">
             {SignInCard ? t("SIGN_IN.TITLE") : t("SIGN_UP.TITLE")}
           </CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">
+          <CardDescription className="text-md text-muted-foreground">
             {SignInCard ? t("SIGN_IN.DESC") : t("SIGN_UP.DESC")}
           </CardDescription>
         </CardHeader>
