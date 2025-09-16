@@ -3,6 +3,8 @@ declare module "next-auth" {
     interface JWT {
         id: string;
         username?: string | null;
+        surname?: string | null
+        completedOnboarding?: boolean
     }
 }
 
@@ -11,7 +13,8 @@ declare module "next-auth" {
         user: User & {
             id: string;
             username?: string | null;
-            completeOnboarding: boolean 
+            completeOnboarding: boolean
+            surname?: string | null
         };
     }
 }
