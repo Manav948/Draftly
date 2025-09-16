@@ -36,7 +36,19 @@ export const authOptions: NextAuthOptions = {
         }),
         GithubProvider({
             clientId: process.env.GITHUB_ID!,
-            clientSecret: process.env.GITHUB_SECRET!
+            clientSecret: process.env.GITHUB_SECRET!,
+            async profile(profile) {
+                const username = generateFromEmail(profile.email, 5)
+                const fullName = profile.name?.split(" ")
+                return {
+                    id: profile.id,
+                    username: profile.login ? profile.login : username,
+                    name: fullName.at(0),
+                    surname: fullName.at(1),
+                    email: profile.email,
+                    image: profile.avatar_url,
+                }
+            }
         }),
         AppleProvider({
             clientId: process.env.APPLE_ID!,
