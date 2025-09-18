@@ -54,11 +54,7 @@ const Step1 = () => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium">First Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Manav"
-                      {...field}
-                      className="rounded-lg"
-                    />
+                    <Input placeholder="Manav" {...field} className="rounded-lg" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,28 +68,23 @@ const Step1 = () => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium">Last Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Valani"
-                      {...field}
-                      className="rounded-lg"
-                    />
+                    <Input placeholder="Valani" {...field} className="rounded-lg" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* Continue Button */}
-            <div className="flex justify-between">
-              <Button
-                type="button"
-                className="px-6 rounded-lg w-full items-center"
-              >
-                Continue →
-              </Button>
-            </div>
+          </div>
+
+          {/* Continue Button */}
+          <div className="flex justify-between">
+            <Button type="submit" className="px-6 rounded-lg w-full items-center">
+              Continue →
+            </Button>
           </div>
         </form>
       </Form>
+
     </div>
   )
 }
