@@ -26,6 +26,13 @@ const Step1 = () => {
     },
   })
 
+  const onSubmit = (data: AdditionalScheam) => {
+    console.log(data)
+    dispatch({ type: ActionType.NAME, payload: data.name! })
+    dispatch({ type: ActionType.SURNAME, payload: data.surname! })
+    dispatch({ type: ActionType.CHANGE_SITE, payload: currentStep + 1 })
+  }
+
   return (
     <div className="flex flex-col items-center gap-8">
       {/* Profile Upload */}
@@ -38,57 +45,52 @@ const Step1 = () => {
 
       {/* Form */}
       <Form {...form}>
-        <form className="w-full max-w-md space-y-6">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium">First Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Manav"
-                    {...field}
-                    className="rounded-lg"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-md space-y-6">
+          <div className="space-y-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium">First Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Manav"
+                      {...field}
+                      className="rounded-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="surname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium">Last Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Valani"
-                    {...field}
-                    className="rounded-lg"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Continue Button */}
-          <div className="flex justify-end">
-            <Button
-              type="button"
-              className="px-6 rounded-lg"
-              onClick={() =>
-                dispatch({
-                  type: ActionType.CHANGE_SITE,
-                  payload: currentStep + 1,
-                })
-              }
-            >
-              Continue →
-            </Button>
+            <FormField
+              control={form.control}
+              name="surname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium">Last Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Valani"
+                      {...field}
+                      className="rounded-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Continue Button */}
+            <div className="flex justify-between">
+              <Button
+                type="button"
+                className="px-6 rounded-lg w-full items-center"
+              >
+                Continue →
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

@@ -1,6 +1,7 @@
 "use client"
 
 import { Action, ActionType, OnboardingFormContext, OnBoardingFormReducer } from "@/types/onBoardingContext"
+import { UseCase } from "@prisma/client"
 import { Session } from "next-auth"
 import { createContext, useContext, useReducer } from "react"
 
@@ -18,6 +19,22 @@ function onBoardingFormReducer(state: OnBoardingFormReducer, action: Action) {
                 currentStep: payload as 1 | 2 | 3,
             }
         }
+        case ActionType.NAME:
+            return {
+                ...state,
+                name: payload as string,
+            };
+
+        case ActionType.SURNAME:
+            return {
+                ...state,
+                surname: payload as string
+            }
+        case ActionType.USECASE:
+            return {
+                ...state,
+                useCase: payload as UseCase
+            }
         default:
             return state;
     }
