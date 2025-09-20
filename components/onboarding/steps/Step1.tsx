@@ -13,11 +13,14 @@ import { AdditionalScheam } from "@/schema/AdditionalUserSchema"
 import { ActionType } from "@/types/onBoardingContext"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { User } from "lucide-react"
-import React from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import Profileimage from "../Profileimage"
+import { useSession } from "next-auth/react"
 
 const Step1 = () => {
-  const { currentStep, name, surname, dispatch } = useOnboardingForm()
+  const session = useSession();
+  const { currentStep, name, surname, profileImage, dispatch } = useOnboardingForm()
   const form = useForm<AdditionalScheam>({
     resolver: zodResolver(AdditionalScheam),
     defaultValues: {
@@ -25,6 +28,13 @@ const Step1 = () => {
       surname: surname ? surname : "",
     },
   })
+
+  useEffect(() => { 
+    dispatch({
+      type : ActionType.PROFILEIMAGE,
+      payload : session.data?.user.image as string
+    })
+  }, [session.data?.user.image, dispatch])
 
   const onSubmit = (data: AdditionalScheam) => {
     console.log(data)
@@ -36,12 +46,14 @@ const Step1 = () => {
   return (
     <div className="flex flex-col items-center gap-8">
       {/* Profile Upload */}
-      <div className="flex flex-col items-center gap-3">
+      {/* <div className="flex flex-col items-center gap-3">
         <div className="w-24 h-24 rounded-full border-2 border-dashed border-muted flex items-center justify-center bg-muted/30">
           <User className="w-10 h-10 text-muted-foreground" />
         </div>
         <p className="text-sm text-muted-foreground">Add profile photo</p>
-      </div>
+      </div> */}
+
+      <Profileimage profileImage={profileImage} />
 
       {/* Form */}
       <Form {...form}>

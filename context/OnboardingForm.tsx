@@ -35,6 +35,12 @@ function onBoardingFormReducer(state: OnBoardingFormReducer, action: Action) {
                 ...state,
                 useCase: payload as UseCase
             }
+        
+        case ActionType.PROFILEIMAGE:
+            return {
+                ...state,
+                UseCase : payload as string
+            }
         default:
             return state;
     }

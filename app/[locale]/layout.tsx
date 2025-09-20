@@ -7,6 +7,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { ReactNode } from "react";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { Toaster } from "react-hot-toast"
+import { QueryProvider } from "@/providers/QueryProvider";
 
 const locales = ["en", "hi"];
 
@@ -47,17 +48,20 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AuthProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Toaster
-                position="top-center"
-                reverseOrder={false} />
-              {children}
-            </ThemeProvider>
+            <QueryProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Toaster
+                  position="top-center"
+                  reverseOrder={false} />
+                {children}
+              </ThemeProvider>
+            </QueryProvider>
+
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

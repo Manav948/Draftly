@@ -1,26 +1,47 @@
 "use client"
 import React from 'react'
 import { useOnboardingForm } from '@/context/OnboardingForm'
+import { UserAvatar } from '../ui/user-avatar'
 
 const Summary = () => {
-    const { name, surname, useCase } = useOnboardingForm()
+    const { name, surname, profileImage, useCase } = useOnboardingForm()
+
     return (
-        <section className='hidden lg:w-1/2 bg-primary lg:flex justify-center items-center'>
-            <div className='bg-card rounded-2xl w-96 min-h-[10rem] shadow-sm flex flex-col items-center p-4 py-8 gap-5'>
-                <div className='w-32 h-32 rounded-full shadow-sm bg-muted mt-[-5rem]'>
+        <section className="hidden lg:flex w-1/2 bg-primary justify-center items-center rounded-4xl">
+            <div className="relative bg-card w-96 min-h-[14rem] shadow-md flex flex-col items-center p-6 gap-6 rounded-2xl">
+                
+                {/* Avatar */}
+                <div className="relative -mt-20">
+                    <UserAvatar 
+                        className="w-32 h-32 rounded-full shadow-2xl border-2 border-black dark:border-white     bg-muted" 
+                        size={64} 
+                        profileImage={profileImage}  
+                    />
                 </div>
-                <div className='text-center space-y-1.5 text-3xl break-words max-w-xs font-semibold'>
-                    {name && <p>{name}</p>}
-                    {surname && <p>{surname}</p>}
+
+                {/* Name + Surname */}
+                <div className="text-center space-y-1">
+                    {(name || surname) ? (
+                        <p className="text-2xl font-semibold text-foreground">
+                            {name} {surname}
+                        </p>
+                    ) : (
+                        <span className="bg-muted rounded-md w-40 h-6 block mx-auto animate-pulse"></span>
+                    )}
                 </div>
-                {!useCase && <span className='bg-muted rounded-md w-24 h-8'></span>}
-                {useCase && (
-                    <p>
-                        {useCase === "WORK" && "Use For Work"}
-                        {useCase === "STUDY" && "Use For Study"}
-                        {useCase === "PERSONAL_USE" && "Use For Personal_use"}
-                    </p>
-                )}
+
+                {/* Use Case */}
+                <div className="text-center">
+                    {!useCase ? (
+                        <span className="bg-muted rounded-md w-28 h-6 block mx-auto animate-pulse"></span>
+                    ) : (
+                        <p className="text-sm font-medium text-muted-foreground">
+                            {useCase === "WORK" && "Using for Work"}
+                            {useCase === "STUDY" && "Using for Study"}
+                            {useCase === "PERSONAL_USE" && "Using for Personal Use"}
+                        </p>
+                    )}
+                </div>
             </div>
         </section>
     )

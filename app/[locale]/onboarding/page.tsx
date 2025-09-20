@@ -17,7 +17,7 @@ const Onboarding = async () => {
           </div>
 
           {/* Right: Summary */}
-          <div className="bg-card p-6 rounded-2xl shadow-md sticky top-10 h-fit">
+          <div className="bg-card p-6 rounded-2xl shadow-md sticky top-10 h-fit flex items-center justify-center">
             <Summary />
           </div>
         </div>
