@@ -23,6 +23,8 @@ import { User as UserType } from "@prisma/client"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { LoadingState } from "../ui/LoadingState"
+import toast from "react-hot-toast"
+import { de } from "zod/v4/locales"
 
 interface Props {
   profileImage?: string | null
@@ -70,8 +72,14 @@ const Profileimage = ({ profileImage }: Props) => {
     "profilePictureUploader",
     {
       onUploadError: (error) => {
-        alert(error)
+        toast.error("Error in uploading image")
       },
+      onClientUploadComplete: (data) => {
+        if (data) uploadProfileImage(data[0].url)
+        else {
+          toast.error("Error in onClientUpload function")
+        }
+      }
     }
   )
 
@@ -83,22 +91,35 @@ const Profileimage = ({ profileImage }: Props) => {
       return data as UserType
     },
     onError: (err) => {
-      console.log(err)
+      toast.error("Error during Profile Image Update")
     },
     onSuccess: async () => {
       setOpen(false)
       await update()
       router.refresh()
+      toast.success("Successfully Update Profile Image")
+    }, mutationKey: ["updateProfileImage"]
+  })
+
+  // delete image
+  const { mutate: deleteProfileImage, isPending: isDeleting } = useMutation({
+    mutationFn: async () => {
+      const { data } = await axios.post(`/api/profile/DeleteProfileImage`)
+      return data as UserType
     },
+    onError: () => {
+      toast.error("Error During Delete Profile-Image")
+    },
+    onSuccess: async () => {
+      toast.success("Successfully delet image")
+      await update()
+      router.refresh()
+    }, mutationKey: ["deleteProfileImage"]
   })
 
   const onSubmit = async (data: ImageSchema) => {
     const image: File = data.image
-    try {
-      const res = await startUpload([image])
-      if (!res) return new Error("uploading error")
-      uploadProfileImage(res[0].url)
-    } catch (error) {}
+    startUpload([image])
   }
 
   return (
@@ -197,11 +218,12 @@ const Profileimage = ({ profileImage }: Props) => {
               <div className="flex items-center justify-center gap-6">
                 <Button
                   type="button"
-                  disabled={!imageOption.canDelete}
+                  disabled={!imageOption.canDelete || isDeleting}
                   variant={imageOption.canDelete ? "destructive" : "outline"}
                   className="rounded-full w-12 h-12 p-0 flex items-center justify-center shadow-md hover:scale-105 transition-transform"
+                  onClick={() => deleteProfileImage()}
                 >
-                  <Trash size={18} />
+                  {isDeleting ? <LoadingState /> : <Trash size={18} />}
                 </Button>
 
                 <Button
