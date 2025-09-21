@@ -13,7 +13,7 @@ const Onboarding = async () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-6xl">
           {/* Left: Steps */}
           <div className="bg-card p-6 rounded-2xl shadow-md">
-            <AdditionalSetting />
+            <AdditionalSetting/>
           </div>
 
           {/* Right: Summary */}

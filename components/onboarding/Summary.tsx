@@ -13,7 +13,7 @@ const Summary = () => {
                 {/* Avatar */}
                 <div className="relative -mt-20">
                     <UserAvatar 
-                        className="w-32 h-32 rounded-full shadow-2xl border-2 border-black dark:border-white     bg-muted" 
+                        className="w-32 h-32 rounded-full shadow-2xl border-2 border-black dark:border-white bg-muted cursor-pointer" 
                         size={64} 
                         profileImage={profileImage}  
                     />

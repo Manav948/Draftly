@@ -119,7 +119,7 @@ const Profileimage = ({ profileImage }: Props) => {
 
   const onSubmit = async (data: ImageSchema) => {
     const image: File = data.image
-    startUpload([image])
+    await startUpload([image])
   }
 
   return (
@@ -141,7 +141,7 @@ const Profileimage = ({ profileImage }: Props) => {
                 src={profileImage}
                 alt="Profile image"
                 fill
-                className="object-cover"
+                className="object-cover cursor-pointer"
                 priority
               />
             ) : (
@@ -159,7 +159,7 @@ const Profileimage = ({ profileImage }: Props) => {
           </DialogHeader>
 
           {/* Preview / Avatar */}
-          <div className="relative w-40 h-40 rounded-full shadow-lg overflow-hidden">
+          <div className="relative w-40 h-40 rounded-full shadow-lg overflow-hidde">
             {imagePriview ? (
               <Image
                 src={imagePriview}
@@ -169,7 +169,7 @@ const Profileimage = ({ profileImage }: Props) => {
               />
             ) : (
               <UserAvatar
-                className="w-40 h-40"
+                className="w-40 h-40 cursor-pointer"
                 size={160}
                 profileImage={profileImage}
               />
@@ -207,6 +207,7 @@ const Profileimage = ({ profileImage }: Props) => {
                           id="image"
                           onChange={onImageChange}
                           className="hidden"
+                          accept="image/*"
                         />
                       </div>
                     </FormControl>

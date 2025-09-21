@@ -35,12 +35,12 @@ export const LocaleSwitcher = () => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => {
+                {/* <DropdownMenuItem onClick={() => {
                     changeLocale("hi")
                 }}
                 className="cursor-pointer">
                     HI
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
 
                  <DropdownMenuItem onClick={() => {
                     changeLocale("en")
