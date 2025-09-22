@@ -9,7 +9,7 @@ const Onboarding = async () => {
 
   return (
     <OnboardingFormProvider session={session}>
-      <main className="min-h-screen bg-background flex items-start justify-center px-6 py-10">
+      <main className="min-h-screen bg-background flex items-start justify-center px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-6xl">
           {/* Left: Steps */}
           <div className="bg-card p-6 rounded-2xl shadow-md">

@@ -6,8 +6,9 @@ export enum ActionType {
     SURNAME = "SURNAME",
     PROFILEIMAGE = "PROFILEIMAGE",
     USECASE = "USECASE",
-    WORKSPACE = "WORKSPACE"
-}
+    WORKSPACE_NAME = "WORKSPACE_NAME",
+    WORKSPACE_IMAGE = "WORKSPACE_IMAGE"
+ }
 
 export interface Action {
     type: ActionType,
@@ -20,7 +21,8 @@ export interface OnBoardingFormReducer {
     surname: string | null,
     profileImage: string | null,
     useCase: UseCase | null,
-    workspace: string | null
+    workspaceName: string | null
+    workspaceImage?: string | null;
 }
 export interface OnboardingFormContext extends OnBoardingFormReducer {
     dispatch: React.Dispatch<Action>

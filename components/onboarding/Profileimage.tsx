@@ -69,7 +69,7 @@ const Profileimage = ({ profileImage }: Props) => {
   }, [imagePriview, profileImage])
 
   const { startUpload, isUploading } = useUploadThing(
-    "profilePictureUploader",
+    "imageUploader",
     {
       onUploadError: (error) => {
         toast.error("Error in uploading image")

@@ -39,8 +39,22 @@ function onBoardingFormReducer(state: OnBoardingFormReducer, action: Action) {
         case ActionType.PROFILEIMAGE:
             return {
                 ...state,
-                UseCase : payload as string
+                profileImage : payload as string
             }
+         
+        case ActionType.WORKSPACE_NAME : {
+            return {
+                ...state,
+                workspaceName : payload as string 
+            };
+        }
+
+        case ActionType.WORKSPACE_IMAGE : {
+            return {
+                ...state,
+                workspaceImage : payload as string | null
+            }
+        }
         default:
             return state;
     }
@@ -57,7 +71,8 @@ const initialFormState: OnBoardingFormReducer = {
     surname: null,
     profileImage: null,
     useCase: null,
-    workspace: ""
+    workspaceName: "",
+    workspaceImage : null
 }
 
 export const OnboardingFormProvider = ({ children, session }: Props) => {

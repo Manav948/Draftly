@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -12,53 +13,82 @@ import { useOnboardingForm } from "@/context/OnboardingForm"
 import { AdditionalScheam } from "@/schema/AdditionalUserSchema"
 import { ActionType } from "@/types/onBoardingContext"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { User } from "lucide-react"
+import { z } from "zod"
 import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import Profileimage from "../Profileimage"
 import { useSession } from "next-auth/react"
+import { motion } from "framer-motion"
+import { ArrowBigRight, ArrowRight } from "lucide-react"
+
+type AdditionalSchemaType = z.infer<typeof AdditionalScheam>
 
 const Step1 = () => {
-  const session = useSession();
+  const session = useSession()
   const { currentStep, name, surname, profileImage, dispatch } = useOnboardingForm()
-  const form = useForm<AdditionalScheam>({
+
+  const form = useForm<AdditionalSchemaType>({
     resolver: zodResolver(AdditionalScheam),
     defaultValues: {
-      name: name ? name : "",
-      surname: surname ? surname : "",
+      name: name || "",
+      surname: surname || "",
     },
   })
 
-  useEffect(() => { 
-    dispatch({
-      type : ActionType.PROFILEIMAGE,
-      payload : session.data?.user.image as string
-    })
-  }, [session.data?.user.image, dispatch])
+  useEffect(() => {
+    if (session.data?.user?.image) {
+      dispatch({
+        type: ActionType.PROFILEIMAGE,
+        payload: session.data.user.image,
+      })
+    }
+  }, [session.data?.user?.image, dispatch])
 
-  const onSubmit = (data: AdditionalScheam) => {
-    console.log(data)
-    dispatch({ type: ActionType.NAME, payload: data.name! })
-    dispatch({ type: ActionType.SURNAME, payload: data.surname! })
+  const onSubmit = (data: AdditionalSchemaType) => {
+    dispatch({ type: ActionType.NAME, payload: data.name })
+    dispatch({ type: ActionType.SURNAME, payload: data.surname })
     dispatch({ type: ActionType.CHANGE_SITE, payload: currentStep + 1 })
   }
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      {/* Profile Upload */}
-      {/* <div className="flex flex-col items-center gap-3">
-        <div className="w-24 h-24 rounded-full border-2 border-dashed border-muted flex items-center justify-center bg-muted/30">
-          <User className="w-10 h-10 text-muted-foreground" />
-        </div>
-        <p className="text-sm text-muted-foreground">Add profile photo</p>
-      </div> */}
+    <section className="min-h-screen flex items-center justify-center dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-300 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="w-full max-w-lg bg-card rounded-2xl shadow-xl p-8 sm:p-10 border border-border"
+      >
+        {/* Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="text-center mb-6"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+            Let’s Get Started 🚀
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">
+            Tell us a little about yourself to personalize your experience
+          </p>
+        </motion.div>
 
-      <Profileimage profileImage={profileImage} />
+        {/* Profile Image */}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="flex justify-center mb-6"
+        >
+          <Profileimage profileImage={profileImage} />
+        </motion.div>
 
-      {/* Form */}
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-md space-y-6">
-          <div className="space-y-8">
+        {/* Form */}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -66,7 +96,11 @@ const Step1 = () => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium">First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manav" {...field} className="rounded-lg" />
+                    <Input
+                      placeholder="Manav"
+                      {...field}
+                      className="rounded-lg bg-muted/40 focus:ring-2 focus:ring-primary"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -80,24 +114,35 @@ const Step1 = () => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium">Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Valani" {...field} className="rounded-lg" />
+                    <Input
+                      placeholder="Valani"
+                      {...field}
+                      className="rounded-lg bg-muted/40 focus:ring-2 focus:ring-primary"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
 
-          {/* Continue Button */}
-          <div className="flex justify-between">
-            <Button type="submit" className="px-6 rounded-lg w-full items-center">
-              Continue →
-            </Button>
-          </div>
-        </form>
-      </Form>
-
-    </div>
+            {/* Continue Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              <Button
+                type="submit"
+                className="w-full rounded-lg py-3 text-base font-semibold bg-gradient-to-r from-primary to-primary/80 hover:opacity-90 transition-all"
+              >
+                Continue
+                <ArrowRight />
+              </Button>
+            </motion.div>
+          </form>
+        </Form>
+      </motion.div>
+    </section>
   )
 }
 

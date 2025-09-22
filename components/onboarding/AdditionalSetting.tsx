@@ -10,7 +10,7 @@ const AdditionalSetting = () => {
   const { currentStep } = useOnboardingForm();
 
   return (
-    <section className="space-y-8">
+    <section className="">
       {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -22,7 +22,7 @@ const AdditionalSetting = () => {
       </div>
 
       {/* Steps */}
-      <div className="bg-muted/40 p-6 rounded-xl shadow-sm">
+      <div className=" rounded-xl shadow-sm">
         {currentStep === 1 && <Step1 />}
         {currentStep === 2 && <Step2 />}
         {currentStep === 3 && <Step3 />}

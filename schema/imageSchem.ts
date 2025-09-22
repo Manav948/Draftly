@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 800000;
-const ACCEPTED_IMAGE_TYPES = [
+export const MAX_FILE_SIZE = 800000;
+export const ACCEPTED_IMAGE_TYPES = [
     "image/jpeg",
     "image/jpg",
     "image/png",

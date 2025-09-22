@@ -2,35 +2,54 @@
 import React, { useRef, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
-import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
-import { UploadCloud, X } from "lucide-react"
+import { Trash, UploadCloud } from "lucide-react"
 import { cn } from "@/lib/utils"
+import toast from "react-hot-toast"
+
 
 interface Props {
-  form: UseFormReturn
+  form: UseFormReturn<any>
   schema: z.ZodObject<any>
   getImagePriview?: React.Dispatch<React.SetStateAction<string>>
-  maxFiles?: number
-  zodKey: string
+  inputAccpect: "image/*" | "pdf",
+  typesDescription: string[];
+  ContainerClassName?: string,
+  LabelClassName?: string,
+  LabelText?: string
+
 }
 
-const UploadFile = ({ form, schema, getImagePriview, maxFiles, zodKey }: Props) => {
+const UploadFile = ({
+  form,
+  schema,
+  getImagePriview,
+  inputAccpect,
+  typesDescription,
+  ContainerClassName,
+  LabelClassName,
+  LabelText
+}: Props) => {
   const [dragActive, setDragActive] = useState<boolean>(false)
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const onFileHandler = (file: File) => {
-    const result = schema.safeParse({ image: file })
+  const onFileHandler = (providedFile: File) => {
+    const result = schema.safeParse({ image: providedFile})
 
     if (result.success) {
-      form.clearErrors(zodKey)
-      form.setValue(zodKey, file)
-      setFile(file)
-      if (getImagePriview) getImagePriview(URL.createObjectURL(file))
+      form.clearErrors("file")
+      form.setValue("file", providedFile)
+      setFile(providedFile)
+      if (getImagePriview) getImagePriview(URL.createObjectURL(providedFile))
+      console.log(result.data);
+      toast.success("File uploaded successfully!")
     } else {
-      const error = result.error.flatten().fieldErrors.image
-      error?.forEach((error) => form.setError(zodKey, { message: error }))
+      const error = result.error.flatten().fieldErrors.file
+      error?.forEach((error) => form.setError("file", { message: error }))
+      console.log(error)
+      toast.error("Failed to upload file.")
     }
   }
 
@@ -67,22 +86,27 @@ const UploadFile = ({ form, schema, getImagePriview, maxFiles, zodKey }: Props) 
 
   const removeFile = () => {
     setFile(null)
-    form.setValue(zodKey, null)
+    form.setValue("file", null)
   }
 
   return (
     <FormField
-      name="image"
+      name="file"
       control={form.control}
       render={({ field }) => (
         <FormItem className="flex flex-col space-y-2">
+          {LabelText && (
+            <FormLabel className={LabelClassName}>{LabelText}</FormLabel>
+          )}
           <FormControl>
             <div
               className={cn(
                 "flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-6 sm:p-8 cursor-pointer transition-all duration-200 ease-in-out text-center",
                 dragActive
                   ? "border-primary bg-primary/10"
-                  : "border-muted-foreground/30 bg-muted hover:bg-muted/70"
+                  : "border-muted-foreground/30 bg-muted hover:bg-muted/70",
+                ContainerClassName
+
               )}
               onDragEnter={handleDragEnter}
               onDrop={handleDrop}
@@ -98,7 +122,7 @@ const UploadFile = ({ form, schema, getImagePriview, maxFiles, zodKey }: Props) 
                 ref={inputRef}
                 value={undefined}
                 type="file"
-                accept="image/*"
+                accept={inputAccpect}
                 onChange={handleChange}
                 className="hidden"
               />
@@ -122,7 +146,7 @@ const UploadFile = ({ form, schema, getImagePriview, maxFiles, zodKey }: Props) 
                     onClick={removeFile}
                     className="flex items-center gap-1 text-red-500 text-xs hover:underline"
                   >
-                    <X size={14} /> Remove
+                    <Trash size={14} /> Remove
                   </button>
                 </div>
               )}
