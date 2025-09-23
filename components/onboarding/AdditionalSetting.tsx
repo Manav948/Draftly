@@ -5,6 +5,7 @@ import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import Step3 from "./steps/Step3";
 import FromStep from "./FromStep";
+import Step4 from "./steps/Step4";
 
 const AdditionalSetting = () => {
   const { currentStep } = useOnboardingForm();
@@ -26,6 +27,7 @@ const AdditionalSetting = () => {
         {currentStep === 1 && <Step1 />}
         {currentStep === 2 && <Step2 />}
         {currentStep === 3 && <Step3 />}
+        {currentStep === 4 && <Step4 />}
       </div>
 
       {/* Progress */}

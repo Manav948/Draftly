@@ -6,7 +6,7 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import UploadFile from "../UploadFile"
 import { Button } from "@/components/ui/button"
-import { WorkspaceScheam, workspaceSchema } from "@/schema/workSpaceSchema"
+import { WorkspaceSchema, workspaceSchema } from "@/schema/workSpaceSchema"
 import { useOnboardingForm } from "@/context/OnboardingForm"
 import { useUploadThing } from "@/lib/uploadthing"
 import toast from "react-hot-toast"
@@ -17,7 +17,7 @@ import { ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
 
 const Step3 = () => {
-  const form = useForm<WorkspaceScheam>({
+  const form = useForm<WorkspaceSchema>({
     resolver: zodResolver(workspaceSchema),
     defaultValues: {
       name: ""
@@ -39,7 +39,7 @@ const Step3 = () => {
     }
   })
 
-  const onSubmit = async (data: WorkspaceScheam) => {
+  const onSubmit = async (data: WorkspaceSchema) => {
     const image: File | undefined | null = data.file
     if (image) await startUpload([image])
     dispatch({ type: ActionType.WORKSPACE_NAME, payload: data.name })
@@ -53,7 +53,6 @@ const Step3 = () => {
       transition={{ duration: 0.9, ease: "easeOut" }}
       className="w-full max-w-lg mx-auto bg-card shadow-xl rounded-2xl p-8 sm:p-10 flex flex-col space-y-8 border mt-4"
     >
-      {/* Step Heading */}
       <div className="text-center space-y-3">
         <h2 className="text-3xl font-extrabold tracking-tight text-foreground">
           Create Your Workspace
@@ -63,10 +62,8 @@ const Step3 = () => {
         </p>
       </div>
 
-      {/* Form */}
       <Form {...form}>
         <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
-          {/* Workspace Name */}
           <FormField
             name="name"
             control={form.control}
@@ -85,7 +82,6 @@ const Step3 = () => {
             )}
           />
 
-          {/* File Upload */}
           <UploadFile
             form={form}
             schema={imageSchema}
@@ -93,7 +89,6 @@ const Step3 = () => {
             typesDescription={[".jpg", ".jpeg", ".png", ".webp", ".gif"]}
           />
 
-          {/* Action Buttons */}
           <div className="flex items-center justify-between w-full">
             <Button
               disabled={isUploading}
