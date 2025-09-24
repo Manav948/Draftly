@@ -1,5 +1,7 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { onboardingSchema } from "@/schema/onboardingSchema";
+import { UseCase as UseCaseType } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -11,15 +13,13 @@ export async function POST(request: Request) {
     }
     const body: unknown = await request.json();
 
-    const result = z.object({
-        profileImage: z.string(),
-    }).safeParse(body);
+    const result = onboardingSchema.safeParse(body)
 
     if (!result.success) {
         return new NextResponse("Something went wrong", { status: 401 })
     }
-    const { profileImage } = result.data;
 
+    const {useCase , workspaceName , name, surname , workspaceImage} = result.data
     try {
         const user = await db.user.findUnique({
             where: {
@@ -35,10 +35,28 @@ export async function POST(request: Request) {
                 id: session.user.id
             },
             data: { 
-                image: profileImage
+                completeOnboarding : true,
+                name,
+                surname,
+                useCase : useCase as UseCaseType 
             }
         })
-        return NextResponse.json(updateUser, { status: 200 })
+
+        const workspace = await db.workspace.create({
+            data : {
+                creatorId: user.id,
+                name : workspaceName,
+                image : workspaceImage
+            }
+        })
+
+        await db.subscription.create({
+            data : {
+                userId : user.id,
+                workspaceId : workspace.id
+            }
+        })
+        return NextResponse.json("OK    ", { status: 200 })
     } catch (error) {
         console.log("Error in db connection : ", error)
         return new NextResponse("Error during db connection", { status: 405 })

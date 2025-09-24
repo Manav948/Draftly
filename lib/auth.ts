@@ -91,6 +91,7 @@ export const authOptions: NextAuthOptions = {
                 session.user.email = token.email
                 session.user.image = token.picture
                 session.user.username = token.username as string | null
+                session.user.completeOnboarding = !!token.completeOnboarding
             }
             const user = await db.user.findUnique({
                 where: {
@@ -100,6 +101,7 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 session.user.image = user.image ?? session.user.image;
                 session.user.completeOnboarding = user.completeOnboarding
+                session.user.username = user.username;
             }
             console.log('Session', session)
             return session
