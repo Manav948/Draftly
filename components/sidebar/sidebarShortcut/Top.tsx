@@ -1,12 +1,26 @@
 "use client"
+import ActiveLink from '@/components/ui/active-link'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import { Home } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import React from 'react'
 
 const Top = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+    const m = useTranslations("SIDEBAR")
+    return (
+        <div>
+            <HoverCard openDelay={250} closeDelay={250}>
+                <HoverCardTrigger asChild>
+                    <ActiveLink variant={"ghost"} size={"icon"} href='/dashboard'>
+                        <Home />
+                    </ActiveLink>
+                </HoverCardTrigger>
+                <HoverCardContent align='start'>
+                    <span>{m("MAIN.HOME_OVER")}</span>
+                </HoverCardContent>
+            </HoverCard>
+        </div>
+    )
 }
 
 export default Top

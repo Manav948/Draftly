@@ -39,9 +39,30 @@
                 "APPALE": "Sign in with Apple",
                 "GITHUB": "Sign in with GitHub"
             },
-            "PENDING" : {
-                "LOADING" : "Please wait..."
+            "PENDING": {
+                "LOADING": "Please wait..."
             }
         }
+    },
+    "SIDEBAR": {
+        "MAIN": {
+            "HOME_OVER": "Home",
+            "LOG_OUT_HOVER": "Log out",
+            "SETTINGS_HOVER": "Settings"
+        },
+        "SETTINGS": {
+            "GENERAL": "General",
+            "ACCOUNT": "Account",
+            "SECURITY": "Security",
+            "Theme": "Theme",
+            "Workspace": "Workspace"
+        }
+    },
+    "COMMON ": {
+        "LANG_HOVER": "Change language",
+        "THEME_HOVER": "Change Theme",
+        "DARK": "Dark",
+        "LIGHT": "Light",
+        "SYSTEM": "system"
     }
 }
