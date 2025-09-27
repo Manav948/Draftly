@@ -15,6 +15,7 @@ const Shortcut = () => {
         <Bottom />
       </div>
     </div>
+
   )
 }
 

@@ -58,11 +58,19 @@
             "Workspace": "Workspace"
         }
     },
-    "COMMON ": {
+    "COMMON": {
         "LANG_HOVER": "Change language",
         "THEME_HOVER": "Change Theme",
         "DARK": "Dark",
         "LIGHT": "Light",
-        "SYSTEM": "system"
+        "SYSTEM": "system",
+        "LOG_OUT": "Log out",
+        "SETTINGS": "Settings"
+    },
+    "ROUTES": {
+        "DASHBOARD": "Home",
+        "SETTINGS": "Settings",
+        "THEME": "Theme",
+        "SECURITY": "Security"
     }
 }

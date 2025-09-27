@@ -5,10 +5,10 @@ import OptionSidebar from './optionSidebar/OptionSidebar'
 
 const Sidebar = () => {
   return (
-    <aside className="flex flex-col w-full h-screen bg-gradient-to-b to-white border-r shadow-lg overflow-y-auto">
-        <Shortcut />
-        <OptionSidebar />
-    </aside>
+   <aside className="flex h-screen w-20 md:w-64 bg-white border-r border-gray-200 shadow-lg overflow-hidden transition-all duration-300">
+    <Shortcut />     
+    <OptionSidebar /> 
+</aside>
   )
 }
 

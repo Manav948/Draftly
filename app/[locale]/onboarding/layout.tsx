@@ -7,8 +7,8 @@ const OnBoarding = ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="flex justify-end items-center gap-4 p-4 border-b border-border">
-        <LocaleSwitcher />
-        <ThemeSwitcher />
+        <LocaleSwitcher alignDropdown={"end"} alignHover={"end"} size={"icon"} variant={"outline"} />
+        <ThemeSwitcher alignDropdown={"end"} alignHover={"end"} size={"icon"} variant={"outline"} />
       </div>
 
       <div className="container mx-auto px-6 py-10">{children}</div>

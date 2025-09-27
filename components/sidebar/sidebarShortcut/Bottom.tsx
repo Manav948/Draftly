@@ -20,7 +20,7 @@ const Bottom = () => {
         <div className='flex flex-col h-full justify-end '>
             
             {/* locale button */}
-            <LocaleSwitcher />
+            <LocaleSwitcher textSize='text-lg' alignHover='start' alignDropdown="start" variant={"ghost"} size={"icon"} />
 
             {/* logout button */}
             <HoverCard openDelay={250} closeDelay={250}>
