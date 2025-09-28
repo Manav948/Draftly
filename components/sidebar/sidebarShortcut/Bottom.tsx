@@ -9,45 +9,56 @@ import { useLocale, useTranslations } from 'next-intl'
 import React from 'react'
 
 const Bottom = () => {
-    const m = useTranslations("SIDEBAR");
-    const lang = useLocale()
-    const logoutHandler = () => {
-        signOut({
-            callbackUrl: `${window.location.origin}/${lang}`
-        })
-    }
-    return (
-        <div className='flex flex-col h-full justify-end '>
-            
-            {/* locale button */}
-            <LocaleSwitcher textSize='text-lg' alignHover='start' alignDropdown="start" variant={"ghost"} size={"icon"} />
+  const t = useTranslations("SIDEBAR");
+  const lang = useLocale();
 
-            {/* logout button */}
-            <HoverCard openDelay={250} closeDelay={250}>
-                <HoverCardTrigger tabIndex={1}>
-                    <Button onClick={() => logoutHandler} variant={"ghost"} size={"icon"}>
-                        <LogOutIcon />
-                    </Button>
-                </HoverCardTrigger>
-            </HoverCard>
+  const logoutHandler = () => {
+    signOut({
+      callbackUrl: `${window.location.origin}/${lang}`
+    });
+  };
 
-            {/* settings button */}
-            <HoverCard openDelay={250} closeDelay={250}>
-                <HoverCardTrigger tabIndex={1}>
-                    <ActiveLink
-                        include='settings'
-                        variant={"ghost"}
-                        size={"icon"}
-                        href='/dashboard/settings'>
-                        <Settings />
-                    </ActiveLink>
-                </HoverCardTrigger>
-                <HoverCardContent>
-                    <span>{m("MAIN.SETTINGS_HOVER")}</span>
-                </HoverCardContent>
-            </HoverCard>
-        </div>
-    )
-}
+  return (
+    <div className="flex flex-col h-full justify-end items-center gap-3">
+      {/* Locale button */}
+      <LocaleSwitcher
+        textSize="text-lg"
+        alignHover="start"
+        alignDropdown="start"
+        variant="ghost"
+        size="icon"
+      />
 
-export default Bottom
+      {/* Logout button with hover */}
+      <HoverCard openDelay={250} closeDelay={250}>
+        <HoverCardTrigger tabIndex={1}>
+          <Button onClick={logoutHandler} variant="ghost" size="icon">
+            <LogOutIcon className="w-5 h-5 text-gray-600" />
+          </Button>
+        </HoverCardTrigger>
+        <HoverCardContent side="right" className="px-2 py-1 text-sm">
+          <span>{t("MAIN.LOG_OUT_HOVER") || "Logout"}</span>
+        </HoverCardContent>
+      </HoverCard>
+
+      {/* Settings button with hover */}
+      <HoverCard openDelay={250} closeDelay={250}>
+        <HoverCardTrigger tabIndex={1}>
+          <ActiveLink
+            include="settings"
+            variant="ghost"
+            size="icon"
+            href="/dashboard/settings"
+          >
+            <Settings className="w-5 h-5 text-gray-600" />
+          </ActiveLink>
+        </HoverCardTrigger>
+        <HoverCardContent side="right" className="px-2 py-1 text-sm">
+          <span>{t("MAIN.SETTINGS_HOVER")}</span>
+        </HoverCardContent>
+      </HoverCard>
+    </div>
+  );
+};
+
+export default Bottom;

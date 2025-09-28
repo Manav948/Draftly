@@ -27,7 +27,7 @@ const Settings = () => {
     return (
         <div>
             <div>
-                <p>{m("SETTINGS.GENERAL")}</p>
+                {/* <p>{m("SETTINGS.GENERAL")}</p> */}
                 <div className='flex flex-col gap-2 w-full mt-2'>
                     {settingsField.map((settingsField, i) => (
                         <ActiveLink
@@ -43,11 +43,11 @@ const Settings = () => {
                     ))}
                 </div>
             </div>
-            <div>
+            {/* <div>
                 <p>
                     {m("SETTINGS.Workspace")}
                 </p>
-            </div>
+            </div> */}
         </div>
     )
 }

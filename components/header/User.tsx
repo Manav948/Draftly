@@ -37,7 +37,7 @@ const User = () => {
         <DropdownMenu>
             {/* Avatar Trigger */}
             <DropdownMenuTrigger asChild>
-                <div className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
+                <div className="relative z-50 rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
                     <UserAvatar className="w-10 h-10 ring-2 ring-gray-200 dark:ring-gray-700" />
                 </div>
             </DropdownMenuTrigger>
@@ -46,7 +46,7 @@ const User = () => {
             <DropdownMenuContent
                 align="end"
                 sideOffset={10}
-                className="w-56 p-2 rounded-xl shadow-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+                className="z-50 w-56 p-2 rounded-xl shadow-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
             >
                 {/* User Info */}
                 <div className="flex items-center gap-3 p-2">

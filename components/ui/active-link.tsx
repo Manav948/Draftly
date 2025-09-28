@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,46 +24,39 @@ interface Props {
   disableActiveStateColor?: boolean;
 }
 
-const ActiveLink = React.forwardRef<HTMLAnchorElement, Props>(
-  (
-    {
-      href,
-      className,
-      variant = "default",
-      size = "default",
-      children,
-      include,
-      workspaceIcon,
-      disableActiveStateColor = false,
-      ...props
-    }: Props,
-    ref
-  ) => {
-    const pathname = usePathname();
-    return (
-      <Link
-        href={href}
-        className={cn(
-          `${buttonVariants({ variant, size })} ${
-            href === pathname || (include && pathname.includes(include))
-              ? workspaceIcon
-                ? "font-semibold border-secondary-foreground border-2"
-                : disableActiveStateColor
-                ? ""
-                : "bg-secondary font-semibold"
-              : ""
-          }`,
-          className
-        )}
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </Link>
-    );
-  }
-);
+const ActiveLink = ({
+  href,
+  className,
+  variant = "default",
+  size = "default",
+  children,
+  include,
+  workspaceIcon,
+  disableActiveStateColor = false,
+}: Props) => {
+  const pathname = usePathname();
 
-ActiveLink.displayName = "ActiveLink";
+  const isActive =
+    href === pathname || (include && pathname.includes(include));
+
+  return (
+    <Link
+      href={href}
+      className={cn(
+        buttonVariants({ variant, size }),
+        isActive
+          ? workspaceIcon
+            ? "font-semibold border-secondary-foreground border-2"
+            : disableActiveStateColor
+            ? ""
+            : "bg-secondary font-semibold"
+          : "",
+        className
+      )}
+    >
+      {children}
+    </Link>
+  );
+};
 
 export default ActiveLink;
