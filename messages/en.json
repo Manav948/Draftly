@@ -67,6 +67,34 @@
         "LOG_OUT": "Log out",
         "SETTINGS": "Settings"
     },
+    "SETTINGS": {
+        "ACCOUNT": {
+            "TITLE": "Account",
+            "DESC": "Manage your Draftly account. All changes to your account will be applied to all Workspaces",
+            "IMAGE": "Profile Image",
+            "USERNAME": "Username",
+            "FIRST_NAME": "First name(optional)",
+            "SURNAME": "Surname(Optional)",
+            "USERNAME_PLACEHOLDER": "Username",
+            "FIRST_NAME_PLACEHOLDER": "First Name",
+            "SURNAME_PLACEHOLDER": "Surname",
+            "LANG": "Language",
+            "SEARCH_LANGUAGE": "Search language...",
+            "SELECT_LANGUAGE": "Select language",
+            "UPDATE_BTN": "Update",
+            "DELETE_TITLE": "Delete Account",
+            "DELETE_DESC": "Once the Account and data are deleted, there is no way to recover them.",
+            "DELETE_LABLE": "Delete My Account And Data",
+            "DELETE_PLACEHOLDER": "Confirm Your Email",
+            "DELETE_BTN": "Delete",
+            "DIALOG": {
+                "TITLE": "Delete Account",
+                "DESC": "You will loose access to all your workspace and projects",
+                "WARNING": "Account deletion is permanent and cannot be unlock,click 'Delete my Account' to deleted your Account",
+                "BUTTON": "Delete My Account"
+            }
+        }
+    },
     "ROUTES": {
         "DASHBOARD": "Home",
         "SETTINGS": "Settings",

@@ -9,14 +9,14 @@ import { useLocale, useTranslations } from 'next-intl'
 import React from 'react'
 
 const Bottom = () => {
-  const t = useTranslations("SIDEBAR");
-  const lang = useLocale();
+  const t = useTranslations("SIDEBAR")
+  const lang = useLocale()
 
   const logoutHandler = () => {
     signOut({
-      callbackUrl: `${window.location.origin}/${lang}`
-    });
-  };
+      callbackUrl: `${window.location.origin}/${lang}`,
+    })
+  }
 
   return (
     <div className="flex flex-col h-full justify-end items-center gap-3">
@@ -31,7 +31,7 @@ const Bottom = () => {
 
       {/* Logout button with hover */}
       <HoverCard openDelay={250} closeDelay={250}>
-        <HoverCardTrigger tabIndex={1}>
+        <HoverCardTrigger asChild>
           <Button onClick={logoutHandler} variant="ghost" size="icon">
             <LogOutIcon className="w-5 h-5 text-gray-600" />
           </Button>
@@ -43,7 +43,7 @@ const Bottom = () => {
 
       {/* Settings button with hover */}
       <HoverCard openDelay={250} closeDelay={250}>
-        <HoverCardTrigger tabIndex={1}>
+        <HoverCardTrigger asChild>
           <ActiveLink
             include="settings"
             variant="ghost"
@@ -58,7 +58,7 @@ const Bottom = () => {
         </HoverCardContent>
       </HoverCard>
     </div>
-  );
-};
+  )
+}
 
-export default Bottom;
+export default Bottom
