@@ -33,10 +33,10 @@ const Bottom = () => {
       <HoverCard openDelay={250} closeDelay={250}>
         <HoverCardTrigger asChild>
           <Button onClick={logoutHandler} variant="ghost" size="icon">
-            <LogOutIcon className="w-5 h-5 text-gray-600" />
+            <LogOutIcon className="w-5 h-5 text-gray-600 dark:text-white" />
           </Button>
         </HoverCardTrigger>
-        <HoverCardContent side="right" className="px-2 py-1 text-sm">
+        <HoverCardContent side="right" className="px-2 py-1">
           <span>{t("MAIN.LOG_OUT_HOVER") || "Logout"}</span>
         </HoverCardContent>
       </HoverCard>
@@ -50,7 +50,7 @@ const Bottom = () => {
             size="icon"
             href="/dashboard/settings"
           >
-            <Settings className="w-5 h-5 text-gray-600" />
+            <Settings className="w-5 h-5 text-gray-600 dark:text-white" />
           </ActiveLink>
         </HoverCardTrigger>
         <HoverCardContent side="right" className="px-2 py-1 text-sm">

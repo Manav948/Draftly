@@ -10,7 +10,7 @@ const Shortcut = () => {
       className="
         flex flex-col justify-between
         w-16 md:w-20 h-full
-        bg-gray-50 border-r border-gray-200
+        bg-white dark:bg-gray-950 text-black dark:text-white
         transition-all duration-300 ease-in-out
       "
     >
@@ -19,7 +19,7 @@ const Shortcut = () => {
         <Workspaces />
       </div>
 
-      <div className="p-4 border-t border-gray-100">
+      <div className="p-4">
         <Bottom />
       </div>
     </div>

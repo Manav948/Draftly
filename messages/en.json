@@ -79,6 +79,7 @@
             "FIRST_NAME_PLACEHOLDER": "First Name",
             "SURNAME_PLACEHOLDER": "Surname",
             "LANG": "Language",
+            "NO_LANGUAGE": "Language not Found",
             "SEARCH_LANGUAGE": "Search language...",
             "SELECT_LANGUAGE": "Select language",
             "UPDATE_BTN": "Update",

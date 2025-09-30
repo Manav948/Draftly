@@ -3,7 +3,7 @@ import React from 'react'
 
 const SecuritySettings = () => {
   return (
-    <div>
+    <div className=''>
       Security
     </div>
   )

@@ -23,8 +23,8 @@ const Theme = () => {
     }
 
     return (
-        <div className="flex justify-center items-center min-h-screen w-full bg-gray-50 dark:bg-black">
-            <Card className="w-full max-w-4xl shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950">
+        <div className="flex justify-center items-start h-full w-full bg-white dark:bg-gray-950">
+            <Card className="w-full mt-20 max-w-6xl shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950">
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold">Theme</CardTitle>
                     <CardDescription className="text-sm text-muted-foreground">
