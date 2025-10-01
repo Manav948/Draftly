@@ -4,7 +4,7 @@ import Sidebar from "@/components/sidebar/Sidebar";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex min-h-screen bg-gray-950 dark:text-white">
+    <main className="flex min-h-screen bg-red-500 dark:text-white">
 
       <aside className="text-black hidden md:flex flex-col min-h-screen dark:bg-gray-950 dark:border-gray-700 shadow-md">
         <Sidebar />

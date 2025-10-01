@@ -20,7 +20,7 @@ interface Props {
     size?: "default" | "sm" | "lg" | "icon" | null
     alignHover?: "center" | "start" | "end"
     alignDropdown?: "center" | "start" | "end"
-    textSize?: "text-lg" | "text-base"
+    textSize?: "text-lg" | "text-base" | "text-sm"
 }
 
 export const LocaleSwitcher = ({

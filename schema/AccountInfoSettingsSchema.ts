@@ -1,7 +1,5 @@
 import z from "zod";
 
-
-
 export const accountInfoSettingsSchema = z.object({
     username: z
         .string()

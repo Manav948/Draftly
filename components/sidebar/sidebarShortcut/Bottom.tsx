@@ -22,7 +22,7 @@ const Bottom = () => {
     <div className="flex flex-col h-full justify-end items-center gap-3">
       {/* Locale button */}
       <LocaleSwitcher
-        textSize="text-lg"
+        textSize="text-sm"
         alignHover="start"
         alignDropdown="start"
         variant="ghost"

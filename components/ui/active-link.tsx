@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,6 +20,7 @@ interface Props {
   include?: string;
   workspaceIcon?: boolean;
   disableActiveStateColor?: boolean;
+  asChild?: boolean; 
 }
 
 const ActiveLink = ({
@@ -33,15 +32,13 @@ const ActiveLink = ({
   include,
   workspaceIcon,
   disableActiveStateColor = false,
+  asChild = false,
 }: Props) => {
   const pathname = usePathname();
+  const isActive = href === pathname || (include && pathname.includes(include));
 
-  const isActive =
-    href === pathname || (include && pathname.includes(include));
-
-  return (
-    <Link
-      href={href}
+  const content = (
+    <span
       className={cn(
         buttonVariants({ variant, size }),
         isActive
@@ -55,8 +52,10 @@ const ActiveLink = ({
       )}
     >
       {children}
-    </Link>
+    </span>
   );
+
+  return asChild ? content : <Link href={href}>{content}</Link>;
 };
 
 export default ActiveLink;

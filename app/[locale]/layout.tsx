@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/providers/ThemeProvider";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { ReactNode } from "react";
 import { AuthProvider } from "@/providers/AuthProvider";
-import { Toaster } from "react-hot-toast"
+import { Toaster } from "react-hot-toast";
 import { QueryProvider } from "@/providers/QueryProvider";
+import ClientThemeProvider from "@/components/ui/ClientThemeProvider";
 
 const locales = ["en", "hi"];
 
@@ -35,33 +35,23 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
 
-  const isValidLocale = locales.includes(locale);
-  if (!isValidLocale) notFound();
+  if (!locales.includes(locale)) notFound();
 
   const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body
-        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AuthProvider>
             <QueryProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                <Toaster
-                  position="top-center"
-                  reverseOrder={false} />
+              <ClientThemeProvider>
+                <Toaster position="top-center" reverseOrder={false} />
                 {children}
-              </ThemeProvider>
+              </ClientThemeProvider>
             </QueryProvider>
-
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

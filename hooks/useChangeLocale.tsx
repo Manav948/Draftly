@@ -9,10 +9,11 @@ const useChangeLocale = () => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const onChange = (nextLocale : "EN" | "HI") => {
+    const onChange = (nextLocale?: "EN" | "HI") => {
+        if (!nextLocale) return; 
         setIsLoading(true);
         startTransition(() => {
-            const segments = pathname.split('/');
+            const segments = pathname?.split('/') || [];
             if (segments[1]?.toUpperCase() === "EN" || segments[1]?.toUpperCase() === "HI") {
                 segments[1] = nextLocale.toLowerCase();
             } else {
@@ -20,9 +21,9 @@ const useChangeLocale = () => {
             }
             const newPath = segments.join('/');
             router.replace(newPath);
-        })
-    }
-    return { isLoading , isPending , onChange }
+        });
+    };
+    return { isLoading, isPending, onChange }
 }
 
 export default useChangeLocale

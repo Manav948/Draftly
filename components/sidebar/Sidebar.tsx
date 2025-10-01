@@ -7,13 +7,14 @@ const Sidebar = () => {
   return (
     <aside
       className="
-        flex flex-shrink-0 
-        h-screen sticky top-0
+        flex h-screen sticky top-0
         bg-white dark:bg-gray-950
-        w-20 md:w-24 lg:w-64
+        border-r border-black dark:border-gray-300
       "
     >
-      <Shortcut />
+      <div className="w-16 md:w-20 bg-red-500 flex flex-col justify-between">
+        <Shortcut />
+      </div>
       <OptionSidebar />
     </aside>
   );

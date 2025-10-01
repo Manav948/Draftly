@@ -1,4 +1,3 @@
-"use client"
 import Accountinfo from '@/components/settings/account/Accountinfo'
 import Heading from '@/components/settings/account/Heading'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
