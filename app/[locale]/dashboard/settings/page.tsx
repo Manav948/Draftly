@@ -33,7 +33,7 @@ const Settings = async () => {
 
         {/* Delete Account Card */}
         <div className="mt-6">
-          <DeleteAccount />
+          <DeleteAccount userEmail={session.user.email!} />
         </div>
       </div>
     </div>

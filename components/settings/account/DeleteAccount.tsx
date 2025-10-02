@@ -5,16 +5,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { DialogTrigger, Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { LoadingState } from '@/components/ui/LoadingState'
 import Warning from '@/components/ui/warning'
 import { deleteAccountSchema, DeleteAccountSchema } from '@/schema/deleteAccountSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogDescription } from '@radix-ui/react-dialog'
-import { useTranslations } from 'next-intl'
+import { useMutation } from '@tanstack/react-query'
+import axios, { AxiosError, AxiosResponse } from 'axios'
+import { signOut } from 'next-auth/react'
+import { useLocale, useTranslations } from 'next-intl'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import toast from "react-hot-toast"
 
-const DeleteAccount = () => {
+
+interface Props {
+    userEmail: string;
+}
+const DeleteAccount = ({ userEmail }: Props) => {
     const t = useTranslations("SETTINGS.ACCOUNT")
+    const lang = useLocale();
 
     const form = useForm<DeleteAccountSchema>({
         resolver: zodResolver(deleteAccountSchema),
@@ -23,8 +33,25 @@ const DeleteAccount = () => {
         },
     });
 
+    const { mutate: deleteProfile, isPending } = useMutation({
+        mutationFn: async (formData: DeleteAccountSchema) => {
+            const { data } = await (axios.post(`/api/profile/delete`, formData)) as AxiosResponse<DeleteAccountSchema>
+            return data;
+        },
+        onError: (err: AxiosError) => {
+            const error = err?.response?.data ? err.response.data : "Something went wrong"
+            toast.error("Email was not Correct Account not Deleted")
+        },
+        onSuccess: async () => {
+            toast.success("Accounted Deleted Successfully");
+            signOut({
+                callbackUrl: `${window.location.origin}/${lang}`
+            })
+        }, mutationKey: ["deleteProfile"]
+    })
+
     const onSubmit = (data: DeleteAccountSchema) => {
-        console.log(data)
+        deleteProfile(data);
     }
 
     return (
@@ -97,12 +124,13 @@ const DeleteAccount = () => {
                                 </Warning>
 
                                 <Button
+                                    disabled={isPending}
                                     onClick={form.handleSubmit(onSubmit)}
                                     size="lg"
                                     variant="destructive"
                                     className="w-full mt-4 cursor-pointer"
                                 >
-                                    {t("DIALOG.BUTTON")}
+                                    {isPending ? <LoadingState loadingText={t("DIALOG.PENDING_BTN")} /> : t("DIALOG.BUTTON")}
                                 </Button>
                             </DialogContent>
                         </Dialog>

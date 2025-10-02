@@ -66,7 +66,7 @@
         "SYSTEM": "system",
         "LOG_OUT": "Log out",
         "SETTINGS": "Settings",
-        "WARNING" : "WARNING"
+        "WARNING": "WARNING"
     },
     "SETTINGS": {
         "ACCOUNT": {
@@ -93,7 +93,8 @@
                 "TITLE": "Delete Account",
                 "DESC": "You will loose access to all your workspace and projects",
                 "WARNING": "Account deletion is permanent and cannot be unlock,click 'Delete my Account' to deleted your Account",
-                "BUTTON": "Delete My Account"
+                "BUTTON": "Delete My Account",
+                "PENDING_BTN": "Deleteing..."
             }
         }
     },

@@ -21,13 +21,15 @@ import { useTheme } from 'next-themes'
 import useChangeLocale from '@/hooks/useChangeLocale'
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 const User = () => {
     const { theme, setTheme } = useTheme()
     const { onChange } = useChangeLocale()
     const lang = useLocale()
     const m = useTranslations("COMMON")
+    const { data: session } = useSession()
+    const user = session?.user
 
     const logOutHandler = () => {
         signOut({ callbackUrl: `${window.location.origin}/${lang}` })
@@ -38,7 +40,10 @@ const User = () => {
             {/* Avatar Trigger */}
             <DropdownMenuTrigger asChild>
                 <div className="relative z-50 rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
-                    <UserAvatar className="w-10 h-10 ring-2 ring-gray-200 dark:ring-gray-700 cursor-pointer" />
+                    <UserAvatar
+                        className="w-10 h-10 ring-2 ring-gray-200 dark:ring-gray-700 cursor-pointer"
+                        profileImage={user?.image ?? null}
+                    />
                 </div>
             </DropdownMenuTrigger>
 
@@ -49,12 +54,12 @@ const User = () => {
                 className="z-[9999] w-56 p-2 rounded-xl shadow-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
             >
                 {/* User Info */}
-                <div className="flex items-center gap-3 p-2">
-                    <UserAvatar className="w-8 h-8" />
+                <div className="flex">
+                    <UserAvatar className="w-full h-full object-cover" profileImage={user?.image ?? null} />
                     <div>
-                        <DropdownMenuLabel className="font-semibold">Manav</DropdownMenuLabel>
+                        <DropdownMenuLabel className="font-semibold">{user?.username ?? "Guest"}</DropdownMenuLabel>
                         <DropdownMenuLabel className="text-xs text-gray-500">
-                            manav@gmail.com
+                            {user?.email ?? "guest@example.com"}
                         </DropdownMenuLabel>
                     </div>
                 </div>
@@ -88,7 +93,7 @@ const User = () => {
                         </DropdownMenuPortal>
                     </DropdownMenuSub>
 
-                    {/* Language */}
+                    {/* Language Switch */}
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger className="cursor-pointer gap-2">
                             <Globe2 size={16} />

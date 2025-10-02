@@ -25,7 +25,7 @@ import { LoadingState } from "../ui/LoadingState";
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 const SignUpCardContent = () => {
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const t = useTranslations("Auth");
 
@@ -69,7 +69,7 @@ const SignUpCardContent = () => {
       console.error("Error during sign-up", error);
       toast.error("Error In Sign-Up function");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -79,7 +79,9 @@ const SignUpCardContent = () => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-3">
-          <ProviderSignInBtns />
+          <ProviderSignInBtns onLoading={function (value: React.SetStateAction<boolean>): void {
+            throw new Error("Function not implemented.");
+          }} />
 
           {/* Inputs */}
           <div className="flex flex-col gap-4">
@@ -145,7 +147,7 @@ const SignUpCardContent = () => {
               type="submit"
             >
               {loading ? (
-                <LoadingState loadingText={t("PENDING.LOADING")} /> 
+                <LoadingState loadingText={"Signing up..."} />
               ) : (
                 t("SIGN_UP.SUBMIT")
               )}
