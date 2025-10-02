@@ -38,7 +38,7 @@ const User = () => {
             {/* Avatar Trigger */}
             <DropdownMenuTrigger asChild>
                 <div className="relative z-50 rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
-                    <UserAvatar className="w-10 h-10 ring-2 ring-gray-200 dark:ring-gray-700" />
+                    <UserAvatar className="w-10 h-10 ring-2 ring-gray-200 dark:ring-gray-700 cursor-pointer" />
                 </div>
             </DropdownMenuTrigger>
 

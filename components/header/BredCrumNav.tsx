@@ -32,7 +32,7 @@ const BredCrumNav = () => {
                   <ChevronRight className="w-4 h-4 text-black dark:text-white" />
                 </>
               ) : (
-                <span className="text-gray-950 dark:text-white font-semibold">
+                <span className="text-gray-950 dark:text-white font-semibold cursor-pointer">
                   {t(link.toUpperCase())}
                 </span>
               )}

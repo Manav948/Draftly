@@ -6,12 +6,12 @@ import React from 'react'
 const Heading = () => {
   const t = useTranslations("SETTINGS")
   return (
-    <Card className="bg-transparent border-none shadow-none mb-6">
-      <CardHeader className="px-0">
+    <Card className="bg-transparent border-none shadow-none">
+      <CardHeader className="px-5">
         <h1 className="text-2xl font-bold tracking-tight">
           {t("ACCOUNT.TITLE")}
         </h1>
-        <CardDescription className="text-muted-foreground mt-1">
+        <CardDescription className="text-muted-foreground ">
           {t("ACCOUNT.DESC")}
         </CardDescription>
       </CardHeader>

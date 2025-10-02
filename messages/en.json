@@ -65,7 +65,8 @@
         "LIGHT": "Light",
         "SYSTEM": "system",
         "LOG_OUT": "Log out",
-        "SETTINGS": "Settings"
+        "SETTINGS": "Settings",
+        "WARNING" : "WARNING"
     },
     "SETTINGS": {
         "ACCOUNT": {

@@ -15,7 +15,7 @@ const DashboardHeader = () => {
         <Welcoming />
       </div>
 
-      <div className="ml-auto">
+      <div className="ml-auto cursor-pointer">
         <User />
       </div>
     </header>

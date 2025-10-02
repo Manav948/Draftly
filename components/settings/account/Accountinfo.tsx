@@ -103,26 +103,25 @@ const AccountInfo = ({
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="w-full 
-      dark:bg-gradient-to-b dark:from-gray-950 dark:via-gray-900 dark:to-black
-      bg-gradient-to-b from-white via-white to-white"
+      className="w-full"
     >
       <Card
-        className="max-w-3xl mx-auto rounded-2xl 
-        dark:bg-gray-900/70 dark:border-gray-800 dark:shadow-lg 
-        bg-white border border-gray-200 shadow-xl
-        backdrop-blur-md transition-all"
+        className="
+        max-w-3xl mx-auto rounded-2xl 
+        bg-gradient-to-br from-white via-gray-50 to-gray-100
+      dark:from-gray-950 dark:via-gray-900 dark:to-black shadow-xl
+        backdrop-blur-md transition-all border-0 border-white"
       >
-        <CardContent className="p-8">
+        <CardContent>
           {/* Profile Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="flex flex-col items-center space-y-3"
+            className="flex flex-col items-center"
           >
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 blur-lg opacity-40 animate-pulse" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 blur-lg opacity-40 animate-pulse cursor-pointer" />
               <Profileimage profileImage={image} />
             </div>
             <h2 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">
@@ -134,7 +133,7 @@ const AccountInfo = ({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-8 mt-8"
+              className="space-y-5"
             >
               {/* Username + Name */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -227,8 +226,8 @@ const AccountInfo = ({
                             >
                               {field.value
                                 ? languages.find(
-                                    (language) => language.value === field.value
-                                  )?.label
+                                  (language) => language.value === field.value
+                                )?.label
                                 : t("ACCOUNT.SELECT_LANGUAGE")}
                               <ChevronsUpDown className="ml-2 h-4 w-4 opacity-60" />
                             </Button>
@@ -282,7 +281,7 @@ const AccountInfo = ({
                   text-white font-semibold
                   bg-gradient-to-r from-purple-500 to-indigo-500 
                   hover:from-indigo-500 hover:to-purple-500
-                  transition-all shadow-md"
+                  transition-all shadow-md cursor-pointer"
                   type="submit"
                 >
                   {isPending ? (
