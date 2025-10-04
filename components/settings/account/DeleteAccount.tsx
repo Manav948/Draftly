@@ -58,7 +58,7 @@ const DeleteAccount = ({ userEmail }: Props) => {
         <Card className="
       max-w-3xl mx-auto
       border-none shadow-md rounded-xl overflow-hidden
-      bg-gradient-to-br from-white via-gray-50 to-gray-100
+      bg-gradient-to-b from-white via-gray-50 to-gray-100
       dark:from-gray-950 dark:via-gray-900 dark:to-black
     ">
             <CardHeader className="pb-2">

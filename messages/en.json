@@ -96,6 +96,34 @@
                 "BUTTON": "Delete My Account",
                 "PENDING_BTN": "Deleteing..."
             }
+        },
+        "SECURITY": {
+            "TITLE": "Security",
+            "DESC": "You can change your password here. Remember that it should contain at least 6 characters, one uppercase letter, one lowercase letter, one digit, and one special character.",
+            "WARNING": {
+                "FIRST": "The password can be changed",
+                "SECOND": "only for accounts created through the form on this site.  ",
+                "THIRD": "If you have an account created with Google or GitHub,  ",
+                "FORTH": "it is not possible to change your password",
+                "FIFTH": "because a different method of account authorization is used."
+            },
+            "FORM": {
+                "TITLE": "Change Password",
+                "CURRENT": {
+                    "LABLE": "Current Password",
+                    "PLACEHOLDER": "Current Password"
+                },
+                "NEW": {
+                    "LABLE": "New Password",
+                    "PLACEHOLDER": "New Password"
+                },
+                "REPEAT": {
+                    "LABLE": "Confirm Password",
+                    "PLACEHOLDER": "Confirm Password"
+                },
+                "BTN": "Change Password",
+                "BTN_PENDING": "Changing Password"
+            }
         }
     },
     "ROUTES": {
