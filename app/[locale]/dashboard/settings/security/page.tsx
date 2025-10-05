@@ -1,4 +1,3 @@
-"use client"
 import SecurityCard from '@/components/settings/security/SecurityCard'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import React from 'react'

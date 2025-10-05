@@ -52,8 +52,8 @@ const ChangePassword = () => {
 
     return (
         <div className="w-full max-w-lg mx-auto 
-                        bg-gradient-to-br from-gray-950 via-gray-900 to-black
-                        border border-gray-800 rounded-2xl shadow-xl p-6 md:p-8
+                        bg-gradient-to-br from-white
+                        border rounded-2xl shadow-xl p-6 md:p-8
                         text-gray-100">
             <h2 className="text-2xl font-bold text-center 
                            bg-clip-text text-transparent 
@@ -69,13 +69,13 @@ const ChangePassword = () => {
                         name='current_password'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium text-gray-300">
+                                <FormLabel className="text-sm font-medium dark:text-gray-300 text-black">
                                     {t("CURRENT.LABLE")}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         type='password'
-                                        className='bg-gray-800/70 border border-gray-700 
+                                        className='dark:bg-gray-800/70 border dark:border-gray-700 
                                                   rounded-xl focus:ring-2 
                                                   focus:ring-primary focus:border-primary 
                                                   text-gray-100 placeholder:text-gray-400 
@@ -95,13 +95,13 @@ const ChangePassword = () => {
                         name='new_password'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium text-gray-300">
+                                <FormLabel className="text-sm font-medium dark:text-gray-300 text-black">
                                     {t("NEW.LABLE")}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         type='password'
-                                        className='bg-gray-800/70 border border-gray-700 
+                                        className='dark:bg-gray-800/70 border dark:border-gray-700 
                                                   rounded-xl focus:ring-2 
                                                   focus:ring-primary focus:border-primary 
                                                   text-gray-100 placeholder:text-gray-400 
@@ -121,13 +121,13 @@ const ChangePassword = () => {
                         name='repeat_password'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium text-gray-300">
+                                <FormLabel className="text-sm font-medium dark:text-gray-300 text-black">
                                     {t("REPEAT.LABLE")}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         type='password'
-                                        className='bg-gray-800/70 border border-gray-700 
+                                        className='dark:bg-gray-800/70 border dark:border-gray-700 
                                                   rounded-xl focus:ring-2 
                                                   focus:ring-primary focus:border-primary 
                                                   text-gray-100 placeholder:text-gray-400 
