@@ -52,7 +52,8 @@ const ChangePassword = () => {
 
     return (
         <div className="w-full max-w-lg mx-auto 
-                        bg-gradient-to-br from-white
+                        bg-white
+                        dark:bg-gradient-to-br from-gray-900 via-gray-900 to-black
                         border rounded-2xl shadow-xl p-6 md:p-8
                         text-gray-100">
             <h2 className="text-2xl font-bold text-center 
