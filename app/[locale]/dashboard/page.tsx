@@ -7,13 +7,8 @@ const Dashboard = async () => {
   console.log(session)
 
   return (
-    <div className="h-full w-full dark:bg-gradient-to-b dark:from-gray-950 dark:via-gray-900 dark:to-black
-      bg-gradient-to-b from-white via-white to-white p-6">
-      {/* Dashboard header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p>Welcome back! Here’s your overview.</p>
-      </div>
+    <div className="flex items-start justify-between px-6 py-4">
+      <Welcoming hideOnMobile showOnlyOnPath="/dashboard" />
     </div>
   )
 }

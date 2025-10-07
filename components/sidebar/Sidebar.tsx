@@ -1,33 +1,39 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Shortcut from "./sidebarShortcut/Shortcut";
 import OptionSidebar from "./optionSidebar/OptionSidebar";
 import { useToggleSidebar } from "@/context/ToggleSidebar";
 import CloseSidebar from "./CloseSidebar";
+import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
   const { isOpen, setIsOpen } = useToggleSidebar();
+  const pathname = usePathname();
+
+  // Auto-close sidebar on route change (mobile)
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname, setIsOpen]);
 
   return (
     <>
       <aside
         className={`
-          flex h-screen sticky top-0 z-50
-          bg-white dark:bg-gray-950
-          border-r border-gray-300 dark:border-gray-700
+          fixed lg:static top-0 left-0 h-screen z-50 flex
+          bg-white dark:bg-gray-950 border-r border-gray-300 dark:border-gray-700
           transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-x-0 shadow-md" : "-translate-x-full lg:translate-x-0 shadow-none"}
+          ${isOpen ? "translate-x-0 shadow-lg" : "-translate-x-full lg:translate-x-0"}
         `}
       >
-        {/* Icon shortcuts */}
+        {/* Main Shortcut Sidebar */}
         <div className="w-16 md:w-20 flex flex-col justify-between">
           <Shortcut />
         </div>
 
-        {/* Settings Sidebar */}
+        {/* Option Sidebar (only for Settings route) */}
         <OptionSidebar />
 
-        {/* Close button */}
+        {/* Close button for mobile */}
         <CloseSidebar />
       </aside>
 

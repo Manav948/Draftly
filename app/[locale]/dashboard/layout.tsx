@@ -5,7 +5,7 @@ import Sidebar from "@/components/sidebar/Sidebar";
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ToggleSidebarProvider>
-      <main className="flex min-h-screen bg-white dark:bg-gray-950 dark:text-white">
+      <main className="flex min-h-screen bg-white dark:bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 dark:text-white">
         <Sidebar />
         <section className="flex flex-col flex-grow">
           <div className="sticky top-0 z-30">

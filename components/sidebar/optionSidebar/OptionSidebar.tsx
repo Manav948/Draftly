@@ -10,10 +10,9 @@ const OptionSidebar = () => {
   return (
     <div
       className={`
-        flex flex-col flex-1 h-screen
-        transition-all duration-300 ease-in-out
+        h-screen transition-all duration-300 ease-in-out
         bg-white dark:bg-gray-950 dark:text-white border-l border-gray-300 dark:border-gray-800
-        ${isSettings ? "w-48 p-4 opacity-100" : "w-0 p-0 opacity-0 overflow-hidden"}
+        ${isSettings ? "w-52 p-4 opacity-100" : "w-0 opacity-0 p-0 overflow-hidden"}
       `}
     >
       {isSettings && <Settings />}

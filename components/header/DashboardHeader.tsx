@@ -2,13 +2,13 @@
 import React from "react";
 import User from "./User";
 import BredCrumNav from "./BredCrumNav";
-import Welcoming from "./Welcoming";
+
 import OpenSidebar from "./OpenSidebar";
 
 const DashboardHeader = () => {
   return (
     <>
-      <header className="relative flex items-center justify-between px-6 py-6 bg-white dark:bg-gray-950 border-b border-gray-300 dark:border-gray-800">
+      <header className="relative flex items-center justify-between px-5 py-3 bg-white dark:bg-gray-950 border-b border-gray-300 dark:border-gray-800 overflow-hidden">
 
         {/* Sidebar open button */}
         <div className="flex items-center text-white">
@@ -16,7 +16,7 @@ const DashboardHeader = () => {
         </div>
 
         {/* Breadcrumb */}
-        <div className="flex items-center gap-4 text-black dark:text-white">
+        <div className="flex items-center gap-3 text-black dark:text-white">
           <BredCrumNav />
         </div>
 
@@ -25,9 +25,6 @@ const DashboardHeader = () => {
           <User />
         </div>
       </header>
-      <div className="flex items-start justify-between px-6 py-4 bg-white dark:bg-gray-950 dark:border-gray-800">
-        <Welcoming showOnlyOnPath="/dashboard" />
-      </div>
     </>
 
   );
