@@ -3,6 +3,7 @@ import React from 'react'
 import Top from './Top'
 import Bottom from './Bottom'
 import Workspaces from './Workspaces'
+import Addworkspace from './newWorkspace/Addworkspace'
 
 const Shortcut = () => {
   return (
@@ -17,6 +18,7 @@ const Shortcut = () => {
       <div className="flex flex-col items-center gap-6 mt-6">
         <Top />
         <Workspaces />
+        <Addworkspace />
       </div>
 
       <div className="p-4">

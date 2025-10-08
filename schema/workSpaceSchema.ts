@@ -21,4 +21,14 @@ export const workspaceSchema = z.object({
     .nullable(),
 });
 
+export const apiWorkspaceSchema = z.object({
+  workspaceName: z.string()
+    .min(4, "Workspace name minimum 4 latters")
+    .refine((username) => /^[a-zA-Z0-9]+$/.test(username), {
+      message: "Workspace name must be alphanumeric",
+    }),
+  file: z.string().optional().nullable()
+})
+
 export type WorkspaceSchema = z.infer<typeof workspaceSchema>;
+export type ApiWorkspaceSchema = z.infer<typeof apiWorkspaceSchema>
