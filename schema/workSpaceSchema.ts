@@ -27,7 +27,11 @@ export const apiWorkspaceSchema = z.object({
     .refine((username) => /^[a-zA-Z0-9]+$/.test(username), {
       message: "Workspace name must be alphanumeric",
     }),
-  file: z.string().optional().nullable()
+  file: z
+    .any()
+    .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
+      message: "File size must be less than 2MB",
+    })
 })
 
 export type WorkspaceSchema = z.infer<typeof workspaceSchema>;
