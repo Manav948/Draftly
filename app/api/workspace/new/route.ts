@@ -2,7 +2,6 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { apiWorkspaceSchema } from "@/schema/workSpaceSchema";
 import { NextResponse } from "next/server";
-import { z } from "zod";
 
 export async function POST(request: Request) {
     const session = await getAuthSession();

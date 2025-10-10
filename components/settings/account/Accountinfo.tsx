@@ -83,7 +83,7 @@ const AccountInfo = ({
       return data;
     },
     onError: (err: AxiosError) => {
-      toast.error(err?.response?.data as string || "Something went wrong");
+      toast.error(err?.response?.data as string || "We couldn’t save your changes. Please check your input and try again.");
     },
     onSuccess: async (res: AccountInfoSettingsSchema) => {
       if (res.language !== lang) onChange(res.language as "EN" | "HI");

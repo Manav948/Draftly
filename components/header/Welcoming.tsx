@@ -18,7 +18,6 @@ const Welcoming = React.forwardRef<HTMLDivElement, Props>(
 
     if (showOnlyOnPath && !pathname.includes(showOnlyOnPath)) return null;
     else {
-      console.log("Rendering Welcoming component");
       return (
         <div ref={ref}
           {...props}

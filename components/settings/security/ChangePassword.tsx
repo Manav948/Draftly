@@ -35,11 +35,20 @@ const ChangePassword = () => {
             return data
         },
         onError: (err: AxiosError) => {
-            const error = err?.response?.data ? err.response.data : "Something went wrong"
-            toast.error("Password not Match")
+            let message = "Something went wrong. Please try again."
+
+            if (err.response?.status === 400) {
+                message = "Your current password is incorrect. Please double-check and try again."
+            } else if (err.response?.status === 422) {
+                message = "The new passwords do not match. Please make sure both fields are the same."
+            } else if (err.response?.status === 500) {
+                message = "Server error occurred. Please try again later."
+            }
+
+            toast.error(message)
         },
         onSuccess: async () => {
-            toast.success("Password Changed Successfully");
+            toast.success("Your password has been changed successfully!");
             router.refresh();
             form.reset();
         },

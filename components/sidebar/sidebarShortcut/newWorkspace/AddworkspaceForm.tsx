@@ -10,7 +10,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ApiWorkspaceSchema, apiWorkspaceSchema, WorkspaceSchema } from "@/schema/workSpaceSchema";
+import {
+  ApiWorkspaceSchema,
+  workspaceSchema,
+  WorkspaceSchema,
+} from "@/schema/workSpaceSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
@@ -18,10 +22,9 @@ import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 import { useUploadThing } from "@/lib/uploadthing";
 import { LoadingState } from "@/components/ui/LoadingState";
-
 
 interface Props {
   onSetOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,60 +32,80 @@ interface Props {
 
 const AddworkspaceForm = ({ onSetOpen }: Props) => {
   const t = useTranslations("WORKSPACE");
-  const [uploadError, setUploadError] = useState(false)
+  const [uploadError, setUploadError] = useState(false);
 
-  const form = useForm<ApiWorkspaceSchema>({
-    resolver: zodResolver(apiWorkspaceSchema),
+  const form = useForm<WorkspaceSchema>({
+    resolver: zodResolver(workspaceSchema),
     defaultValues: {
       workspaceName: "",
     },
   });
 
-  const { mutate: newWorksace, isPending } = useMutation({
+  // --- Mutation for creating new workspace ---
+  const { mutate: newWorkspace, isPending } = useMutation({
     mutationFn: async (data: ApiWorkspaceSchema) => {
       const { data: result } = await axios.post("/api/workspace/new", data);
       return result;
     },
     onError: (err: AxiosError) => {
-      const error = err?.response?.data ? err.response.data : "Something went wrong"
-      toast.error("Worksace not created Please try again");
-    },
-    onSuccess: () => {
-      onSetOpen(false);
-      toast.success("Workspace Created");
-    }, mutationKey: ["newWorkspace"]
-  })
+      console.error("Workspace creation error:", err);
 
+      const serverMessage = err?.response?.data;
+      if (serverMessage === "Same WorkSpace Name Try something another one") {
+        toast.error("⚠️ A workspace with this name already exists. Please choose another name.");
+      } else if (err?.response?.status === 500) {
+        toast.error("💥 Server error — please try again later.");
+      } else if (err?.response?.status === 401 || err?.response?.status === 403) {
+        toast.error("🔒 You don’t have permission. Please log in again.");
+      } else {
+        toast.error("❌ Workspace not created. Please check your input and try again.");
+      }
+    },
+    onSuccess: (data) => {
+      onSetOpen(false);
+      toast.success("🎉 Workspace created successfully!");
+    },
+    mutationKey: ["newWorkspace"],
+  });
+
+  // --- Image upload handling ---
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onUploadError: () => {
       setUploadError(true);
-      toast.error("Workspace icon not added")
+      toast.error("❌ Failed to upload workspace icon. Please try again.");
     },
-
     onClientUploadComplete: (data) => {
       if (!data) {
         setUploadError(true);
-        toast.error("Workspace icon not added")
+        toast.error("⚠️ No image uploaded. Please try again.");
+      }
+    },
+  });
+
+  // --- Submit handler ---
+  const onSubmit = async (data: WorkspaceSchema) => {
+    setUploadError(false);
+    const image: File | undefined | null = data.file;
+
+    let workspaceImageURL: null | string = null;
+    if (image) {
+      const uploadData = await startUpload([image]);
+      if (uploadData) {
+        workspaceImageURL = uploadData[0].url;
+      } else {
+        toast.error("⚠️ Error uploading image.");
+        return;
       }
     }
-  })
 
-  const onSubmit = async (data: ApiWorkspaceSchema) => {
-    setUploadError(false)
-
-    const image: File | undefined | null = data.file
-
-    let workspaceImageURL: null | string = null
-    if (image) {
-      const data = await startUpload([image])
-      if (data) workspaceImageURL = data[0].url
-    }
     if (uploadError) return;
-    newWorksace({
-      workspaceName: data.workspaceName,
-      file: workspaceImageURL
-    })
-  }
+
+    newWorkspace({
+      workspaceName: data.workspaceName.trim(),
+      file: workspaceImageURL,
+    });
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
@@ -120,8 +143,8 @@ const AddworkspaceForm = ({ onSetOpen }: Props) => {
           {/* Upload File */}
           <UploadFile
             form={form}
-            schema={apiWorkspaceSchema}
-            inputAccpect="image/*"
+            schema={workspaceSchema}
+            inputAccept="image/*"
             typesDescription={[".jpg", ".jpeg", ".png", ".webp", ".gif"]}
           />
 
@@ -136,8 +159,10 @@ const AddworkspaceForm = ({ onSetOpen }: Props) => {
                          transition-all duration-300"
             >
               {isUploading || isPending ? (
-                <LoadingState loadingText="Loading..." />
-              ) : t("BTN_ADD")}
+                <LoadingState loadingText="Creating Workspace..." />
+              ) : (
+                t("BTN_ADD")
+              )}
             </Button>
           </div>
         </form>

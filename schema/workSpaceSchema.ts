@@ -2,7 +2,7 @@ import { z } from "zod";
 import { MAX_FILE_SIZE, ACCEPTED_IMAGE_TYPES } from "./imageSchem";
 
 export const workspaceSchema = z.object({
-  name: z
+  workspaceName: z
     .string()
     .min(2, "Workspace name must be at least 2 letters")
     .refine((username) => /^[a-zA-Z0-9]+$/.test(username), {
@@ -27,12 +27,10 @@ export const apiWorkspaceSchema = z.object({
     .refine((username) => /^[a-zA-Z0-9]+$/.test(username), {
       message: "Workspace name must be alphanumeric",
     }),
-  file: z
-    .any()
-    .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
-      message: "File size must be less than 2MB",
-    })
-})
+  file: z.string()
+    .optional()
+    .nullable(),
+});
 
 export type WorkspaceSchema = z.infer<typeof workspaceSchema>;
 export type ApiWorkspaceSchema = z.infer<typeof apiWorkspaceSchema>

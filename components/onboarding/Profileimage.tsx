@@ -24,7 +24,6 @@ import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { LoadingState } from "../ui/LoadingState"
 import toast from "react-hot-toast"
-import { de } from "zod/v4/locales"
 
 interface Props {
   profileImage?: string | null
@@ -54,6 +53,7 @@ const Profileimage = ({ profileImage }: Props) => {
         error?.forEach((error) =>
           form.setError("image", { message: error })
         )
+        toast.error("Please select a valid image file (JPG, PNG, or GIF).")
       }
     }
   }
@@ -68,20 +68,17 @@ const Profileimage = ({ profileImage }: Props) => {
     }
   }, [imagePriview, profileImage])
 
-  const { startUpload, isUploading } = useUploadThing(
-    "imageUploader",
-    {
-      onUploadError: (error) => {
-        toast.error("Error in uploading image")
-      },
-      onClientUploadComplete: (data) => {
-        if (data) uploadProfileImage(data[0].url)
-        else {
-          toast.error("Error in onClientUpload function")
-        }
+  const { startUpload, isUploading } = useUploadThing("imageUploader", {
+    onUploadError: () => {
+      toast.error("We couldn’t upload your image. Please try again.")
+    },
+    onClientUploadComplete: (data) => {
+      if (data) uploadProfileImage(data[0].url)
+      else {
+        toast.error("Something went wrong while processing your image.")
       }
-    }
-  )
+    },
+  })
 
   const { mutate: uploadProfileImage, isPending } = useMutation({
     mutationFn: async (profileImage: string) => {
@@ -90,41 +87,45 @@ const Profileimage = ({ profileImage }: Props) => {
       })
       return data as UserType
     },
-    onError: (err) => {
-      toast.error("Error during Profile Image Update")
+    onError: () => {
+      toast.error("Failed to update profile image. Please try again later.")
     },
     onSuccess: async () => {
       setOpen(false)
       await update()
       router.refresh()
-      toast.success("Successfully Update Profile Image")
-    }, mutationKey: ["updateProfileImage"]
+      toast.success("Profile image updated successfully 🎉")
+    },
+    mutationKey: ["updateProfileImage"],
   })
 
-  // delete image
   const { mutate: deleteProfileImage, isPending: isDeleting } = useMutation({
     mutationFn: async () => {
       const { data } = await axios.post(`/api/profile/DeleteProfileImage`)
       return data as UserType
     },
     onError: () => {
-      toast.error("Error During Delete Profile-Image")
+      toast.error("Couldn’t delete your image. Please try again.")
     },
     onSuccess: async () => {
-      toast.success("Successfully delet image")
+      toast.success("Profile image removed successfully.")
       await update()
       router.refresh()
-    }, mutationKey: ["deleteProfileImage"]
+    },
+    mutationKey: ["deleteProfileImage"],
   })
 
   const onSubmit = async (data: ImageSchema) => {
     const image: File = data.image
+    if (!image) {
+      toast.error("Please select an image before uploading.")
+      return
+    }
     await startUpload([image])
   }
 
   return (
     <section className="space-y-6 w-full flex flex-col justify-center items-center">
-      {/* Title */}
       <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">
         Add a Profile Image
       </p>
@@ -150,7 +151,6 @@ const Profileimage = ({ profileImage }: Props) => {
           </Button>
         </DialogTrigger>
 
-        {/* Dialog Content */}
         <DialogContent className="flex flex-col items-center justify-center gap-6 p-8 rounded-2xl shadow-xl max-w-md">
           <DialogHeader className="text-center">
             <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white">
@@ -158,15 +158,9 @@ const Profileimage = ({ profileImage }: Props) => {
             </DialogTitle>
           </DialogHeader>
 
-          {/* Preview / Avatar */}
-          <div className="relative w-40 h-40 rounded-full shadow-lg overflow-hidde">
+          <div className="relative w-40 h-40 rounded-full shadow-lg overflow-hidden">
             {imagePriview ? (
-              <Image
-                src={imagePriview}
-                fill
-                alt="Preview"
-                className="object-cover"
-              />
+              <Image src={imagePriview} fill alt="Preview" className="object-cover" />
             ) : (
               <UserAvatar
                 className="w-40 h-40 cursor-pointer"
@@ -176,7 +170,6 @@ const Profileimage = ({ profileImage }: Props) => {
             )}
           </div>
 
-          {/* Upload Form */}
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -190,9 +183,7 @@ const Profileimage = ({ profileImage }: Props) => {
                     <FormControl>
                       <div className="flex flex-col items-center gap-3">
                         <Button
-                          onClick={() => {
-                            inputRef.current?.click()
-                          }}
+                          onClick={() => inputRef.current?.click()}
                           type="button"
                           variant="secondary"
                           className="rounded-lg px-6 font-medium"
@@ -215,7 +206,6 @@ const Profileimage = ({ profileImage }: Props) => {
                 )}
               />
 
-              {/* Action Buttons */}
               <div className="flex items-center justify-center gap-6">
                 <Button
                   type="button"

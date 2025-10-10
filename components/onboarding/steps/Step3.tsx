@@ -20,7 +20,7 @@ const Step3 = () => {
   const form = useForm<WorkspaceSchema>({
     resolver: zodResolver(workspaceSchema),
     defaultValues: {
-      name: ""
+      workspaceName: ""
     }
   })
 
@@ -28,22 +28,32 @@ const Step3 = () => {
 
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onUploadError: () => {
-      toast.error("Error in uploading image")
+      toast.error("⚠️ Upload failed! Please try again with a valid image file.")
     },
     onClientUploadComplete: (data) => {
-      if (data) {
+      if (data && data.length > 0) {
         dispatch({ type: ActionType.WORKSPACE_IMAGE, payload: data[0].url })
+        toast.success("✅ Image uploaded successfully!")
       } else {
-        toast.error("Error in onClientUpload function")
+        toast.error("⚠️ Something went wrong. Please upload your image again.")
       }
     }
   })
 
   const onSubmit = async (data: WorkspaceSchema) => {
     const image: File | undefined | null = data.file
-    if (image) await startUpload([image])
-    dispatch({ type: ActionType.WORKSPACE_NAME, payload: data.name })
-    dispatch({ type: ActionType.CHANGE_SITE, payload: currentStep + 1 })
+
+    try {
+      if (image) {
+        await startUpload([image])
+      }
+      dispatch({ type: ActionType.WORKSPACE_NAME, payload: data.workspaceName })
+      dispatch({ type: ActionType.CHANGE_SITE, payload: currentStep + 1 })
+      toast.success(`🎉 Workspace "${data.workspaceName}" added successfully!`)
+    } catch (err) {
+      toast.error("❌ Failed to create workspace. Please check your connection and try again.")
+      console.error("Workspace creation error:", err)
+    }
   }
 
   return (
@@ -58,14 +68,16 @@ const Step3 = () => {
           Create Your Workspace
         </h2>
         <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-          Give your workspace a name and upload an image (PNG, JPG, or GIF). This will help others recognize it easily.
+          Give your workspace a unique name and upload a logo.  
+          Supported formats: <span className="font-medium text-foreground">PNG, JPG, or GIF</span>.
         </p>
       </div>
 
       <Form {...form}>
         <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+          {/* Workspace Name */}
           <FormField
-            name="name"
+            name="workspaceName"
             control={form.control}
             render={({ field }) => (
               <FormItem>
@@ -82,13 +94,15 @@ const Step3 = () => {
             )}
           />
 
+          {/* Upload Section */}
           <UploadFile
             form={form}
             schema={imageSchema}
-            inputAccpect="image/*"
+            inputAccept="image/*"
             typesDescription={[".jpg", ".jpeg", ".png", ".webp", ".gif"]}
           />
 
+          {/* Continue Button */}
           <div className="flex items-center justify-between w-full">
             <Button
               disabled={isUploading}
@@ -96,7 +110,7 @@ const Step3 = () => {
               className="rounded-lg px-6 font-semibold flex items-center gap-2 w-full"
             >
               {isUploading ? (
-                <LoadingState />
+                <LoadingState loadingText="Uploading..." />
               ) : (
                 <>
                   Continue
