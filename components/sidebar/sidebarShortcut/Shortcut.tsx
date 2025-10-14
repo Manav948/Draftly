@@ -2,10 +2,14 @@
 import React from 'react'
 import Top from './Top'
 import Bottom from './Bottom'
-import Workspaces from './Workspaces'
+import Workspaces from './workspaces/Workspaces'
 import Addworkspace from './newWorkspace/Addworkspace'
+import { Workspace } from '@prisma/client'
 
-const Shortcut = () => {
+interface Props {
+  userWorkspace : Workspace[]
+}
+const Shortcut = ({userWorkspace} :Props) => {
   return (
     <div
       className="
@@ -17,7 +21,7 @@ const Shortcut = () => {
     >
       <div className="flex flex-col items-center gap-6 mt-6">
         <Top />
-        <Workspaces />
+        <Workspaces userWorkspaces={userWorkspace} />
         <Addworkspace />
       </div>
 

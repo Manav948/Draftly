@@ -68,7 +68,7 @@ const AddworkspaceForm = ({ onSetOpen }: Props) => {
     mutationKey: ["newWorkspace"],
   });
 
-  // --- Image upload handling ---
+  // --- Image uploading handler ---
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onUploadError: () => {
       setUploadError(true);

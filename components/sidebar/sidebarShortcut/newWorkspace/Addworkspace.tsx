@@ -19,6 +19,8 @@ import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import AddworkspaceForm from "./AddworkspaceForm";
 import { motion } from "framer-motion";
+import Warning from "@/components/ui/warning";
+import ActiveWorkspaceInfo from "@/components/common/ActiveWorkspaceInfo";
 
 const Addworkspace = () => {
   const [open, setOpen] = useState(false);
@@ -41,14 +43,6 @@ const Addworkspace = () => {
             </HoverCardTrigger>
           </DialogTrigger>
 
-          {/* Tooltip */}
-          <HoverCardContent
-            align="start"
-            className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700 shadow-lg"
-          >
-            {t("MAIN.NEW_WORKSPACE")}
-          </HoverCardContent>
-
           {/* Dialog */}
           <DialogContent
             className="max-w-lg p-0 overflow-hidden rounded-2xl shadow-2xl 
@@ -69,7 +63,9 @@ const Addworkspace = () => {
                   {t("MAIN.WORKSPACE_DESC")}
                 </DialogDescription>
               </DialogHeader>
-
+              <Warning className="hidden sm:flex gap-2" blue>
+              <ActiveWorkspaceInfo className="text-left text-secondary-foreground" activeNumber={3} />
+              </Warning>
               <AddworkspaceForm onSetOpen={setOpen} />
             </motion.div>
           </DialogContent>

@@ -7,10 +7,11 @@ import React from 'react'
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   hideIcon?: boolean
   yellow?: boolean
+  blue?: boolean
 }
 
 const Warning = React.forwardRef<HTMLDivElement, Props>(
-  ({ className, children, hideIcon, yellow, ...props }: Props, ref) => {
+  ({ className, children, hideIcon, yellow, blue, ...props }: Props, ref) => {
     const t = useTranslations('COMMON')
 
     return (
@@ -20,7 +21,9 @@ const Warning = React.forwardRef<HTMLDivElement, Props>(
           "my-4 px-4 py-3 border rounded-xl shadow-sm transition-colors",
           yellow
             ? "bg-yellow-400/10 border-yellow-400 text-yellow-800 dark:border-yellow-700 dark:bg-yellow-950/80 dark:text-yellow-200"
+
             : "border-red-300 bg-red-50 text-red-800 dark:border-red-900 dark:bg-red-950/90 dark:text-red-100",
+          blue && "bg-blue-400/10 border-blue-400 text-blue-800 dark:border-blue-700 dark:bg-blue-950/80 dark:text-blue-200",
           className
         )}
         {...props}
@@ -34,7 +37,7 @@ const Warning = React.forwardRef<HTMLDivElement, Props>(
               )}
             />
             <p className="uppercase tracking-wide text-sm">
-              {t('WARNING')}
+              {blue ? t('NOTICE') : t('WARNING')}
             </p>
           </div>
         )}

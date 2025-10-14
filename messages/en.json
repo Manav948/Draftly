@@ -2,7 +2,6 @@
   "Index": {
     "title": "Welcome to Draftly"
   },
-
   "Auth": {
     "EMAIL": "Email",
     "PASSWORD": "Password",
@@ -45,7 +44,6 @@
       }
     }
   },
-
   "SIDEBAR": {
     "MAIN": {
       "HOME_OVER": "Home",
@@ -63,7 +61,6 @@
       "Workspace": "Workspace"
     }
   },
-
   "COMMON": {
     "LANG_HOVER": "Change language",
     "THEME_HOVER": "Change Theme",
@@ -72,9 +69,14 @@
     "SYSTEM": "System",
     "LOG_OUT": "Log out",
     "SETTINGS": "Settings",
-    "WARNING": "Warning"
+    "WARNING": "Warning",
+    "NOTICE" : "Notice",
+    "ACTIVE_WORKSPACE": {
+      "FIRST": "You Have",
+      "SECOND": "Out Of",
+      "THIRD": "Active Workspaces"
+    }
   },
-
   "SETTINGS": {
     "ACCOUNT": {
       "TITLE": "Account",
@@ -133,7 +135,6 @@
       }
     }
   },
-
   "WORKSPACE": {
     "TITLE": "Add Workspace",
     "DESC": "Create a new workspace to start managing your team and projects efficiently.",
@@ -159,7 +160,6 @@
       "FAILED": "Failed to create workspace. Please try again."
     }
   },
-
   "ROUTES": {
     "DASHBOARD": "Home",
     "SETTINGS": "Settings",
