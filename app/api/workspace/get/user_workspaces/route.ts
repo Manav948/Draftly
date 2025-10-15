@@ -7,19 +7,23 @@ export const GET = async (request: Request) => {
     const userId = url.searchParams.get("userId")
 
     if (!userId) {
-        return NextResponse.json("Error in user api function", { status: 404 })
+        return NextResponse.json("User ID is missing. Please try again.", { status: 400 })
     }
     try {
-        const workspace = db.workspace.findMany({
+        const workspace = await db.workspace.findMany({
             where: {
                 creatorId: userId
             }
         })
-        if (!workspace) {
+        if (!workspace || workspace.length === 0) {
             return NextResponse.json([], { status: 200 })
         }
         return NextResponse.json(workspace, { status: 202 })
     } catch (error) {
-        return NextResponse.json("Error during db connection", { status: 405 })
+        console.error("Error fetching user workspaces:", error);
+        return NextResponse.json(
+            { error: "Failed to fetch workspaces. Please try again later." },
+            { status: 500 }
+        );
     }
 }

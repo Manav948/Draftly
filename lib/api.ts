@@ -22,5 +22,5 @@ export const getWorkspaces = async (userId: string) => {
     if (!res.ok) {
         return []
     }
-    return res.json() as Promise<[]>
+    return res.json() as Promise<Workspace[]>
 }

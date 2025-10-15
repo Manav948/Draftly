@@ -1,27 +1,13 @@
 import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { Workspace } from "@prisma/client";
 import SidebarContainer from "./SidebarContainer";
+import { getWorkspaces } from "@/lib/api";
 
 const Sidebar = async () => {
   const session = await getAuthSession();
-  if (!session) {
-    return null
-  }
-  let userWorkspaces: Workspace[] = [];
-  try {
-    const workspaces = await db.workspace.findMany({
-      where: {
-        creatorId: session.user.id
-      }
-    })
-    if (!workspaces) {
-      userWorkspaces = [];
-    }
-    userWorkspaces = workspaces
-  } catch (_) {
-    userWorkspaces = []
-  }
+  if(!session) return null;
+
+  const userWorkspaces = await getWorkspaces(session.user.id)
+ 
   return (
     <SidebarContainer userWorkspace={userWorkspaces} />
   );
