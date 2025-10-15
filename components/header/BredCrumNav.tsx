@@ -7,11 +7,18 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { cn } from "@/lib/utils";
 
+const availableRoutesWithTranselation = [
+  "dashboard",
+  "settings",
+  "security",
+  "theme"
+]
+
 const BredCrumNav = () => {
   const paths = usePathname();
   const pathNames = paths
     .split("/")
-    .filter((path) => path !== "en" && path.trim() !== "");
+    .filter((path) => path !== "en" && path !== "workspace" && path.trim() !== "");
   const t = useTranslations("ROUTES");
 
   if (pathNames.length > 0) {
@@ -43,7 +50,7 @@ const BredCrumNav = () => {
                     "bg-gray-200/70 text-gray-900 dark:bg-white/80 dark:text-black shadow-sm cursor-pointer"
                   )}
                 >
-                  {t(link.toUpperCase())}
+                  {availableRoutesWithTranselation.includes(link) ? t(link.toUpperCase()) : link}
                 </span>
               )}
             </div>

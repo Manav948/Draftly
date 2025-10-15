@@ -20,7 +20,7 @@ const WorkspaceComponent = ({ workspaces: { id, image, name } }: Props) => {
     <HoverCard openDelay={100} closeDelay={100}>
       <HoverCardTrigger asChild>
         <ActiveLink
-          href={`/dashboard/workspace/${id}`}
+          href={`/dashboard/workspace/${name}`}
           size="icon"
           variant="ghost"
           className="

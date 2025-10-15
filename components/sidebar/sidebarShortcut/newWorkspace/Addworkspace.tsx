@@ -22,7 +22,11 @@ import { motion } from "framer-motion";
 import Warning from "@/components/ui/warning";
 import ActiveWorkspaceInfo from "@/components/common/ActiveWorkspaceInfo";
 
-const Addworkspace = () => {
+interface Props {
+  activeWorkspace: number;
+}
+
+const Addworkspace = ({activeWorkspace} : Props) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations("SIDEBAR");
 
@@ -36,7 +40,7 @@ const Addworkspace = () => {
               <Button
                 onClick={() => setOpen(true)}
                 variant="ghost"
-                size="icon" 
+                size="icon"
               >
                 <Plus />
               </Button>
@@ -64,7 +68,7 @@ const Addworkspace = () => {
                 </DialogDescription>
               </DialogHeader>
               <Warning className="hidden sm:flex gap-2" blue>
-              <ActiveWorkspaceInfo className="text-left text-secondary-foreground" activeNumber={3} />
+                <ActiveWorkspaceInfo className="text-left text-secondary-foreground" activeNumber={activeWorkspace} />
               </Warning>
               <AddworkspaceForm onSetOpen={setOpen} />
             </motion.div>

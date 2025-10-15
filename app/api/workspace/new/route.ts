@@ -1,5 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { MAX_USER_WORKSPACES } from "@/lib/options";
 import { apiWorkspaceSchema } from "@/schema/workSpaceSchema";
 import { NextResponse } from "next/server";
 
@@ -35,6 +36,10 @@ export async function POST(request: Request) {
         })
         if (!user) {
             return new NextResponse("User Not Found", { status: 404, statusText: "User not Found" })
+        }
+
+        if (user.createdWorkspaces.length === MAX_USER_WORKSPACES) {
+            return new NextResponse("Workspace limit reached — you can’t create more workspaces right now."), { status: 402 }
         }
 
         const theSameWorkspace = user.createdWorkspaces.find(
