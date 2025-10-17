@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { Workspace } from "@prisma/client";
+import React, { useMemo } from "react";
+import { Workspace, WorkspaceIconColor } from "@prisma/client";
 import {
   HoverCard,
   HoverCardContent,
@@ -13,25 +13,67 @@ import { motion } from "framer-motion";
 
 interface Props {
   workspaces: Workspace;
+  href: string
 }
 
-const WorkspaceComponent = ({ workspaces: { id, image, name } }: Props) => {
+const WorkspaceComponent = ({ workspaces: { id, image, name, color }, href }: Props) => {
+
+  const workspaceColor = useMemo(() => {
+    switch (color) {
+      case WorkspaceIconColor.BLUE:
+        return "bg-blue-600 hover:bg-blue-500"
+
+      case WorkspaceIconColor.PINK:
+        return "bg-pink-600 hover:bg-pink-500"
+
+      case WorkspaceIconColor.YELLOW:
+        return "bg-yellow-600 hover:bg-yellow-500"
+
+      case WorkspaceIconColor.CYAN:
+        return "bg-cyan-600 hover:bg-cyan-500"
+
+      case WorkspaceIconColor.EMERALD:
+        return "bg-emerald-600 hover:bg-emerald-500"
+
+      case WorkspaceIconColor.FUCHSIA:
+        return "bg-fuchsia-600 hover:bg-fuhsia-500"
+
+      case WorkspaceIconColor.GREEN:
+        return "bg-green-600 hover:bg-green-500"
+
+      case WorkspaceIconColor.INDIGO:
+        return "bg-indigo-600 hover:bg-indigo-500"
+
+      case WorkspaceIconColor.LIME:
+        return "bg-lime-600 hover:bg-lime-500"
+
+      case WorkspaceIconColor.ORANGE:
+        return "bg-orange-600 hover:bg-orange-500"
+
+      case WorkspaceIconColor.PURPLE:
+        return "bg-purple-600 hover:bg-purple-500"
+
+      case WorkspaceIconColor.RED:
+        return "bg-red-600 hover:bg-red-500"
+
+      default:
+        return "bg-blue-600 hover:bg-blue-500"
+
+    }
+  }, [color])
   return (
     <HoverCard openDelay={100} closeDelay={100}>
       <HoverCardTrigger asChild>
         <ActiveLink
-          href={`/dashboard/workspace/${name}`}
+          workspaceIcon
+          href={`${href}/${id}`}
           size="icon"
           variant="ghost"
-          className="
+          className={`
             relative flex items-center justify-center
             w-9 h-9 rounded-xl overflow-hidden
-            border border-gray-300 dark:border-gray-700
-            bg-gray-100 dark:bg-gray-800
-            hover:bg-gray-200 dark:hover:bg-gray-700
-            transition-all duration-200
-            shadow-sm hover:shadow-md hover:scale-105
-          "
+            shadow-sm hover:shadow-md hover:scale-105 ${!image && workspaceColor}
+          `}
         >
           {image ? (
             <motion.div
@@ -41,6 +83,7 @@ const WorkspaceComponent = ({ workspaces: { id, image, name } }: Props) => {
               className="w-full h-full"
             >
               <Image
+                priority
                 src={image}
                 alt="workspace"
                 fill

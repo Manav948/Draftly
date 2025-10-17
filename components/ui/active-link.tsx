@@ -20,7 +20,7 @@ interface Props {
   include?: string;
   workspaceIcon?: boolean;
   disableActiveStateColor?: boolean;
-  asChild?: boolean; 
+  asChild?: boolean;
 }
 
 const ActiveLink = ({

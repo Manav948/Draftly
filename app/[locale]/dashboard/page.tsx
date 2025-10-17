@@ -1,3 +1,4 @@
+import DashboardHeader from '@/components/header/DashboardHeader'
 import Welcoming from '@/components/header/Welcoming'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import React from 'react'
@@ -7,9 +8,12 @@ const Dashboard = async () => {
   console.log(session)
 
   return (
-    <div className="flex items-start justify-between px-6 py-4">
-      <Welcoming hideOnMobile showOnlyOnPath="/dashboard" />
-    </div>
+    <>
+      <DashboardHeader />
+      <div className="flex items-start justify-between px-6 py-4">
+        <Welcoming hideOnMobile showOnlyOnPath="/dashboard" />
+      </div>
+    </>
   )
 }
 

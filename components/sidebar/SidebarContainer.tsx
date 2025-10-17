@@ -9,11 +9,14 @@ import { Workspace } from "@prisma/client";
 
 interface Props {
     userWorkspace: Workspace[];
+    userId: string
+    userAdminWorkspaces: Workspace[];
 }
 
-const SidebarContainer = ({ userWorkspace }: Props) => {
+const SidebarContainer = ({ userWorkspace, userId, userAdminWorkspaces }: Props) => {
     const { isOpen, setIsOpen } = useToggleSidebar();
     const pathname = usePathname();
+    const createdWorkspaces = userWorkspace.filter((workspace) => workspace.creatorId == userId)
 
     // Auto-close sidebar on route change (mobile)
     useEffect(() => {
@@ -32,11 +35,11 @@ const SidebarContainer = ({ userWorkspace }: Props) => {
             >
                 {/* Main Shortcut Sidebar */}
                 <div className="w-16 md:w-20 flex flex-col justify-between">
-                    <Shortcut userWorkspace={userWorkspace} />
+                    <Shortcut userWorkspace={userWorkspace} activeWorkspaces={createdWorkspaces.length} />
                 </div>
 
                 {/* Option Sidebar (only for Settings route) */}
-                <OptionSidebar activeWorkspaces={userWorkspace.length} />
+                <OptionSidebar activeWorkspaces={createdWorkspaces.length} userAdminWorkspaces={userAdminWorkspaces} />
 
                 {/* Close button for mobile */}
                 <CloseSidebar />

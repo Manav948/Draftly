@@ -1,10 +1,12 @@
-import { GET } from "@/app/api/uploadthing/route"
+import { SettingsWorkspace } from "@/types/extended"
 import { Workspace } from "@prisma/client"
 import { notFound } from "next/navigation"
 
+export const domain =
+    process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "http://localhost:3000"
 
-export const getWorkspace = async (workspace_name: string, userId: string) => {
-    const res = await fetch(`http://localhost:3000/api/workspace/get/workspace_detail/${workspace_name}?userId=${userId}`, {
+export const getWorkspace = async (workspace_id: string, userId: string) => {
+    const res = await fetch(`${domain}/api/workspace/get/workspace_detail/${workspace_id}?userId=${userId}`, {
         method: "GET",
         cache: "no-store"
     })
@@ -15,7 +17,7 @@ export const getWorkspace = async (workspace_name: string, userId: string) => {
 }
 
 export const getWorkspaces = async (userId: string) => {
-    const res = await fetch(`http://localhost:3000/api/workspace/get/user_workspaces?userId=${userId}`, {
+    const res = await fetch(`${domain}/api/workspace/get/user_workspaces?userId=${userId}`, {
         method: "GET",
         cache: "no-store"
     })
@@ -23,4 +25,27 @@ export const getWorkspaces = async (userId: string) => {
         return []
     }
     return res.json() as Promise<Workspace[]>
+}
+
+export const getUserAdminWorkspaces = async (userId: string) => {
+    const res = await fetch(`${domain}/api/workspace/get/user_admin_workspaces?userId=${userId}`, {
+        method: "GET",
+        cache: "no-store"
+    })
+    if (!res.ok) {
+        return []
+    }
+    return res.json() as Promise<Workspace[]>
+}
+
+export const getWorkspaceSettings = async (workspace_id: string, userId: string) => {
+    const res = await fetch(`${domain}/api/workspace/get/settings/${workspace_id}?userId=${userId}`, {
+        method: "GET",
+        cache: "no-store"
+    })
+    if (!res.ok) {
+        console.log("WorkspaceSettings : ", res)
+        return notFound()
+    }
+    return res.json() as Promise<SettingsWorkspace>
 }

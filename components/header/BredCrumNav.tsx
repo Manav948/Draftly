@@ -14,9 +14,13 @@ const availableRoutesWithTranselation = [
   "theme"
 ]
 
-const BredCrumNav = () => {
+interface Props {
+  addManualRoutes?: string[];
+}
+
+const BredCrumNav = ({ addManualRoutes }: Props) => {
   const paths = usePathname();
-  const pathNames = paths
+  const pathNames = addManualRoutes ? addManualRoutes : paths
     .split("/")
     .filter((path) => path !== "en" && path !== "workspace" && path.trim() !== "");
   const t = useTranslations("ROUTES");

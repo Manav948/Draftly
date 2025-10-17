@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         return new NextResponse("Something went wrong", { status: 401 })
     }
 
-    const {useCase , workspaceName , name, surname , workspaceImage} = result.data
+    const { useCase, workspaceName, name, surname, workspaceImage } = result.data
     try {
         const user = await db.user.findUnique({
             where: {
@@ -34,26 +34,27 @@ export async function POST(request: Request) {
             where: {
                 id: session.user.id
             },
-            data: { 
-                completeOnboarding : true,
+            data: {
+                completeOnboarding: true,
                 name,
                 surname,
-                useCase : useCase as UseCaseType 
+                useCase: useCase as UseCaseType
             }
         })
 
         const workspace = await db.workspace.create({
-            data : {
+            data: {
                 creatorId: user.id,
-                name : workspaceName,
-                image : workspaceImage
+                name: workspaceName,
+                image: workspaceImage
             }
         })
 
         await db.subscription.create({
-            data : {
-                userId : user.id,
-                workspaceId : workspace.id
+            data: {
+                userId: user.id,
+                workspaceId: workspace.id,
+                userRole: "OWNER"
             }
         })
         return NextResponse.json("OK    ", { status: 200 })

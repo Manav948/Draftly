@@ -1,11 +1,16 @@
 "use client"
 
 import ActiveLink from '@/components/ui/active-link'
+import { Workspace } from '@prisma/client'
 import { LockKeyhole, SunMoon, User2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
+import SettingsWorkspace from './SettingsWorkspace'
 
-const Settings = () => {
+interface Props {
+    userAdminWorkspaces: Workspace[]
+}
+const Settings = ({ userAdminWorkspaces }: Props) => {
     const settingsField = [
         { href: "/dashboard/settings", icon: <User2 size={20} />, title: "SETTINGS.ACCOUNT" },
         { href: "/dashboard/settings/security", icon: <LockKeyhole size={20} />, title: "SETTINGS.SECURITY" },
@@ -37,6 +42,11 @@ const Settings = () => {
                         </ActiveLink>
                     ))}
                 </div>
+            </div>
+            <div className='flex flex-col gap-2 w-full mt-5'>
+                {userAdminWorkspaces.map((workspace) => (
+                    <SettingsWorkspace key={workspace.id} href='/dashboard/settings/workspace' workspace={workspace} />
+                ))}
             </div>
         </div>
     )

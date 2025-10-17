@@ -66,6 +66,7 @@ enum UserPermission {
   ADMIN
   CAN_EDIT
   READ_ONLY
+  OWNER
 }
 enum UseCase {
   WORK
@@ -81,7 +82,23 @@ model Workspace {
   Creator User? @relation("CreatedBy" , fields:[creatorId] , references:[id] , onDelete:Cascade)
   Subscribers Subscription[]
   image String?
+  color WorkspaceIconColor @default(RED)
   @@index([creatorId])
+}
+
+enum WorkspaceIconColor {
+  PURPLE
+  RED
+  GREEN
+  BLUE
+  PINK
+  YELLOW
+  ORANGE
+  CYAN
+  LIME
+  EMERALD
+  INDIGO
+  FUCHSIA
 }
 
 model Subscription {

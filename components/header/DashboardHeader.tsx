@@ -2,10 +2,13 @@
 import React from "react";
 import User from "./User";
 import BredCrumNav from "./BredCrumNav";
-
 import OpenSidebar from "./OpenSidebar";
 
-const DashboardHeader = () => {
+interface Props {
+  addManualRoutes?: string[];
+}
+
+const DashboardHeader = ({addManualRoutes} : Props) => {
   return (
     <>
       <header className="relative flex items-center justify-between px-5 py-3 bg-white dark:bg-gray-950 border-b border-gray-300 dark:border-gray-800 overflow-hidden">
@@ -17,7 +20,7 @@ const DashboardHeader = () => {
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-3 text-black dark:text-white">
-          <BredCrumNav />
+          <BredCrumNav addManualRoutes={addManualRoutes} />
         </div>
 
         {/* User profile */}

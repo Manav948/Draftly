@@ -3,11 +3,11 @@ import { NextResponse } from "next/server"
 
 interface Params {
     params: {
-        workspace_name: string;
+        workspace_id: string;
     }
 }
 
-export const GET = async (request: Request, { params: { workspace_name } }: Params) => {
+export const GET = async (request: Request, { params: { workspace_id } }: Params) => {
     const url = new URL(request.url)
     const userId = url.searchParams.get("userId")
 
@@ -15,10 +15,14 @@ export const GET = async (request: Request, { params: { workspace_name } }: Para
         return NextResponse.json("Error in user api function", { status: 404 })
     }
     try {
-        const workspace = db.workspace.findMany({
+        const workspace = await db.workspace.findUnique({
             where: {
-                name: workspace_name,
-                creatorId: userId
+                id: workspace_id,
+                Subscribers: {
+                    some: {
+                        userId
+                    }
+                }
             }
         })
         if (!workspace) {

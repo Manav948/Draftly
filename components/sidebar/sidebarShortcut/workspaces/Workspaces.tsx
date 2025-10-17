@@ -5,9 +5,12 @@ import WorkspaceComponent from "./Workspace";
 
 interface Props {
   userWorkspaces: Workspace[];
+  href : string
 }
 
-const Workspaces = ({ userWorkspaces }: Props) => {
+const Workspaces = ({ userWorkspaces , href
+
+ }: Props) => {
   return (
     <div
       className="
@@ -16,7 +19,7 @@ const Workspaces = ({ userWorkspaces }: Props) => {
       "
     >
       {userWorkspaces.map((workspace) => (
-        <WorkspaceComponent key={workspace.id} workspaces={workspace} />
+        <WorkspaceComponent key={workspace.id} workspaces={workspace} href={href} />
       ))}
     </div>
   );

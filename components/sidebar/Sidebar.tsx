@@ -1,15 +1,15 @@
 import { getAuthSession } from "@/lib/auth";
 import SidebarContainer from "./SidebarContainer";
-import { getWorkspaces } from "@/lib/api";
+import { getUserAdminWorkspaces, getWorkspaces } from "@/lib/api";
 
 const Sidebar = async () => {
   const session = await getAuthSession();
-  if(!session) return null;
+  if (!session) return null;
 
-  const userWorkspaces = await getWorkspaces(session.user.id)
- 
+  const [userWorkspaces, userAdminWorkspaces] = await Promise.all([getWorkspaces(session.user.id), getUserAdminWorkspaces(session.user.id)])
+
   return (
-    <SidebarContainer userWorkspace={userWorkspaces} />
+    <SidebarContainer userWorkspace={userWorkspaces} userId={session.user.id} userAdminWorkspaces={userAdminWorkspaces} />
   );
 };
 

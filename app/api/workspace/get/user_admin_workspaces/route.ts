@@ -12,13 +12,14 @@ export const GET = async (request: Request) => {
     try {
         const subscriptions = await db.subscription.findMany({
             where: {
-                userId
+                userId,
+                OR: [{ userRole: "ADMIN" }, { userRole: "OWNER" }]
             },
             include: {
                 workspace: true
             }
         })
-
+        console.log("subs",subscriptions)
         const workspace = subscriptions.map((subscription) => subscription.workspace)
         if (!workspace || workspace.length === 0) {
             return NextResponse.json([], { status: 200 })

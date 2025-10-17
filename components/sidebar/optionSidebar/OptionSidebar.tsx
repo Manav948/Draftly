@@ -3,12 +3,14 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import Settings from "./Settings";
 import ActiveWorkspaceInfo from "@/components/common/ActiveWorkspaceInfo";
+import { Workspace } from "@prisma/client";
 
 interface Props {
   activeWorkspaces: number
+  userAdminWorkspaces: Workspace[]
 }
 
-const OptionSidebar = ({ activeWorkspaces }: Props) => {
+const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces }: Props) => {
   const pathname = usePathname();
   const isSettings = pathname.includes("/dashboard/settings");
 
@@ -20,7 +22,7 @@ const OptionSidebar = ({ activeWorkspaces }: Props) => {
         ${isSettings ? "w-52 p-4 opacity-100" : "w-0 opacity-0 p-0 overflow-hidden"} flex flex-col justify-between
       `}
     >
-      {isSettings && <Settings />}
+      {isSettings && <Settings userAdminWorkspaces={userAdminWorkspaces} />}
       <ActiveWorkspaceInfo activeNumber={activeWorkspaces} />
     </div>
   );

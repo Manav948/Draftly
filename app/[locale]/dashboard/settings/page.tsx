@@ -1,3 +1,4 @@
+import DashboardHeader from '@/components/header/DashboardHeader'
 import Accountinfo from '@/components/settings/account/Accountinfo'
 import DeleteAccount from '@/components/settings/account/DeleteAccount'
 import Heading from '@/components/settings/account/Heading'
@@ -10,6 +11,7 @@ const Settings = async () => {
 
   return (
     <div className="h-full w-full">
+      <DashboardHeader />
       <div
         className="
           min-h-screen py-6 

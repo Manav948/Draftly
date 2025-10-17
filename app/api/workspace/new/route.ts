@@ -1,5 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getRandomWorkspaceColor } from "@/lib/getRandomWorkspaceColor";
 import { MAX_USER_WORKSPACES } from "@/lib/options";
 import { apiWorkspaceSchema } from "@/schema/workSpaceSchema";
 import { NextResponse } from "next/server";
@@ -50,11 +51,22 @@ export async function POST(request: Request) {
             return new NextResponse("Same WorkSpace Name Try something another one", { status: 403 })
         }
 
+
+        const color = getRandomWorkspaceColor()
         const workspace = await db.workspace.create({
             data: {
                 creatorId: user.id,
                 name: workspaceName,
-                image: file
+                image: file,
+                color
+            }
+        })
+
+        await db.subscription.create({
+            data: {
+                userId: user.id,
+                workspaceId: workspace.id,
+                    userRole: "OWNER"
             }
         })
         return NextResponse.json(workspace, { status: 200 })

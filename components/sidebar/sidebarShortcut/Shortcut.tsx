@@ -8,9 +8,10 @@ import { Workspace } from '@prisma/client'
 
 interface Props {
   userWorkspace: Workspace[]
+  activeWorkspaces : number
 }
-const Shortcut = ({ userWorkspace }: Props) => {
-  return (
+const Shortcut = ({ userWorkspace,activeWorkspaces }: Props) => {
+  return (  
     <div
       className="
         flex flex-col justify-between
@@ -21,8 +22,8 @@ const Shortcut = ({ userWorkspace }: Props) => {
     >
       <div className="flex flex-col items-center gap-6 mt-6">
         <Top />
-        <Workspaces userWorkspaces={userWorkspace} />
-        <Addworkspace activeWorkspace={userWorkspace.length} />
+        <Workspaces userWorkspaces={userWorkspace} href='/dashboard/workspace' />
+        <Addworkspace activeWorkspace={activeWorkspaces} />
       </div>
 
       <div className="p-4">
