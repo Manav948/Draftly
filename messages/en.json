@@ -70,7 +70,7 @@
     "LOG_OUT": "Log out",
     "SETTINGS": "Settings",
     "WARNING": "Warning",
-    "NOTICE" : "Notice",
+    "NOTICE": "Notice",
     "ACTIVE_WORKSPACE": {
       "FIRST": "You Have",
       "SECOND": "Out Of",
@@ -165,5 +165,12 @@
     "SETTINGS": "Settings",
     "THEME": "Theme",
     "SECURITY": "Security"
+  },
+  "EDIT_WORKSPACE": {
+    "PICTURE": {
+      "LABLE": "Workspace Icon",
+      "TITLE": "Change Icon",
+      "BTN": "Choose Image"
+    }
   }
 }

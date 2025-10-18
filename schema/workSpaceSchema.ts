@@ -1,5 +1,31 @@
 import { z } from "zod";
 import { MAX_FILE_SIZE, ACCEPTED_IMAGE_TYPES } from "./imageSchem";
+const file = z
+  .any()
+  .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
+    message: "File size must be less than 2MB",
+  })
+  .refine((file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type), {
+    message: "Only .jpg, .jpeg, .png, and .webp formats are supported",
+  })
+  .optional()
+  .nullable()
+
+const color = z.enum([
+  "PURPLE",
+  "RED",
+  "GREEN",
+  "YELLOW",
+  "CYAN",
+  "INDIGO",
+  "LIME",
+  "ORANGE",
+  "PINK",
+  "EMERALD",
+  "BLUE",
+  "FUCHSIA"
+])
+
 
 export const workspaceSchema = z.object({
   workspaceName: z
@@ -9,18 +35,8 @@ export const workspaceSchema = z.object({
       message: "Workspace name must be alphanumeric",
     }),
 
-  file: z
-    .any()
-    .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
-      message: "File size must be less than 2MB",
-    })
-    .refine((file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type), {
-      message: "Only .jpg, .jpeg, .png, and .webp formats are supported",
-    })
-    .optional()
-    .nullable(),
-});
-
+  file
+})
 export const apiWorkspaceSchema = z.object({
   workspaceName: z.string()
     .min(4, "Workspace name minimum 4 latters")
@@ -32,5 +48,10 @@ export const apiWorkspaceSchema = z.object({
     .nullable(),
 });
 
+export const workspacePicture = z.object({
+  file,
+})
+
+export type WorkspacePicture = z.infer<typeof workspacePicture>
 export type WorkspaceSchema = z.infer<typeof workspaceSchema>;
 export type ApiWorkspaceSchema = z.infer<typeof apiWorkspaceSchema>

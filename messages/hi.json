@@ -1,47 +1,176 @@
 {
-    "Index": {
-        "title": "Welcome to Super Productivity"
+  "Index": {
+    "title": "Welcome to Draftly"
+  },
+  "Auth": {
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "USERNAME": "Username",
+    "SIGN_IN": {
+      "TITLE": "Sign In",
+      "DESC": "Welcome back to continue your work efficiently.",
+      "SUBMIT": "Sign In",
+      "FORGOT_PASSWORD": "Forgot password?",
+      "DON'T_HAVE_ACCOUNT": {
+        "FIRST": "Don't have an account?",
+        "SECOND": " Sign Up"
+      },
+      "PROVIDERS": {
+        "GOOGLE": "Sign in with Google",
+        "APPALE": "Sign in with Apple",
+        "GITHUB": "Sign in with GitHub"
+      }
     },
-    "Auth": {
-        "EMAIL": "Email",
-        "PASSWORD": "Password",
-        "USERNAME": "Username",
-        "SIGN_IN": {
-            "TITLE": "Sign In Hindi",
-            "DESC": "Welcome back to ....",
-            "SUBMIT": "Sign In",
-            "FORGOT_PASSWORD": "Forgot password?",
-            "DON'T_HAVE_ACCOUNT": {
-                "FIRST": "Don't have an account?",
-                "SECOND": " Sign Up"
-            },
-            "PROVIDERS": {
-                "GOOGLE": "Sign in with Google",
-                "APPALE": "Sign in with Apple",
-                "GITHUB": "Sign in with GitHub"
-            }
-        },
-        "SIGN_UP": {
-            "TITLE": "Sign Up",
-            "DESC": "Create your account to get started",
-            "SUBMIT": "Sign Up",
-            "FORGOT_PASSWORD": "Forgot your password?",
-            "HAVE_ACCOUNT": {
-                "FIRST": "Already have an account?",
-                "SECOND": " Sign In"
-            },
-            "TERMS": {
-                "FIRST": "By signing up, you agree to our",
-                "SECOND": "Terms of Service"
-            },
-            "PROVIDERS": {
-                "GOOGLE": "Sign in with Google",
-                "APPALE": "Sign in with Apple",
-                "GITHUB": "Sign in with GitHub"
-            },
-            "PENDING" : {
-                "LOADING" : "Please wait..."
-            }
-        }
+    "SIGN_UP": {
+      "TITLE": "Sign Up",
+      "DESC": "Create your account to get started",
+      "SUBMIT": "Sign Up",
+      "FORGOT_PASSWORD": "Forgot your password?",
+      "HAVE_ACCOUNT": {
+        "FIRST": "Already have an account?",
+        "SECOND": " Sign In"
+      },
+      "TERMS": {
+        "FIRST": "By signing up, you agree to our",
+        "SECOND": "Terms of Service"
+      },
+      "PROVIDERS": {
+        "GOOGLE": "Sign up with Google",
+        "APPALE": "Sign up with Apple",
+        "GITHUB": "Sign up with GitHub"
+      },
+      "PENDING": {
+        "LOADING": "Please wait..."
+      }
     }
+  },
+  "SIDEBAR": {
+    "MAIN": {
+      "HOME_OVER": "Home",
+      "LOG_OUT_HOVER": "Log out",
+      "SETTINGS_HOVER": "Settings",
+      "NEW_WORKSPACE": "New Workspace",
+      "WORKSPACE_TITLE": "Create new workspace",
+      "WORKSPACE_DESC": "Organize your projects and collaborate easily in your workspace."
+    },
+    "SETTINGS": {
+      "GENERAL": "General",
+      "ACCOUNT": "Account",
+      "SECURITY": "Security",
+      "Theme": "Theme",
+      "Workspace": "Workspace"
+    }
+  },
+  "COMMON": {
+    "LANG_HOVER": "Change language",
+    "THEME_HOVER": "Change Theme",
+    "DARK": "Dark",
+    "LIGHT": "Light",
+    "SYSTEM": "System",
+    "LOG_OUT": "Log out",
+    "SETTINGS": "Settings",
+    "WARNING": "Warning",
+    "NOTICE": "Notice",
+    "ACTIVE_WORKSPACE": {
+      "FIRST": "You Have",
+      "SECOND": "Out Of",
+      "THIRD": "Active Workspaces"
+    }
+  },
+  "SETTINGS": {
+    "ACCOUNT": {
+      "TITLE": "Account",
+      "DESC": "Manage your Draftly account. All changes will be applied to all your workspaces.",
+      "IMAGE": "Profile Image",
+      "USERNAME": "Username",
+      "FIRST_NAME": "First name (optional)",
+      "SURNAME": "Surname (optional)",
+      "USERNAME_PLACEHOLDER": "Username",
+      "FIRST_NAME_PLACEHOLDER": "First name",
+      "SURNAME_PLACEHOLDER": "Surname",
+      "LANG": "Language",
+      "NO_LANGUAGE": "Language not found",
+      "SEARCH_LANGUAGE": "Search language...",
+      "SELECT_LANGUAGE": "Select language",
+      "UPDATE_BTN": "Update",
+      "DELETE_TITLE": "Delete Account",
+      "DELETE_DESC": "Once deleted, your account and data cannot be recovered.",
+      "DELETE_LABLE": "Delete My Account and Data",
+      "DELETE_PLACEHOLDER": "Confirm your email",
+      "DELETE_BTN": "Delete",
+      "DIALOG": {
+        "TITLE": "Delete Account",
+        "DESC": "You will lose access to all your workspaces and projects.",
+        "WARNING": "Account deletion is permanent. Click 'Delete my Account' to confirm.",
+        "BUTTON": "Delete My Account",
+        "PENDING_BTN": "Deleting..."
+      }
+    },
+    "SECURITY": {
+      "TITLE": "Security",
+      "DESC": "Change your password here. It must contain at least 6 characters, one uppercase letter, one lowercase letter, one number, and one special character.",
+      "WARNING": {
+        "FIRST": "Password changes are available",
+        "SECOND": "only for accounts created directly on this platform.",
+        "THIRD": "If you signed up using Google or GitHub,",
+        "FORTH": "you cannot change your password here",
+        "FIFTH": "since they use external authentication."
+      },
+      "FORM": {
+        "TITLE": "Change Password",
+        "CURRENT": {
+          "LABLE": "Current Password",
+          "PLACEHOLDER": "Current Password"
+        },
+        "NEW": {
+          "LABLE": "New Password",
+          "PLACEHOLDER": "New Password"
+        },
+        "REPEAT": {
+          "LABLE": "Confirm Password",
+          "PLACEHOLDER": "Confirm Password"
+        },
+        "BTN": "Change Password",
+        "BTN_PENDING": "Changing Password..."
+      }
+    }
+  },
+  "WORKSPACE": {
+    "TITLE": "Add Workspace",
+    "DESC": "Create a new workspace to start managing your team and projects efficiently.",
+    "INPUTS": {
+      "NAME": "Workspace Name",
+      "IMAGE": "Workspace Image"
+    },
+    "PLACEHOLDERS": {
+      "NAME": "Enter your workspace name"
+    },
+    "UPLOAD": {
+      "TITLE": "Upload workspace image (optional)",
+      "DESC": "Supported formats: .jpg, .jpeg, .png, .webp, .gif"
+    },
+    "BTN_ADD": "Create Workspace",
+    "BTN_PENDING": "Creating Workspace...",
+    "SUCCESS": "Workspace created successfully!",
+    "ERROR": {
+      "INVALID_NAME": "Workspace name must be alphanumeric.",
+      "TOO_SHORT": "Workspace name must be at least 4 letters.",
+      "IMAGE_SIZE": "File size must be less than 2MB.",
+      "IMAGE_TYPE": "Only .jpg, .jpeg, .png, and .webp formats are supported.",
+      "FAILED": "Failed to create workspace. Please try again."
+    }
+  },
+  "ROUTES": {
+    "DASHBOARD": "Home",
+    "SETTINGS": "Settings",
+    "THEME": "Theme",
+    "SECURITY": "Security"
+  },
+  "EDIT_WORKSPACE": {
+    "PICTURE": {
+      "LABLE": "Workspace Icon",
+      "TITLE": "Change Icon",
+      "BTN": "Choose Image"
+    }
+  }
 }
