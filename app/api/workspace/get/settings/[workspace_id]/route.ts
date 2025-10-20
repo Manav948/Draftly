@@ -2,15 +2,14 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 interface Props {
-  params: {
+  params: Promise<{
     workspace_id: string;
-  };
+  }>;
 }
 
-export const GET = async (
-  request: Request,
-  { params: { workspace_id } }: Props
-) => {
+export const GET = async (request: Request, { params }: Props) => {
+  const { workspace_id } = await params; // ✅ Await the params object
+
   const url = new URL(request.url);
   const userId = url.searchParams.get("userId");
 
@@ -23,7 +22,7 @@ export const GET = async (
   try {
     const workspace = await db.workspace.findFirst({
       where: {
-        id: workspace_id,
+        id: workspace_id, // ✅ already awaited above
         Subscribers: {
           some: {
             userId,

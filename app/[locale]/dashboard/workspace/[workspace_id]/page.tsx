@@ -4,22 +4,23 @@ import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboar
 import React from 'react'
 
 interface Params {
-    params: {
-        workspace_id: string
-    }
+  params: Promise<{ workspace_id: string }>
 }
 
-const page = async ({ params: { workspace_id } }: Params) => {
-    const session = await checkIfUserCompletedOnboarding(`/dashboard/workspace/${workspace_id}`)
-    const workspace = await getWorkspace(workspace_id, session.user.id)
-    return (
-        <>
-            <DashboardHeader addManualRoutes={["dashboard", workspace.name]} />
-            <main className='flex flex-col gap-2'>
-                {workspace.name}
-            </main>
-        </>
-    )
+const page = async ({ params }: Params) => {
+  const { workspace_id } = await params
+
+  const session = await checkIfUserCompletedOnboarding(`/dashboard/workspace/${workspace_id}`)
+  const workspace = await getWorkspace(workspace_id, session.user.id)
+
+  return (
+    <>
+      <DashboardHeader addManualRoutes={["dashboard", workspace.name]} />
+      <main className="flex flex-col gap-2">
+        {workspace.name}
+      </main>
+    </>
+  )
 }
 
 export default page
