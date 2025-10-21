@@ -49,13 +49,19 @@ const SignUpCardContent = () => {
         },
       });
 
+      if (res.status === 409) {
+        toast.error(t("SIGN_UP.ERROR.EMAIL_EXISTS"));
+        return;
+      }
+
       if (!res.ok) {
-        throw new Error("Something went wrong");
+        toast.error(t("SIGN_UP.ERROR.GENERIC"));
+        return;
       }
 
       const signUPInfo = await res.json();
       if (res.status === 200) {
-        toast.success("Sign-Up Successfully ! Please sign-in");
+        toast.success(t("SIGN_UP.SUCCESS"));
       }
 
       await signIn("credentials", {
@@ -67,7 +73,7 @@ const SignUpCardContent = () => {
       router.push("/sign-in");
     } catch (error) {
       console.error("Error during sign-up", error);
-      toast.error("Error In Sign-Up function");
+      toast.error(t("SIGN_UP.ERROR.NETWORK"));
     } finally {
       setLoading(false);
     }
@@ -147,7 +153,7 @@ const SignUpCardContent = () => {
               type="submit"
             >
               {loading ? (
-                <LoadingState loadingText={"Signing up..."} />
+                <LoadingState loadingText={t("SIGN_UP.PENDING.LOADING")} />
               ) : (
                 t("SIGN_UP.SUBMIT")
               )}

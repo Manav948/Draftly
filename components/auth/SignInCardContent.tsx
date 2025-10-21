@@ -49,13 +49,15 @@ const SignInCardContent = () => {
             })
             if (!account) throw new Error("Something went wrong!")
             if (account.error) {
-                toast.error("Error occur During sign-in, please try again")
+                toast.error(t("SIGN_IN.ERROR.INVALID_CREDENTIALS"));
+            } else {
+                toast.success(t("SIGN_IN.SUCCESS"));
+                router.push("/onboarding");
+                router.refresh();
             }
-            router.push("/onboarding");
-            router.refresh()
         } catch (error) {
-            console.log("Error in sign-in handler : ", error)
-            toast.error("Error in sign-in function, try it again")
+            console.error("Sign-in failed:", error);
+            toast.error(t("SIGN_IN.ERROR.GENERIC"));
         } finally {
             isLoading(false)
         }

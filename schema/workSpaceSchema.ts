@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { MAX_FILE_SIZE, ACCEPTED_IMAGE_TYPES } from "./imageSchem";
+import { id } from "zod/v4/locales";
 const file = z
   .any()
   .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
@@ -52,6 +53,37 @@ export const workspacePicture = z.object({
   file,
 })
 
+export const apiWorkspaceDeletePicture = z.object({
+  id: z.string()
+})
+
+export const apiWorkspacePicture = z.object({
+  picture: z.string(),
+  id: z.string()
+})
+
+export const workspaceEditData = z.object({
+  workspaceName: z.string()
+    .min(4, "Workspace name minimum 4 latters")
+    .refine((username) => /^[a-zA-Z0-9]+$/.test(username), {
+      message: "Workspace name must be alphanumeric",
+    }),
+  color
+})
+
+export const apiWorkspaceEditData = z.object({
+  id: z.string(),
+  workspaceName: z.string()
+    .min(4, "Workspace name minimum 4 latters")
+    .refine((username) => /^[a-zA-Z0-9]+$/.test(username), {
+      message: "Workspace name must be alphanumeric",
+    }),
+  color
+})
+
+export type ApiWorkspacePicture = z.infer<typeof apiWorkspacePicture>
+export type WorkspaceEditData = z.infer<typeof workspaceEditData>
+export type ApiWorkspaceEditData = z.infer<typeof apiWorkspaceEditData>
 export type WorkspacePicture = z.infer<typeof workspacePicture>
 export type WorkspaceSchema = z.infer<typeof workspaceSchema>;
 export type ApiWorkspaceSchema = z.infer<typeof apiWorkspaceSchema>

@@ -3,44 +3,56 @@
     "title": "Welcome to Draftly"
   },
   "Auth": {
-    "EMAIL": "Email",
+    "EMAIL": "Email address",
     "PASSWORD": "Password",
     "USERNAME": "Username",
     "SIGN_IN": {
-      "TITLE": "Sign In",
-      "DESC": "Welcome back to continue your work efficiently.",
-      "SUBMIT": "Sign In",
-      "FORGOT_PASSWORD": "Forgot password?",
+      "TITLE": "Welcome back to Draftly",
+      "DESC": "Sign in to access your workspace and keep creating effortlessly.",
+      "SUBMIT": "Continue to Draftly",
+      "FORGOT_PASSWORD": "Forgot your password?",
       "DON'T_HAVE_ACCOUNT": {
-        "FIRST": "Don't have an account?",
-        "SECOND": " Sign Up"
+        "FIRST": "New to Draftly?",
+        "SECOND": "Create an account"
       },
       "PROVIDERS": {
-        "GOOGLE": "Sign in with Google",
-        "APPALE": "Sign in with Apple",
-        "GITHUB": "Sign in with GitHub"
-      }
+        "GOOGLE": "Continue with Google",
+        "APPALE": "Continue with Apple",
+        "GITHUB": "Continue with GitHub"
+      },
+      "ERROR": {
+        "INVALID_CREDENTIALS": "Invalid email or password. Please try again.",
+        "GENERIC": "Unable to sign in. Please check your details and try again.",
+        "NETWORK": "Network error. Please check your connection."
+      },
+      "SUCCESS": "Successfully signed in! Redirecting..."
     },
     "SIGN_UP": {
-      "TITLE": "Sign Up",
-      "DESC": "Create your account to get started",
-      "SUBMIT": "Sign Up",
+      "TITLE": "Create your Draftly account",
+      "DESC": "Get started by creating your personal workspace today.",
+      "SUBMIT": "Create Account",
       "FORGOT_PASSWORD": "Forgot your password?",
       "HAVE_ACCOUNT": {
-        "FIRST": "Already have an account?",
-        "SECOND": " Sign In"
+        "FIRST": "Already part of Draftly?",
+        "SECOND": "Sign in"
       },
       "TERMS": {
-        "FIRST": "By signing up, you agree to our",
-        "SECOND": "Terms of Service"
+        "FIRST": "By creating an account, you agree to Draftly’s",
+        "SECOND": "Terms of Service and Privacy Policy"
       },
       "PROVIDERS": {
         "GOOGLE": "Sign up with Google",
         "APPALE": "Sign up with Apple",
         "GITHUB": "Sign up with GitHub"
       },
+      "SUCCESS": "Account created successfully! Welcome to Draftly.",
+      "ERROR": {
+        "EMAIL_EXISTS": "An account with this email already exists.",
+        "GENERIC": "Something went wrong during sign-up. Please try again.",
+        "NETWORK": "Network error. Please check your internet connection."
+      },
       "PENDING": {
-        "LOADING": "Please wait..."
+        "LOADING": "Creating your account..."
       }
     }
   },
