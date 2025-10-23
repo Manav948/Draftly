@@ -4,3 +4,5 @@ export const getRandomWorkspaceColor = () => {
     const randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex] as WorkspaceIconColor
 }
+
+export const colors = Object.values(WorkspaceIconColor)

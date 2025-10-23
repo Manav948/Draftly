@@ -104,7 +104,7 @@ const UploadFile = ({
                 <Button
                   onClick={() => inputRef.current?.click()}
                   type="button"
-                  className="dark:text-white mb-1"
+                  className="dark:text-black mb-1"
                 >
                   {btnText ?? "Upload"}
                 </Button>

@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/
 import { SettingsWorkspace } from '@/types/extended';
 import React from 'react';
 import EditworkspaceImage from './EditworkspaceImage';
+import EditWorkspaceData from './EditWorlskspaceData';
 
 interface Props {
   workspace: SettingsWorkspace;
@@ -21,6 +22,7 @@ const EditWorkspaceCard = ({ workspace }: Props) => {
 
       <CardContent className="space-y-6">
         <EditworkspaceImage workspace={workspace} />
+        <EditWorkspaceData workspace={workspace} />
       </CardContent>
     </Card>
   );

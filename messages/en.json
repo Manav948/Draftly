@@ -183,6 +183,18 @@
       "LABLE": "Workspace Icon",
       "TITLE": "Change Icon",
       "BTN": "Choose Image"
+    },
+    "DATA": {
+      "INPUTS": {
+        "NAME": "Workspace Name",
+        "COLOR": "Workspace Icon Color"
+      },
+      "PLACEHOLDERS": {
+        "NAME": "Enter your workspace name (e.g. Team Nexus, Draftly Studio)"
+      },
+      "INFO": "Customize your workspace identity. The color will only apply to the icon when no image has been set — keeping your workspace looking clean and personal.",
+      "BTN": "Save Changes",
+      "BTN_PENDING": "Saving..."
     }
   }
 }
