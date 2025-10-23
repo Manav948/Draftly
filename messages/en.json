@@ -195,6 +195,19 @@
       "INFO": "Customize your workspace identity. The color will only apply to the icon when no image has been set — keeping your workspace looking clean and personal.",
       "BTN": "Save Changes",
       "BTN_PENDING": "Saving..."
+    },
+    "DELETE": {
+      "TITLE": "Delete Workspace",
+      "DESC": "Deleting this workspace will permanently remove all its data — including tasks, users, and settings. This action cannot be undone, so proceed carefully.",
+      "LABLE": "Type the workspace name to confirm",
+      "BTN": "Delete",
+      "DIALOG": {
+        "TITLE": "Confirm Workspace Deletion",
+        "DESC": "This will permanently erase all data linked to this workspace, and every member will instantly lose access. Once deleted, there’s no turning back.",
+        "WARNING": "⚠️ This action is irreversible. Make sure you’ve backed up everything important before continuing.",
+        "BUTTON": "Permanently Delete Workspace",
+        "PENDING_BTN": "Deleting..."
+      }
     }
   }
 }
