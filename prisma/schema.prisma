@@ -83,10 +83,10 @@ model Workspace {
   Subscribers Subscription[]
   image String?
   color WorkspaceIconColor @default(RED)
-  inviteCode String @unique @default("")
-  adminCode String @unique  @default("")
-  canEditCode String @unique @default("")
-  readOnlyCode String @unique  @default("")
+  inviteCode String @unique @default(uuid())
+  adminCode String @unique  @default(uuid())
+  canEditCode String @unique @default(uuid())
+  readOnlyCode String @unique  @default(uuid())
   @@index([creatorId])
 }
 

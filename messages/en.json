@@ -209,5 +209,21 @@
         "PENDING_BTN": "Deleting..."
       }
     }
-  }
+  },
+  "Invite": {
+    "Role": "Invite as"
+  },
+  "ADMIN": {
+    "TITLE": "Admin",
+    "DESC": "Full control over workspace settings and users"
+  },
+  "EDITOR": {
+    "TITLE": "Editor",
+    "DESC": "Can edit and manage workspace content"
+  },
+  "VIEWER": {
+    "TITLE": "Viewer",
+    "DESC": "Can only view workspace data"
+  },
+  "COPY": "Copy Invite Link"
 }

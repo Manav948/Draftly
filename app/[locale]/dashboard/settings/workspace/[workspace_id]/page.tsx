@@ -1,4 +1,5 @@
 import DashboardHeader from '@/components/header/DashboardHeader';
+import InviteUsers from '@/components/inviteUsers/InviteUsers';
 import WorkspaceTab from '@/components/settings/workspace/WorkspaceTab';
 import { getWorkspaceSettings } from '@/lib/api';
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding';
@@ -12,11 +13,14 @@ interface Props {
 const workspace = async ({ params: { workspace_id } }: Props) => {
     const session = await checkIfUserCompletedOnboarding(`/dashboard/settings/workspace/${workspace_id}`)
     const workspace = await getWorkspaceSettings(workspace_id, session.user.id)
+    const user = workspace.subscribers.find((sub) => sub.user.id === session.user.id)
     return (
         <>
-            <DashboardHeader addManualRoutes={["dashboard", "settings", workspace.name]} />
+            <DashboardHeader addManualRoutes={["dashboard", "settings", workspace.name]} >
+                {user?.userRole === "ADMIN" || user?.userRole === "OWNER" && <InviteUsers workspace={workspace} />}
+            </DashboardHeader>
             <main className='flex flex-col gap-2'>
-            <WorkspaceTab workspace={workspace} />
+                <WorkspaceTab workspace={workspace} />
             </main>
         </>
     )

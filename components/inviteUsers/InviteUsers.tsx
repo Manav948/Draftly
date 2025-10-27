@@ -18,7 +18,7 @@ interface Props {
 
 const InviteUsers = ({ workspace }: Props) => {
   return (
-    <Dialog open={true}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -30,7 +30,7 @@ const InviteUsers = ({ workspace }: Props) => {
       </DialogTrigger>
 
       <DialogContent className="
-        max-w-md 
+        max-w-lg w-full
         bg-gradient-to-br from-background/90 via-background/95 to-background/90 
         dark:from-gray-900 dark:via-gray-950 dark:to-gray-900
         border border-border/40 rounded-2xl shadow-xl

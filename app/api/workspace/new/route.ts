@@ -4,6 +4,7 @@ import { getRandomWorkspaceColor } from "@/lib/getRandomWorkspaceColor";
 import { MAX_USER_WORKSPACES } from "@/lib/options";
 import { apiWorkspaceSchema } from "@/schema/workSpaceSchema";
 import { NextResponse } from "next/server";
+import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request: Request) {
     const session = await getAuthSession();
@@ -58,15 +59,21 @@ export async function POST(request: Request) {
                 creatorId: user.id,
                 name: workspaceName,
                 image: file,
-                color
+                color,
+                inviteCode: uuidv4(),
+                canEditCode: uuidv4(),
+                readOnlyCode: uuidv4(),
+                adminCode: uuidv4()
             }
         })
+
+        console.log("Workpace : ",workspace)
 
         await db.subscription.create({
             data: {
                 userId: user.id,
                 workspaceId: workspace.id,
-                    userRole: "OWNER"
+                userRole: "OWNER"
             }
         })
         return NextResponse.json(workspace, { status: 200 })
