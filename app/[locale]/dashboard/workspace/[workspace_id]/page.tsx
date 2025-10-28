@@ -13,8 +13,6 @@ const page = async ({ params }: Params) => {
 
   const session = await checkIfUserCompletedOnboarding(`/dashboard/workspace/${workspace_id}`)
   const [workspace, userRole] = await Promise.all([getWorkspace(workspace_id, session.user.id), getWorkspaceRole(workspace_id, session.user.id)])
-
-  console.log("user Role = ",userRole)
   return (
     <>
       <DashboardHeader addManualRoutes={["dashboard", workspace.name]} >

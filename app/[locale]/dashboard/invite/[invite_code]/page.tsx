@@ -1,7 +1,6 @@
 import { checkIfUserCompletedOnboarding } from "@/lib/checkIfUserCompletedOnboarding";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import { use } from "react";
 
 interface Params {
     params: {
@@ -29,7 +28,7 @@ const Workspace = async ({ searchParams, params: { invite_code } }: Params) => {
         redirect("/dashboard/error?error=no-data")
     }
 
-    if (role !== "admin" && role !== "editor" && role !== "viewer") {
+    if (!["admin", "editor", "viewer"].includes(role)) {
         redirect("/dashboard/error?error=invalid-role")
     }
 
@@ -38,42 +37,28 @@ const Workspace = async ({ searchParams, params: { invite_code } }: Params) => {
     }
 
     switch (role) {
-        case "admin": {
-            inviteCodeValidWhere = {
-                ...inviteCodeValidWhere,
-                adminCode: shareCode as string
-            };
+        case "admin":
+            inviteCodeValidWhere.adminCode = shareCode as string;
             break;
-        }
-        case "editor": {
-            inviteCodeValidWhere = {
-                ...inviteCodeValidWhere,
-                canEditCode: shareCode as string
-            };
+        case "editor":
+            inviteCodeValidWhere.canEditCode = shareCode as string;
             break;
-        }
-        case "viewer": {
-            inviteCodeValidWhere = {
-                ...inviteCodeValidWhere,
-                readOnlyCode: shareCode as string
-            };
+        case "viewer":
+            inviteCodeValidWhere.readOnlyCode = shareCode as string;
             break;
-        }
         default:
             return redirect("/dashboard/error?error=invalid-role")
     }
 
     const inviteCodeValid = await db.workspace.findUnique({
-        where: {
-            ...inviteCodeValidWhere
-        }
+        where: inviteCodeValidWhere
     })
 
     if (!inviteCodeValid) {
         redirect("/dashboard/error?error=outdated-invalid-invite")
     }
 
-    const existingWorkspace = await db.workspace.findUnique({
+    const existingWorkspace = await db.workspace.findFirst({
         where: {
             inviteCode: invite_code,
             Subscribers: {
@@ -89,23 +74,14 @@ const Workspace = async ({ searchParams, params: { invite_code } }: Params) => {
     }
 
 
-    const userRole = () => {
-        switch (role) {
-            case "admin":
-                return "ADMIN"
-            case "editor":
-                return "CAN_EDIT"
-            case "viewer":
-                return "READ_ONLY"
-            default:
-                return redirect("/dashboard/error?error=invalid-role");
-        }
-    }
+    const userRole =
+        role === "admin" ? "ADMIN" : role === "editor" ? "CAN_EDIT" : "READ_ONLY";
+        
     await db.subscription.create({
         data: {
             userId: session.user.id,
             workspaceId: inviteCodeValid.id,
-            userRole: userRole()
+            userRole
         }
     })
 

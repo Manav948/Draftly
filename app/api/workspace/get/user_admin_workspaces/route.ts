@@ -19,7 +19,6 @@ export const GET = async (request: Request) => {
                 workspace: true
             }
         })
-        console.log("subs",subscriptions)
         const workspace = subscriptions.map((subscription) => subscription.workspace)
         if (!workspace || workspace.length === 0) {
             return NextResponse.json([], { status: 200 })

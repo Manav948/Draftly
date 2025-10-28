@@ -59,7 +59,7 @@ const InviteContent = ({ workspace }: Props) => {
                     return codes.readOnlyCode;
             }
         };
-        return `${domain}/${lang}/dashboard/invites/${codes.inviteCode}?role=${selectedRole}&shareRole=${shareRole()}`;
+        return `${domain}/${lang}/dashboard/invite/${codes.inviteCode}?role=${selectedRole}&shareCode=${shareRole()}`;
     }, [codes, lang, selectedRole]);
 
     const { mutate: regenerateLink, isPending } = useMutation({
