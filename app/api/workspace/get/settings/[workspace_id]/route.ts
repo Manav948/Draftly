@@ -8,10 +8,13 @@ interface Props {
 }
 
 export const GET = async (request: Request, { params }: Props) => {
-  const { workspace_id } = await params; // ✅ Await the params object
+  const { workspace_id } = await params;
 
   const url = new URL(request.url);
   const userId = url.searchParams.get("userId");
+
+  console.log("User ID:", userId);
+  console.log("workspace id : " , workspace_id)
 
   if (!userId) {
     return NextResponse.json("User ID is missing. Please try again.", {
@@ -22,12 +25,15 @@ export const GET = async (request: Request, { params }: Props) => {
   try {
     const workspace = await db.workspace.findFirst({
       where: {
-        id: workspace_id, // ✅ already awaited above
-        Subscribers: {
-          some: {
-            userId,
-          },
-        },
+        id: workspace_id,
+        OR: [
+          {creatorId: userId },
+          {
+            Subscribers: {
+              some: { userId }
+            }
+          }
+        ]
       },
       include: {
         Subscribers: {

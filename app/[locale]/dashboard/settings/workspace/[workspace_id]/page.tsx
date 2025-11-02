@@ -11,23 +11,24 @@ interface Props {
     };
 }
 
-const workspace = async ({ params: { workspace_id } }: Props) => {
+const Workspace = async ({ params: { workspace_id } }: Props) => {
     const session = await checkIfUserCompletedOnboarding(`/dashboard/settings/workspace/${workspace_id}`)
     const workspace = await getWorkspaceSettings(workspace_id, session.user.id)
     if (!workspace) return notFound()
-    // const user = workspace.subscribers.find((subscriber) => subscriber.user.id=== session.user.id)
+    const user = workspace.Subscribers.find(
+        (subscriber) => subscriber.user.id === session.user.id
+    );
     return (
         <>
             <DashboardHeader addManualRoutes={["dashboard", "settings", workspace.name]} >
-                {/* {(user?.userRole === "ADMIN" || user?.userRole === "OWNER") &&  <InviteUsers workspace={workspace} />} */}
-                <InviteUsers workspace={workspace} />
+                {(user?.userRole === "ADMIN" || user?.userRole === "OWNER") && <InviteUsers workspace={workspace} />}
 
             </DashboardHeader>
             <main className='flex flex-col gap-2'>
-                <WorkspaceTab workspace={workspace} />
+                <WorkspaceTab workspace={workspace} workspaceId={workspace.id} />
             </main>
         </>
     )
 }
 
-export default workspace
+export default Workspace

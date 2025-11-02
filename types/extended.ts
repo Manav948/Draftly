@@ -10,5 +10,5 @@ export interface SubscriptionUser {
 }
 
 export interface  SettingsWorkspace extends Workspace {
-    subscribers : SubscriptionUser[];
+    Subscribers : SubscriptionUser[];
 }

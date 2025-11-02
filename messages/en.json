@@ -208,6 +208,24 @@
         "BUTTON": "Permanently Delete Workspace",
         "PENDING_BTN": "Deleting..."
       }
+    },
+    "MEMBERS": {
+      "TITLE": "Workspace Members",
+      "DESC": "Manage people in this workspace. You can update roles or remove members anytime.",
+      "TABLE": {
+        "USERNAME": "Member",
+        "PERMISSION_SMAll": "Role",
+        "PERMISSION_BIG": "Workspace Role"
+      },
+      "REMOVE": {
+        "REMOVE_BTN": "Remove",
+        "REMOVE": {
+          "TITLE": "Remove Member",
+          "NOTE": "You can invite this member back to the workspace anytime.",
+          "BTN": "Remove from Workspace",
+          "BTN_PENDING": "Removing..."
+        }
+      }
     }
   },
   "Invite": {

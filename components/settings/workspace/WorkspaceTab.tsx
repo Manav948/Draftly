@@ -1,3 +1,4 @@
+"use client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SettingsWorkspace } from '@/types/extended';
 import { Layers, Users2 } from 'lucide-react';
@@ -5,12 +6,14 @@ import React from 'react';
 import EditWorkspaceCard from './overview/edit/EditWorkspaceCard';
 import DeleteWorkspace from './overview/DeleteWorkspace';
 import { Separator } from '@/components/ui/separator';
+import MembersCard from './members/MembersCard';
 
 interface Props {
   workspace: SettingsWorkspace;
+  workspaceId : string
 }
 
-const WorkspaceTab = ({ workspace }: Props) => {
+const WorkspaceTab = ({ workspace , workspaceId }: Props) => {
   return (
     <div className="w-full max-w-4xl mx-auto mt-12 px-4 sm:px-6">
       {/* Outer Card */}
@@ -49,8 +52,7 @@ const WorkspaceTab = ({ workspace }: Props) => {
           {/* Members Content */}
           <TabsContent value="members" className="animate-fadeIn">
             <div className="p-8 bg-gradient-to-br from-card/70 via-card/90 to-card/100 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 rounded-xl border border-border/40 text-center shadow-md transition-all duration-300 hover:shadow-lg">
-              <h1 className="text-xl font-semibold mb-2 text-foreground">Workspace Members</h1>
-              <p className="text-muted-foreground">Feature coming soon...</p>
+              <MembersCard workspace={workspace} workspaceId={workspaceId} />
             </div>
           </TabsContent>
         </Tabs>
