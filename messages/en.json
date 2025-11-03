@@ -228,6 +228,34 @@
       }
     }
   },
+  "PERMISSIONS": {
+    "WAIT": "Updating role...",
+    "OWNER": {
+      "TITLE": "Owner",
+      "DESC": "Has full control over the entire workspace"
+    },
+    "ADMIN": {
+      "TITLE": "Admin",
+      "DESC": "Manages workspace settings and members"
+    },
+    "CAN_EDIT": {
+      "TITLE": "Editor",
+      "DESC": "Can edit workspace content and collaborate"
+    },
+    "READ_ONLY": {
+      "TITLE": "Viewer",
+      "DESC": "Can only view workspace items"
+    },
+    "Invite": {
+      "Role": "Invite as"
+    },
+    "COPY": "Copy invite link"
+  },
+  "WAIT": "Updating role...",
+  "OWNER": {
+    "TITLE": "Owner",
+    "DESC": "Has full control over the entire workspace"
+  },
   "Invite": {
     "Role": "Invite as"
   },

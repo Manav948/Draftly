@@ -27,7 +27,6 @@ const Settings = ({ userAdminWorkspaces }: Props) => {
     return (
         <div>
             <div>
-                {/* <p>{m("SETTINGS.GENERAL")}</p> */}
                 <div className='flex flex-col gap-2 w-full mt-2'>
                     {mounted && settingsField.map((field, i) => (
                         <ActiveLink
