@@ -7,9 +7,10 @@ import OpenSidebar from "./OpenSidebar";
 interface Props {
   addManualRoutes?: string[];
   children?: React.ReactNode;
+  workspaceHref?: string
 }
 
-const DashboardHeader = ({ addManualRoutes, children }: Props) => {
+const DashboardHeader = ({ addManualRoutes, children, workspaceHref }: Props) => {
   return (
     <header className="
       sticky top-0 z-40
@@ -28,15 +29,12 @@ const DashboardHeader = ({ addManualRoutes, children }: Props) => {
 
       {/* Breadcrumb Navigation */}
       <div className="flex items-center gap-3 text-foreground">
-        <BredCrumNav addManualRoutes={addManualRoutes} />
+        <BredCrumNav addManualRoutes={addManualRoutes} workspaceHref={workspaceHref} />
       </div>
 
       {/* User + Action Buttons */}
       <div className="flex items-center gap-3 ml-auto">
-        {/* Additional Buttons Passed from Pages (like Invite, Notifications, etc.) */}
         {children}
-
-        {/* User Profile */}
         <User />
       </div>
     </header>

@@ -16,9 +16,10 @@ const availableRoutesWithTranselation = [
 
 interface Props {
   addManualRoutes?: string[];
+  workspaceHref?: string
 }
 
-const BredCrumNav = ({ addManualRoutes }: Props) => {
+const BredCrumNav = ({ addManualRoutes, workspaceHref }: Props) => {
   const paths = usePathname();
   const pathNames = addManualRoutes ? addManualRoutes : paths
     .split("/")
@@ -37,13 +38,13 @@ const BredCrumNav = ({ addManualRoutes }: Props) => {
               {!isLast ? (
                 <>
                   <Link
-                    href={href}
+                    href={workspaceHref && pathNames.length - 1 ? workspaceHref : href}
                     className={cn(
                       "transition-all font-medium relative group hover:text-primary",
                       "after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 group-hover:after:w-full"
                     )}
                   >
-                    {t(link.toUpperCase())}
+                    {availableRoutesWithTranselation.includes(link) ? t(link.toUpperCase()) : link}
                   </Link>
                   <ChevronRight className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                 </>

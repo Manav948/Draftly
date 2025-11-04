@@ -271,5 +271,13 @@
     "TITLE": "Viewer",
     "DESC": "Can only view workspace data"
   },
-  "COPY": "Copy Invite Link"
+  "COPY": "Copy Invite Link",
+  "WORKSPACE_OPTIONS": {
+    "SHORTCUTS": "Shortcuts",
+    "TASKS": "Tasks",
+    "SCHEDULES": "Schedules",
+    "MIND_MAPS": "Mind_Maps",
+    "STUDY": "Study",
+    "FILES": "Files"
+  }
 }
