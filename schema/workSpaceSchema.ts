@@ -11,7 +11,7 @@ const file = z
   .optional()
   .nullable()
 
-const color = z.enum([
+export const color = z.enum([
   "PURPLE",
   "RED",
   "GREEN",

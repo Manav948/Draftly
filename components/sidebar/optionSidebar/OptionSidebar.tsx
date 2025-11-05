@@ -28,6 +28,7 @@ const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces }: Props) => {
     >
       {isSettings && <Settings userAdminWorkspaces={userAdminWorkspaces} />}
       {url && <WorkspaceOptions workspaceId={workspaceId} />}
+      {pathname === `/dashboard/workspace/${workspaceId}/tasks` && <p>Tasks</p>}
       <ActiveWorkspaceInfo activeNumber={activeWorkspaces} />
     </div>
   );

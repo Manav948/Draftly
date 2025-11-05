@@ -9,7 +9,7 @@ interface Props {
     asChild?: boolean;
     className?: string;
     children: React.ReactNode
-    setSelectedEmoji: React.Dispatch<React.SetStateAction<string>>
+    onSelectedEmoji: (emoji: string) => void
 }
 
 interface OnSelect {
@@ -21,7 +21,7 @@ interface OnSelect {
     unified: string
 }
 
-const EmojiSelector = ({ asChild, className, children, setSelectedEmoji }: Props) => {
+const EmojiSelector = ({ asChild, className, children, onSelectedEmoji }: Props) => {
     const { theme, setTheme, systemTheme } = useTheme();
     const locale = useLocale();
     const [open, setOpen] = useState(false);
@@ -44,7 +44,7 @@ const EmojiSelector = ({ asChild, className, children, setSelectedEmoji }: Props
             <DropdownMenuContent asChild>
                 <div>
                     <Picker data={data} emojiSize={20} emojiButtonSize={32} theme={emojiTheme} locale={locale} onEmojiSelected={(e: OnSelect) => {
-                        setSelectedEmoji(e.native);
+                        onSelectedEmoji(e.native);
                         setOpen(false)
                     }} />
                 </div>

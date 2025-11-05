@@ -6,25 +6,26 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @unique
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
- 
+  id                String  @id @default(cuid())
+  userId            String  @unique
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
 }
- 
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -32,32 +33,34 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
- 
+
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  username      String    @unique
-  surname       String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  hashedPassword String?
-  image         String?
-  language      String?
-  completeOnboarding Boolean @default(false)
-  accounts      Account[]
-  sessions      Session[]
-  createdWorkspaces Workspace[] @relation("CreatedBy")
-  subscriptions Subscription[]
-  useCase UseCase?
- 
+  id                 String         @id @default(cuid())
+  name               String?
+  username           String         @unique
+  surname            String?
+  email              String?        @unique
+  emailVerified      DateTime?      @map("email_verified")
+  hashedPassword     String?
+  image              String?
+  language           String?
+  completeOnboarding Boolean        @default(false)
+  accounts           Account[]
+  sessions           Session[]
+  createdWorkspaces  Workspace[]    @relation("CreatedBy")
+  subscriptions      Subscription[]
+  useCase            UseCase?
+  createdTasks       Task[]         @relation("TaskCreatedByUser")
+  updatedTasks       Task[]         @relation("TaskUpdatedByUser")
+
   @@map("users")
 }
- 
+
 model VerificationToken {
   identifier String
-  token      String     @unique
+  token      String   @unique
   expires    DateTime
- 
+
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
@@ -68,26 +71,61 @@ enum UserPermission {
   READ_ONLY
   OWNER
 }
+
 enum UseCase {
   WORK
   STUDY
   PERSONAL_USE
 }
+
 model Workspace {
-  id String @id @default(cuid())
-  name String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  creatorId String?
-  Creator User? @relation("CreatedBy" , fields:[creatorId] , references:[id] , onDelete:Cascade)
-  Subscribers Subscription[]
-  image String?
-  color WorkspaceIconColor @default(RED)
-  inviteCode String @unique @default(uuid())
-  adminCode String @unique  @default(uuid())
-  canEditCode String @unique @default(uuid())
-  readOnlyCode String @unique  @default(uuid())
+  id           String             @id @default(cuid())
+  name         String
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  creatorId    String?
+  Creator      User?              @relation("CreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
+  Subscribers  Subscription[]
+  image        String?
+  color        WorkspaceIconColor @default(RED)
+  inviteCode   String             @unique @default(uuid())
+  adminCode    String             @unique @default(uuid())
+  canEditCode  String             @unique @default(uuid())
+  readOnlyCode String             @unique @default(uuid())
+  Task         Task[]
+
   @@index([creatorId])
+}
+
+model Task {
+  id            String     @id @default(cuid())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  updatedBy     User       @relation(name: "TaskUpdatedByUser", fields: [updatedUserId], references: [id])
+  updatedUserId String
+  creator       User       @relation(name: "TaskCreatedByUser", fields: [creatorId], references: [id])
+  creatorId     String
+  workspace     Workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId   String?
+  title         String?
+  emoji         String
+  content       Json
+  Tag           Tag[]
+
+  @@index([updatedUserId])
+  @@index([creatorId])
+  @@index([workspaceId])
+}
+
+model Tag {
+  id       String             @id @default(cuid())
+  name     String
+  isActive Boolean
+  color    WorkspaceIconColor
+  task     Task?              @relation(fields: [taskId], references: [id])
+  taskId   String?
+
+  @@index([taskId])
 }
 
 enum WorkspaceIconColor {
@@ -106,13 +144,13 @@ enum WorkspaceIconColor {
 }
 
 model Subscription {
-  user User @relation(fields : [userId] , references: [id] , onDelete: Cascade)
-  userId String
-  workspace Workspace @relation(fields : [workspaceId] , references: [id] , onDelete:Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String
-  userRole UserPermission @default(READ_ONLY)
+  userRole    UserPermission @default(READ_ONLY)
 
-  @@id([userId , workspaceId])
+  @@id([userId, workspaceId])
   @@index([workspaceId])
   @@index([userId])
 }

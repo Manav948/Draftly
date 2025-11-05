@@ -1,12 +1,14 @@
 import React from 'react'
 import { Card, CardContent } from '../ui/card'
-import Title from './title/Title'
+import Container from './container/Container'
+import Header from './header/Header'
 
 const Editor = () => {
     return (
         <Card>
             <CardContent>
-                <Title />
+                <Header />
+                <Container />
             </CardContent>
         </Card>
     )
