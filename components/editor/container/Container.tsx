@@ -1,12 +1,8 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 
-const Container = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const Container = ({ children }: { children?: React.ReactNode }) => {
+  return <div className="w-full">{children}</div>;
+};
 
-export default Container
+export default Container;

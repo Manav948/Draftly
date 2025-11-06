@@ -5,8 +5,15 @@ import React, { useState } from 'react'
 import CommandTagItem from './CommandTagItem'
 import NewTag from './NewTag'
 import EditTag from './EditTag'
+import { Tag } from '@prisma/client'
 
-const CommandContainer = () => {
+interface Props {
+    tags?: Tag[]
+    currentActiveThings: Tag[];
+    onSelectAvtiveTag: (id: string) => void
+}
+
+const CommandContainer = ({ tags, currentActiveThings, onSelectAvtiveTag }: Props) => {
     const [tab, setTab] = useState<"list" | "editTag" | "newTag">("list")
 
     const onSetTab = (tab: "list" | "newTag" | "editTag") => {
@@ -20,7 +27,14 @@ const CommandContainer = () => {
                     <CommandList>
                         <CommandEmpty>No Result Found.</CommandEmpty>
                         <CommandGroup heading="TAGS">
-                            <CommandTagItem />
+                            {tags?.map((tag) => (
+                                <CommandTagItem
+                                    key={tag.id}
+                                    tag={tag}
+                                    currentActiveTags={currentActiveThings}
+                                    onSelectActiveTag={onSelectAvtiveTag}
+                                />
+                            ))}
                         </CommandGroup>
                         <CommandSeparator />
                         <CommandGroup heading="NEW">

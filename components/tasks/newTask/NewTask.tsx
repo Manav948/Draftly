@@ -1,10 +1,13 @@
 import Editor from '@/components/editor/Editor'
 import React from 'react'
 
-const NewTask = () => {
+interface Props {
+    workspaceId: string
+}
+const NewTask = ({ workspaceId }: Props) => {
     return (
         <div>
-            <Editor />
+            <Editor workspaceId={workspaceId} initialActiveTags={[]} />
         </div>
     )
 }

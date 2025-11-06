@@ -2,55 +2,59 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale/en-US";
 import { CalendarIcon } from "lucide-react";
 import React, { useState } from "react";
 import { DateRange } from "react-day-picker";
 
-const TaskCalendar = ({ className }: React.HTMLAttributes<HTMLDivElement>) => {
+interface Props {
+  onUpdateForm?: (e: DateRange | undefined) => void;
+  className?: string;
+}
+
+const TaskCalendar = ({ className, onUpdateForm }: Props) => {
   const [date, setDate] = useState<DateRange | undefined>(undefined);
 
   const formatRange = () => {
-    if (!date?.from) return "Pick a Date";
+    if (!date?.from) return "Pick a date";
     if (date.to) {
-      return `${format(date.from, "dd LLL y", { locale: enUS })} → ${format(
+      return `${format(date.from, "dd LLL yyyy", { locale: enUS })} → ${format(
         date.to,
-        "dd LLL y",
+        "dd LLL yyyy",
         { locale: enUS }
       )}`;
     }
-    return format(date.from, "dd LLL y", { locale: enUS });
+    return format(date.from, "dd LLL yyyy", { locale: enUS });
+  };
+
+  const onSelectDateChange = (d: DateRange | undefined) => {
+    setDate(d);
+    onUpdateForm?.(d);
   };
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={className}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             id="date"
             size="sm"
             variant="outline"
-            className="flex items-center gap-2 justify-start min-w-[160px] hover:bg-accent transition-all"
+            className="flex items-center gap-2 min-w-[160px] rounded-lg"
           >
-            <CalendarIcon size={18} className="opacity-80" />
-            <span className="text-sm text-muted-foreground">
-              {formatRange()}
-            </span>
+            <CalendarIcon size={18} />
+            <span className="text-sm text-muted-foreground">{formatRange()}</span>
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent
-          align="start"
-          className="rounded-lg p-2 shadow-md border bg-popover"
-        >
+        <PopoverContent align="start" className="rounded-lg p-2 shadow-lg border bg-popover">
           <Calendar
             mode="range"
             initialFocus
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={onSelectDateChange}
             locale={enUS}
             numberOfMonths={1}
             className="rounded-md"

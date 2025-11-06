@@ -1,7 +1,7 @@
 import React from 'react'
-import Logo from './Logo'
+import Logo from '../Logo'
 import Title from './Title'
-import TaskCalender from './TaskCalender'
+import TaskCalender from '../TaskCalender'
 import TagSelector from '@/components/common/tag/tagSelector/TagSelector'
 import LinkTag from '@/components/common/tag/LinkTag'
 

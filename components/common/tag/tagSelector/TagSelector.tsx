@@ -8,8 +8,16 @@ import {
 import { Plus } from "lucide-react";
 import React from "react";
 import CommandContainer from "./CommandContainer";
+import { Tag } from "@prisma/client";
+import { LoadingState } from "@/components/ui/LoadingState";
 
-const TagSelector = () => {
+
+interface Props {
+  tags?: Tag[]
+  currentActiveThings: Tag[];
+  onSelectAvtiveTag: (id: string) => void
+}
+const TagSelector = ({ tags, currentActiveThings, onSelectAvtiveTag }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +37,17 @@ const TagSelector = () => {
         align="start"
         className="rounded-lg shadow-lg p-1 animate-in fade-in-0 scale-in-95"
       >
-        <CommandContainer />
+        {tags ? (
+          <CommandContainer
+            tags={tags}
+            currentActiveThings={currentActiveThings}
+            onSelectAvtiveTag={onSelectAvtiveTag}
+          />
+        ) : (
+          <div>
+            <LoadingState />
+          </div>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

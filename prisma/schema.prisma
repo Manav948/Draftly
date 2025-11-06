@@ -93,23 +93,24 @@ model Workspace {
   canEditCode  String             @unique @default(uuid())
   readOnlyCode String             @unique @default(uuid())
   Task         Task[]
+  tags         Tag[]
 
   @@index([creatorId])
 }
 
 model Task {
-  id            String     @id @default(cuid())
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  updatedBy     User       @relation(name: "TaskUpdatedByUser", fields: [updatedUserId], references: [id])
-  updatedUserId String
-  creator       User       @relation(name: "TaskCreatedByUser", fields: [creatorId], references: [id])
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  updatedBy     User?     @relation(name: "TaskUpdatedByUser", fields: [updatedUserId], references: [id])
+  updatedUserId String?
+  creator       User      @relation(name: "TaskCreatedByUser", fields: [creatorId], references: [id])
   creatorId     String
-  workspace     Workspace? @relation(fields: [workspaceId], references: [id])
-  workspaceId   String?
+  workspace     Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId   String
   title         String?
-  emoji         String
-  content       Json
+  emoji         String?
+  content       Json?
   Tag           Tag[]
 
   @@index([updatedUserId])
@@ -118,14 +119,14 @@ model Task {
 }
 
 model Tag {
-  id       String             @id @default(cuid())
-  name     String
-  isActive Boolean
-  color    WorkspaceIconColor
-  task     Task?              @relation(fields: [taskId], references: [id])
-  taskId   String?
+  id          String             @id @default(cuid())
+  name        String
+  tasks       Task[]
+  color       WorkspaceIconColor
+  workspace   Workspace?         @relation(fields: [workspaceId], references: [id])
+  workspaceId String?
 
-  @@index([taskId])
+  @@index([workspaceId])
 }
 
 enum WorkspaceIconColor {
