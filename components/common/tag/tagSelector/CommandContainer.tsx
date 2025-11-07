@@ -10,10 +10,11 @@ import { Tag } from '@prisma/client'
 interface Props {
     tags?: Tag[]
     currentActiveThings: Tag[];
-    onSelectAvtiveTag: (id: string) => void
+    onSelectActiveTag: (id: string) => void
+    workspaceId: string
 }
 
-const CommandContainer = ({ tags, currentActiveThings, onSelectAvtiveTag }: Props) => {
+const CommandContainer = ({ tags, currentActiveThings, onSelectActiveTag, workspaceId }: Props) => {
     const [tab, setTab] = useState<"list" | "editTag" | "newTag">("list")
 
     const onSetTab = (tab: "list" | "newTag" | "editTag") => {
@@ -32,7 +33,7 @@ const CommandContainer = ({ tags, currentActiveThings, onSelectAvtiveTag }: Prop
                                     key={tag.id}
                                     tag={tag}
                                     currentActiveTags={currentActiveThings}
-                                    onSelectActiveTag={onSelectAvtiveTag}
+                                    onSelectActiveTag={onSelectActiveTag}
                                 />
                             ))}
                         </CommandGroup>
@@ -56,7 +57,7 @@ const CommandContainer = ({ tags, currentActiveThings, onSelectAvtiveTag }: Prop
                 </>
             )}
             {tab === "editTag" && <EditTag />}
-            {tab === "newTag" && <NewTag onSetTab={onSetTab} />}
+            {tab === "newTag" && <NewTag onSetTab={onSetTab} workspaceId={workspaceId} />}
         </Command>
     )
 }

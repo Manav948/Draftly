@@ -17,8 +17,8 @@ interface Props {
   initialActiveTags?: Tag[];
 }
 
-const Editor = ({ workspaceId, initialActiveTags = [] }: Props) => {
-  const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(initialActiveTags);
+const Editor = ({ workspaceId  , initialActiveTags}: Props) => {
+  const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(initialActiveTags || []);
   const [isMounted, setIsMounted] = useState(false);
   const _titleRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -90,29 +90,32 @@ const Editor = ({ workspaceId, initialActiveTags = [] }: Props) => {
                   <TaskCalendar onUpdateForm={onUpdateSelectHandler} />
                   <TagSelector
                     tags={tags}
-                    currentActiveThings={currentActiveTags}
-                    onSelectAvtiveTag={onSelectActiveTagHandler}
+                    currentActiveTags={currentActiveTags}
+                    onSelectActiveTag={onSelectActiveTagHandler}
+                    workspaceId={workspaceId}
                   />
 
                   {/* active tags */}
                   <div className="flex gap-2 flex-wrap">
                     {currentActiveTags.map((tag) => (
-                      <LinkTag key={tag.id} tag={tag} />
+                      <div key={tag.id}>
+                        <LinkTag tag={tag} disabled={false} />
+                      </div>
                     ))}
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="flex justify-end pt-2">
-              <button
-                type="submit"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-white bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 hover:opacity-95 shadow"
-              >
-                Save
-              </button>
+              <div className="flex justify-end pt-2">
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-white bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 hover:opacity-95 shadow"
+                >
+                  Save
+                </button>
+              </div>
             </div>
-          </div>
+            </div>
         </CardContent>
       </form>
     </Card>

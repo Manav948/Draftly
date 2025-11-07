@@ -8,14 +8,22 @@ import { colors } from '@/lib/getRandomWorkspaceColor'
 import { cn } from '@/lib/utils'
 import { tagSchema, TagSchema } from '@/schema/TagSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { WorkspaceIconColor } from '@prisma/client'
+import { Tag, WorkspaceIconColor } from '@prisma/client'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios, { AxiosError } from 'axios'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { v4 as uuidv4 } from "uuid"
+
+
 interface Props {
     onSetTab: (tab: "list" | "newTag" | "editTag") => void
+    workspaceId: string
 }
-const NewTag = ({ onSetTab }: Props) => {
+
+const NewTag = ({ onSetTab, workspaceId }: Props) => {
+    const queryClient = useQueryClient();
     const form = useForm<TagSchema>({
         resolver: zodResolver(tagSchema),
         defaultValues: {
@@ -24,6 +32,50 @@ const NewTag = ({ onSetTab }: Props) => {
             id: uuidv4()
         }
     })
+
+    const { mutate: editWorkspaceData } = useMutation({
+        mutationFn: async (data: TagSchema) => {
+            await axios.post("/api/tags/new_tag", {
+                ...data,
+                workspaceId
+            })
+        },
+        onMutate: async () => {
+            await queryClient.cancelQueries({ queryKey: ["getWorkspaceTags", workspaceId] });
+
+            const previousTags = queryClient.getQueryData<Tag[]>(["getWorkspaceTags", workspaceId]) || [];
+
+            const id = form.getValues("id");
+            const color = form.getValues("color");
+            const name = form.getValues("tagName");
+
+            queryClient.setQueryData(["getWorkspaceTags", workspaceId], [
+                ...previousTags,
+                { id, name, color, workspaceId },
+            ]);
+
+            return { previousTags };
+        },
+
+        onSuccess: () => {
+            toast.success("Tag Created Successfully.");
+            onSetTab("list");
+        },
+
+        onError: (err, _, context) => {
+            queryClient.setQueryData(["getWorkspaceTags", workspaceId], context?.previousTags);
+            toast.error("Unable to create tag. Please try again.");
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ["getWorkspaceTags", workspaceId] });
+        },
+
+    })
+
+    const onSubmit = async (data: TagSchema) => {
+        editWorkspaceData(data);
+    }
 
     const TagColor = (providedColors: WorkspaceIconColor, isDarkMode = false) => {
         const colors: Record<WorkspaceIconColor, string> = {
@@ -79,7 +131,7 @@ const NewTag = ({ onSetTab }: Props) => {
             ? "bg-blue-900 border-blue-700 hover:bg-blue-800 hover:border-blue-500"
             : "bg-blue-600 border-blue-400 hover:bg-blue-500 hover:border-blue-600");
     }
-    const onSubmit = async (data: TagSchema) => { }
+
 
     return (
         <Form {...form}>
@@ -124,8 +176,11 @@ const NewTag = ({ onSetTab }: Props) => {
                                                     <FormControl>
                                                         <RadioGroupItem
                                                             value={color}
-                                                            className={cn(`transition-colors duration-200 ${TagColor(color)}`)}
-                                                        ></RadioGroupItem>
+                                                            className={cn(
+                                                                "h-6 w-6 rounded-full border cursor-pointer",
+                                                                TagColor(color)
+                                                            )}
+                                                        />
                                                     </FormControl>
                                                 </FormItem>
                                             ))}
@@ -146,9 +201,9 @@ const NewTag = ({ onSetTab }: Props) => {
                     Cancel
                 </Button>
                 <Button
-                className=''
-                size={"sm"}
-                type='submit'
+                    className=''
+                    size={"sm"}
+                    type='submit'
                 >
                     Create
                 </Button>

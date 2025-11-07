@@ -14,10 +14,11 @@ import { LoadingState } from "@/components/ui/LoadingState";
 
 interface Props {
   tags?: Tag[]
-  currentActiveThings: Tag[];
-  onSelectAvtiveTag: (id: string) => void
+  currentActiveTags: Tag[];
+  onSelectActiveTag: (id: string) => void
+  workspaceId : string
 }
-const TagSelector = ({ tags, currentActiveThings, onSelectAvtiveTag }: Props) => {
+const TagSelector = ({ tags, currentActiveTags, onSelectActiveTag , workspaceId }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -40,8 +41,9 @@ const TagSelector = ({ tags, currentActiveThings, onSelectAvtiveTag }: Props) =>
         {tags ? (
           <CommandContainer
             tags={tags}
-            currentActiveThings={currentActiveThings}
-            onSelectAvtiveTag={onSelectAvtiveTag}
+            currentActiveThings={currentActiveTags}
+            onSelectActiveTag={onSelectActiveTag}
+            workspaceId={workspaceId}
           />
         ) : (
           <div>

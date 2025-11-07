@@ -79,17 +79,16 @@ const CommandTagItem = ({ tag: { color, id, workspaceId, name },
     return (
         <CommandItem>
             <Button
-                onClick={() => {
-                    onSelectActiveTag(id)
-                }}
-                size={"sm"}
-                variant={"ghost"}
-                className={`${TagColor}`}
+                onClick={() => onSelectActiveTag(id)}
+                size="sm"
+                variant="ghost"
+                className={`flex w-full items-center justify-between ${TagColor}`}
             >
-                <p>
+                <div className="flex items-center gap-2">
                     <Tag size={16} />
                     <span>{name}</span>
-                </p>
+                </div>
+
                 {isActive && <Check size={16} />}
             </Button>
         </CommandItem>
