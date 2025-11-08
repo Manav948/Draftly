@@ -5,17 +5,25 @@ import React, { useState } from 'react'
 import CommandTagItem from './CommandTagItem'
 import NewTag from './NewTag'
 import EditTag from './EditTag'
-import { Tag } from '@prisma/client'
+import { Tag, WorkspaceIconColor } from '@prisma/client'
 
 interface Props {
     tags?: Tag[]
-    currentActiveThings: Tag[];
+    currentActiveTags: Tag[];
     onSelectActiveTag: (id: string) => void
     workspaceId: string
+    onUpdateActiveTags: (id: string, color: WorkspaceIconColor, name: string) => void
+    onDeleteActiveTag: (tagId: string) => void
 }
 
-const CommandContainer = ({ tags, currentActiveThings, onSelectActiveTag, workspaceId }: Props) => {
+const CommandContainer = ({ tags, currentActiveTags, onSelectActiveTag, workspaceId, onUpdateActiveTags, onDeleteActiveTag }: Props) => {
     const [tab, setTab] = useState<"list" | "editTag" | "newTag">("list")
+    const [editedTagInfo, setEditedTagInfo] = useState<Tag | null>(null);
+
+    const editTagInfoHandler = (tag: Tag) => {
+        setEditedTagInfo(tag);
+        setTab("editTag");
+    }
 
     const onSetTab = (tab: "list" | "newTag" | "editTag") => {
         setTab(tab)
@@ -27,16 +35,20 @@ const CommandContainer = ({ tags, currentActiveThings, onSelectActiveTag, worksp
                     <CommandInput className='' placeholder='Filter' />
                     <CommandList>
                         <CommandEmpty>No Result Found.</CommandEmpty>
-                        <CommandGroup heading="TAGS">
-                            {tags?.map((tag) => (
-                                <CommandTagItem
-                                    key={tag.id}
-                                    tag={tag}
-                                    currentActiveTags={currentActiveThings}
-                                    onSelectActiveTag={onSelectActiveTag}
-                                />
-                            ))}
-                        </CommandGroup>
+                        {(tags?.length ?? 0) > 0 && (<>
+                            <CommandGroup heading="TAGS">
+                                {tags?.map((tag) => (
+                                    <CommandTagItem
+                                        key={tag.id}
+                                        tag={tag}
+                                        currentActiveTags={currentActiveTags}
+                                        onSelectActiveTag={onSelectActiveTag}
+                                        onEditTagInfo={editTagInfoHandler}
+                                    />
+                                ))}
+                            </CommandGroup>
+                        </>
+                        )}
                         <CommandSeparator />
                         <CommandGroup heading="NEW">
                             <CommandItem>
@@ -56,7 +68,18 @@ const CommandContainer = ({ tags, currentActiveThings, onSelectActiveTag, worksp
                     </CommandList>
                 </>
             )}
-            {tab === "editTag" && <EditTag />}
+            {tab === "editTag" && <NewTag
+                edit
+                workspaceId={workspaceId}
+                color={editedTagInfo?.color}
+                id={editedTagInfo?.id}
+                tagName={editedTagInfo?.name}
+                onSetTab={onSetTab}
+                onUpdateActiveTags={onUpdateActiveTags}
+                onDeleteActiveTag={onDeleteActiveTag}
+                currentActiveTags={currentActiveTags}
+                onSelectActiveTag={onSelectActiveTag} 
+            />}
             {tab === "newTag" && <NewTag onSetTab={onSetTab} workspaceId={workspaceId} />}
         </Command>
     )

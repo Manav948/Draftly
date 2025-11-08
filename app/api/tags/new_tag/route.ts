@@ -20,7 +20,6 @@ export async function POST(request: Request) {
 
     const { id, color, workspaceId, tagName } = result.data;
 
-
     const subscription = await db.subscription.findFirst({
       where: {
         userId: session.user.id,
@@ -42,18 +41,25 @@ export async function POST(request: Request) {
       where: { id: workspaceId },
       include: {
         tags: {
-          where: {
-            workspaceId
-          },
-          select: {
-            name: true
-          }
-        }
-      }
+          where: { workspaceId },
+          select: { name: true },
+        },
+      },
     });
 
     if (!workspace) {
       return new NextResponse("Workspace not found", { status: 404 });
+    }
+
+    const tagExist = workspace.tags.find(
+      (tag) => tag.name.toLowerCase() === tagName.toLowerCase()
+    );
+
+    if (tagExist) {
+      return NextResponse.json(
+        "Tag name already exists. Try another name.",
+        { status: 405 }
+      );
     }
 
     const newTag = await db.tag.create({
@@ -64,12 +70,6 @@ export async function POST(request: Request) {
         color,
       },
     });
-
-    const tagExist = workspace.tags.find((tag) => tag.name.toLowerCase() === tagName.toLowerCase())
-    
-    if (!tagExist) {
-      return NextResponse.json("Tag name is already exist. Try some other name", { status: 405 })
-    }
 
     return NextResponse.json(newTag, { status: 200 });
 

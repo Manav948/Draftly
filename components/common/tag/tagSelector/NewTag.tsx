@@ -20,20 +20,39 @@ import { v4 as uuidv4 } from "uuid"
 interface Props {
     onSetTab: (tab: "list" | "newTag" | "editTag") => void
     workspaceId: string
+    edit?: boolean
+    tagName?: string
+    color?: WorkspaceIconColor
+    id?: string
+    onUpdateActiveTags?: (tagId: string, color: WorkspaceIconColor, name: string) => void
+    currentActiveTags?: Tag[]
+    onDeleteActiveTag?: (tagId: string) => void
+    onSelectActiveTag?: (id: string) => void
+
 }
 
-const NewTag = ({ onSetTab, workspaceId }: Props) => {
+const NewTag = ({
+    onSetTab,
+    workspaceId,
+    edit,
+    tagName,
+    color,
+    id,
+    onUpdateActiveTags,
+    currentActiveTags,
+    onDeleteActiveTag,
+    onSelectActiveTag
+}: Props) => {
     const queryClient = useQueryClient();
     const form = useForm<TagSchema>({
         resolver: zodResolver(tagSchema),
         defaultValues: {
-            tagName: "",
-            color: "RED",
-            id: uuidv4()
+            tagName: edit && tagName ? tagName : "",
+            color: edit && color ? color : "RED",
+            id: edit && id ? id : uuidv4()
         }
     })
-
-    const { mutate: editWorkspaceData } = useMutation({
+    const { mutate: newTag } = useMutation({
         mutationFn: async (data: TagSchema) => {
             await axios.post("/api/tags/new_tag", {
                 ...data,
@@ -62,7 +81,7 @@ const NewTag = ({ onSetTab, workspaceId }: Props) => {
             onSetTab("list");
         },
 
-        onError: (err, _, context) => {
+        onError: (err: AxiosError, _, context) => {
             queryClient.setQueryData(["getWorkspaceTags", workspaceId], context?.previousTags);
             toast.error("Unable to create tag. Please try again.");
         },
@@ -70,11 +89,99 @@ const NewTag = ({ onSetTab, workspaceId }: Props) => {
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["getWorkspaceTags", workspaceId] });
         },
-
+        mutationKey: ["newTag"]
     })
 
+
+    //edit functionality
+    const { mutate: editTag } = useMutation({
+        mutationFn: async (data: TagSchema) => {
+            await axios.post("/api/tags/edit_tag", {
+                ...data,
+                workspaceId
+            })
+        },
+        onMutate: async () => {
+            await queryClient.cancelQueries({ queryKey: ["getWorkspaceTags", workspaceId] });
+
+            const previousTags = queryClient.getQueryData<Tag[]>(["getWorkspaceTags", workspaceId]) || [];
+
+            const color = form.getValues("color");
+            const name = form.getValues("tagName");
+
+            const updatedTag = previousTags.map((tag) => tag.id === id ? { ...tag, name, color } : tag)
+
+            queryClient.setQueryData(["getWorkspaceTags"], updatedTag);
+            onUpdateActiveTags && onUpdateActiveTags(id!, color, name)
+
+            return { previousTags };
+        },
+
+        onSuccess: () => {
+            toast.success("Tag Created Successfully.");
+            onSetTab("list");
+        },
+
+        onError: (err: AxiosError, _, context) => {
+            const prevTag = context?.previousTags.find((tag) => tag.id === id);
+            queryClient.setQueryData(["getWorkspaceTags"], context?.previousTags);
+            const error = err?.response?.data ? err.response.data : "Somethig went wrong"
+            toast.error("Unable to create tag. Please try again.");
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ["getWorkspaceTags", workspaceId] });
+        },
+        mutationKey: ["editTag"]
+    })
+    //  delteTag Functionality
+    const { mutate: deleteTag } = useMutation<void, AxiosError, void, { checkedPreviousTags: Tag[]; previousActiveTags: Tag[] }>(
+        {
+            mutationFn: async () => {
+                await axios.post("/api/tags/delete_tag", {
+                    id,
+                    workspaceId
+                })
+            },
+            onMutate: async () => {
+                await queryClient.cancelQueries({ queryKey: ["getWorkspaceTags", workspaceId] });
+
+                const previousTags = queryClient.getQueryData<Tag[]>(["getWorkspaceTags", workspaceId]) || [];
+
+                const checkedPreviousTags = previousTags && previousTags.length > 0 ? previousTags : []
+                const previousActiveTags = currentActiveTags ? currentActiveTags : []
+
+                const updatedTag = checkedPreviousTags.filter((tag) => tag.id !== id)
+
+                queryClient.setQueryData(["getWorkspaceTags"], updatedTag);
+                onDeleteActiveTag && onDeleteActiveTag(id!)
+
+                return { checkedPreviousTags, previousActiveTags };
+            },
+
+            onSuccess: () => {
+                toast.success("Tag Created Successfully.");
+                onSetTab("list");
+            },
+
+            onError: (err: AxiosError, _, context) => {
+                const previousActiveTags = context?.previousActiveTags.find((tag) => tag.id === id)
+                queryClient.setQueryData(["getWorkspaceTags"], context?.previousActiveTags);
+
+                previousActiveTags && onSelectActiveTag && onSelectActiveTag(previousActiveTags.id)
+                const error = err?.response?.data ? err.response.data : "Somethig went wrong"
+                toast.error("Unable to create tag. Please try again.");
+            },
+
+            onSettled: () => {
+                queryClient.invalidateQueries({ queryKey: ["getWorkspaceTags", workspaceId] });
+            },
+            mutationKey: ["deleteTag"]
+        })
+
     const onSubmit = async (data: TagSchema) => {
-        editWorkspaceData(data);
+        if (edit) editTag(data);
+        else newTag(data);
     }
 
     const TagColor = (providedColors: WorkspaceIconColor, isDarkMode = false) => {
@@ -194,18 +301,18 @@ const NewTag = ({ onSetTab, workspaceId }: Props) => {
                 </div>
                 <Button
                     onClick={() => {
-                        onSetTab("list")
+                        edit ? deleteTag() : onSetTab("list")
                     }}
                     type="button"
                     className="w-full dark:text-black font-semibold">
-                    Cancel
+                    {edit ? "Delete" : "Cancel"}
                 </Button>
                 <Button
                     className=''
                     size={"sm"}
                     type='submit'
                 >
-                    Create
+                    {edit ? "Edit Tag" : "Create Tag"}
                 </Button>
             </form>
         </Form>

@@ -6,7 +6,7 @@ import TextareaAutoSize from "react-textarea-autosize";
 import TaskCalendar from "./TaskCalender";
 import TagSelector from "@/components/common/tag/tagSelector/TagSelector";
 import LinkTag from "@/components/common/tag/LinkTag";
-import { Tag } from "@prisma/client";
+import { Tag, WorkspaceIconColor } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { taskSchema, TaskSchema } from "@/schema/taskSchema";
@@ -16,8 +16,7 @@ interface Props {
   workspaceId: string;
   initialActiveTags?: Tag[];
 }
-
-const Editor = ({ workspaceId  , initialActiveTags}: Props) => {
+const Editor = ({ workspaceId, initialActiveTags }: Props) => {
   const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(initialActiveTags || []);
   const [isMounted, setIsMounted] = useState(false);
   const _titleRef = useRef<HTMLTextAreaElement | null>(null);
@@ -32,7 +31,7 @@ const Editor = ({ workspaceId  , initialActiveTags}: Props) => {
     },
   });
 
-  const { data: tags } = useQuery({
+  const { data: tags, isLoading } = useQuery({
     queryFn: async () => {
       const res = await fetch(`/api/tags/get/get_workspace_tags?workspaceId=${workspaceId}`);
       if (!res.ok) return [];
@@ -63,6 +62,20 @@ const Editor = ({ workspaceId  , initialActiveTags}: Props) => {
     });
   };
 
+  const onUpdateActiveTagsHandler = (id: string, color: WorkspaceIconColor, name: string) => {
+    setCurrentActiveTags((prev) =>
+      prev.map((tag) => (tag.id === id ? { ...tag, color, name } : tag))
+    );
+  };
+
+  const onDeleteActiveTagHandler = (tagId: string) => {
+    setCurrentActiveTags((prev) => {
+      const updateTag = prev.filter((tag) => tag.id !== tagId)
+      return updateTag
+    })
+  }
+
+
   const { ref: titleRef, ...rest } = form.register("title");
 
   return (
@@ -89,10 +102,13 @@ const Editor = ({ workspaceId  , initialActiveTags}: Props) => {
                 <div className="mt-4 flex flex-wrap gap-3 items-center">
                   <TaskCalendar onUpdateForm={onUpdateSelectHandler} />
                   <TagSelector
+                    isLoading={isLoading}
                     tags={tags}
                     currentActiveTags={currentActiveTags}
                     onSelectActiveTag={onSelectActiveTagHandler}
                     workspaceId={workspaceId}
+                    onUpdateActiveTags={onUpdateActiveTagsHandler}
+                    onDeleteActiveTag={onDeleteActiveTagHandler}
                   />
 
                   {/* active tags */}
@@ -115,7 +131,7 @@ const Editor = ({ workspaceId  , initialActiveTags}: Props) => {
                 </button>
               </div>
             </div>
-            </div>
+          </div>
         </CardContent>
       </form>
     </Card>

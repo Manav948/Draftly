@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { CommandItem } from '@/components/ui/command'
-import { Check, Tag } from 'lucide-react'
+import { Check, Pencil, Tag } from 'lucide-react'
 import React, { useMemo } from 'react'
 import { WorkspaceIconColor, Tag as TagType } from '@prisma/client'
 
@@ -8,19 +8,23 @@ interface Props {
     tag: TagType
     currentActiveTags: TagType[]
     onSelectActiveTag: (id: string) => void
+    onEditTagInfo: (tag: TagType) => void
     isDarkMode?: boolean;
 }
 const CommandTagItem = ({ tag: { color, id, workspaceId, name },
     currentActiveTags,
     onSelectActiveTag,
-    isDarkMode
+    isDarkMode,
+    onEditTagInfo
 }
     : Props) => {
-
+    console.log("CurrentActiveTags : ", currentActiveTags)
     const isActive = useMemo(() => {
         return (currentActiveTags.length > 0 &&
             currentActiveTags.find((activeTag) => activeTag.id === id))
     }, [currentActiveTags, id])
+
+    const [isHovered, setIsHovered] = React.useState(false);
 
     const TagColor = useMemo(() => {
         const colors: Record<WorkspaceIconColor, string> = {
@@ -77,7 +81,14 @@ const CommandTagItem = ({ tag: { color, id, workspaceId, name },
     }, [color, isDarkMode]);
 
     return (
-        <CommandItem>
+        <CommandItem onMouseEnter={() => {
+            setIsHovered(true)
+        }}
+            onMouseLeave={() => {
+                setIsHovered(false)
+            }}
+            className='flex items-center justify-between'
+        >
             <Button
                 onClick={() => onSelectActiveTag(id)}
                 size="sm"
@@ -91,6 +102,13 @@ const CommandTagItem = ({ tag: { color, id, workspaceId, name },
 
                 {isActive && <Check size={16} />}
             </Button>
+            {isHovered && (
+                <Button>
+                    <Pencil size={16} onClick={() => {
+                        if (onEditTagInfo) onEditTagInfo({ color, id, name, workspaceId })
+                    }} />
+                </Button>
+            )}
         </CommandItem>
     )
 }
