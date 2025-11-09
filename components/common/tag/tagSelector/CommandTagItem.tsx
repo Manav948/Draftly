@@ -81,20 +81,17 @@ const CommandTagItem = ({ tag: { color, id, workspaceId, name },
     }, [color, isDarkMode]);
 
     return (
-        <CommandItem onMouseEnter={() => {
-            setIsHovered(true)
-        }}
-            onMouseLeave={() => {
-                setIsHovered(false)
-            }}
-            className='flex items-center justify-between'
+        <CommandItem
+            onSelect={(e) => {}}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="flex items-center justify-between"
+        >    <Button
+            onClick={() => onSelectActiveTag(id)}
+            size="sm"
+            variant="ghost"
+            className={`flex w-full items-center justify-between ${TagColor}`}
         >
-            <Button
-                onClick={() => onSelectActiveTag(id)}
-                size="sm"
-                variant="ghost"
-                className={`flex w-full items-center justify-between ${TagColor}`}
-            >
                 <div className="flex items-center gap-2">
                     <Tag size={16} />
                     <span>{name}</span>

@@ -17,7 +17,9 @@ interface Props {
   initialActiveTags?: Tag[];
 }
 const Editor = ({ workspaceId, initialActiveTags }: Props) => {
-  const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(initialActiveTags || []);
+  const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(
+    initialActiveTags || []
+  );
   const [isMounted, setIsMounted] = useState(false);
   const _titleRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -33,7 +35,9 @@ const Editor = ({ workspaceId, initialActiveTags }: Props) => {
 
   const { data: tags, isLoading } = useQuery({
     queryFn: async () => {
-      const res = await fetch(`/api/tags/get/get_workspace_tags?workspaceId=${workspaceId}`);
+      const res = await fetch(
+        `/api/tags/get/get_workspace_tags?workspaceId=${workspaceId}`
+      );
       if (!res.ok) return [];
       return (await res.json()) as Tag[];
     },
@@ -62,19 +66,19 @@ const Editor = ({ workspaceId, initialActiveTags }: Props) => {
     });
   };
 
-  const onUpdateActiveTagsHandler = (id: string, color: WorkspaceIconColor, name: string) => {
+  const onUpdateActiveTagsHandler = (
+    id: string,
+    color: WorkspaceIconColor,
+    name: string
+  ) => {
     setCurrentActiveTags((prev) =>
       prev.map((tag) => (tag.id === id ? { ...tag, color, name } : tag))
     );
   };
 
   const onDeleteActiveTagHandler = (tagId: string) => {
-    setCurrentActiveTags((prev) => {
-      const updateTag = prev.filter((tag) => tag.id !== tagId)
-      return updateTag
-    })
-  }
-
+    setCurrentActiveTags((prev) => prev.filter((tag) => tag.id !== tagId));
+  };
 
   const { ref: titleRef, ...rest } = form.register("title");
 
@@ -103,7 +107,7 @@ const Editor = ({ workspaceId, initialActiveTags }: Props) => {
                   <TaskCalendar onUpdateForm={onUpdateSelectHandler} />
                   <TagSelector
                     isLoading={isLoading}
-                    tags={tags}
+                    tags={tags ?? []}
                     currentActiveTags={currentActiveTags}
                     onSelectActiveTag={onSelectActiveTagHandler}
                     workspaceId={workspaceId}
