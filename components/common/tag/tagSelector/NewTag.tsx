@@ -258,7 +258,7 @@ const NewTag = ({
           {edit ? "Delete" : "Cancel"}
         </Button>
 
-        <Button className="" size={"sm"} type="submit">
+        <Button className="" size={"sm"} type="submit" variant={"ghost"}>
           {edit ? "Edit Tag" : "Create Tag"}
         </Button>
       </form>

@@ -138,7 +138,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
                         </div>
                     </div>
                     <div>
-                        <EditorTask workspaceId={workspaceId} />
+                        <EditorTask />
                     </div>
                 </CardContent>
             </form>

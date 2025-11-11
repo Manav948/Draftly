@@ -1,5 +1,5 @@
-import Editor from '@/components/editor/Editor'
 import React from 'react'
+import TaskContainer from '../container/TaskContainer'
 
 interface Props {
     workspaceId: string
@@ -7,7 +7,7 @@ interface Props {
 const NewTask = ({ workspaceId }: Props) => {
     return (
         <div>
-            <Editor workspaceId={workspaceId} initialActiveTags={[]} />
+            <TaskContainer workspaceId={workspaceId} initialActiveTags={[]} />
         </div>
     )
 }
