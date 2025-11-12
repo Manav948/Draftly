@@ -6,10 +6,11 @@ import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import { BubbleMenu } from "@tiptap/react/menus";
 import { EditorContent } from "@tiptap/react";
-import OptionBtn from "./tools/OptionBtn";
-import { Bold, ItalicIcon, Strikethrough, UnderlineIcon } from "lucide-react";
 import AddLink from "./tools/AddLink";
-
+import ToolsContainer from "./tools/ToolsContainer";
+import { Color } from "@tiptap/extension-color";
+import { TextStyle } from "@tiptap/extension-text-style";
+import {History} from "@tiptap/extension-history";
 const EditorTask = () => {
   const editor = useEditor({
     immediatelyRender: false,
@@ -30,6 +31,8 @@ const EditorTask = () => {
       }),
       Underline,
       Link,
+      Color,
+      TextStyle,
     ],
     content: `
       <h1>This is a heading</h1>
@@ -38,7 +41,7 @@ const EditorTask = () => {
   });
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-between mt-5">
       <div className="w-full max-w-4xl">
         {editor && (
           <>
@@ -50,50 +53,8 @@ const EditorTask = () => {
                 border-gray-200 dark:border-gray-700
               "
             >
-              <OptionBtn
-                type="button"
-                icon={<Bold size={16} />}
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                className={
-                  editor.isActive("bold")
-                    ? "bg-gray-300 dark:bg-gray-700"
-                    : ""
-                }
-              />
-
-              <OptionBtn
-                type="button"
-                icon={<ItalicIcon size={16} />}
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={
-                  editor.isActive("italic")
-                    ? "bg-gray-300 dark:bg-gray-700"
-                    : ""
-                }
-              />
-
-              <OptionBtn
-                type="button"
-                icon={<UnderlineIcon size={16} />}
-                onClick={() => editor.chain().focus().toggleUnderline().run()}
-                className={
-                  editor.isActive("underline")
-                    ? "bg-gray-300 dark:bg-gray-700"
-                    : ""
-                }
-              />
-
-              <OptionBtn
-                type="button"
-                icon={<Strikethrough size={16} />}
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                className={
-                  editor.isActive("strike")
-                    ? "bg-gray-300 dark:bg-gray-700"
-                    : ""
-                }
-              />
-            <AddLink editor={editor} />
+              <AddLink editor={editor} />
+              <ToolsContainer editor={editor} />
             </BubbleMenu>
 
             <EditorContent editor={editor} spellCheck={false} />
