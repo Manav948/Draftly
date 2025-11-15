@@ -84,7 +84,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
     const { ref: titleRef, ...rest } = form.register("title");
 
     return (
-        <Card className="dark:bg-gradient-to-b from-gray-900 via-gray-950 to-gray-950 border border-border/40 shadow-xl overflow-hidden">
+        <Card className="dark:bg-gradient-to-b from-gray-900 via-gray-950 to-gray-950 border border-border/40 shadow-xl overflow-hidden rounded-none">
             <form className="w-full">
                 <CardContent className="p-6">
                     <div className="flex flex-col gap-4">
@@ -125,15 +125,6 @@ const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
                                         ))}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="flex justify-end pt-2">
-                                <button
-                                    type="submit"
-                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-white bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 hover:opacity-95 shadow"
-                                >
-                                    Save
-                                </button>
                             </div>
                         </div>
                     </div>

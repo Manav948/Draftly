@@ -23,8 +23,8 @@ const Tasks = async ({ params }: Params) => {
                 )}
             </DashboardHeader>
             <main className="flex flex-col gap-2">
-                <NewTask workspaceId={workspace_id} />
-                {/* <TaskContainer workspaceId={workspace_id} initialActiveTags={[]} /> */}
+                {/* <NewTask workspaceId={workspace_id} /> */}
+                <TaskContainer workspaceId={workspace_id} initialActiveTags={[]} />
             </main>
         </>
     )

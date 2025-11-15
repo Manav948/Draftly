@@ -17,7 +17,7 @@ interface Props {
     workspaceId: string;
     initialActiveTags?: Tag[];
 }
-const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
+const Editor = ({ workspaceId, initialActiveTags }: Props) => {
     const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(
         initialActiveTags || []
     );
@@ -146,4 +146,4 @@ const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
     );
 };
 
-export default TaskContainer;
+export default Editor;

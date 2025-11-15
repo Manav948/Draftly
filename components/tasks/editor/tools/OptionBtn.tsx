@@ -10,7 +10,7 @@ const OptionBtn = ({ onClick, className, type = "button" , children , ...props }
       type={type} 
       className={cn(
         "w-8 h-8 flex justify-center items-center rounded-lg " +
-          "hover:bg-gray-200/70 dark:hover:bg-gray-700/50 transition-all shadow-sm",
+          "hover:bg-gray-200/70 dark:hover:bg-gray-700/50 transition-all",
         className
       )}
       size="icon"

@@ -7,6 +7,8 @@ import {
     Code2,
     Eraser,
     ItalicIcon,
+    List,
+    ListOrdered,
     Redo2,
     Strikethrough,
     UnderlineIcon,
@@ -84,6 +86,28 @@ const ToolsContainer = ({ editor }: Props) => {
                 <Code2 size={16} />
             </OptionBtn>
 
+            <OptionBtn
+                type="button"
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${editor.isActive("heading", { level: 1 })
+                    ? "bg-gray-300 dark:bg-gray-700 text-blue-600 dark:text-blue-400"
+                    : ""
+                    }`}
+            >
+                <ListOrdered size={18} />
+            </OptionBtn>
+
+            <OptionBtn
+                type="button"
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${editor.isActive("heading", { level: 1 })
+                    ? "bg-gray-300 dark:bg-gray-700 text-blue-600 dark:text-blue-400"
+                    : ""
+                    }`}
+            >
+                <List size={18} />
+            </OptionBtn>
+
             <Separator className="h-6 bg-gray-300 dark:bg-gray-700" orientation="vertical" />
             <AddLink editor={editor} />
             <Separator className="h-6 bg-gray-300 dark:bg-gray-700" orientation="vertical" />
@@ -152,7 +176,7 @@ const ToolsContainer = ({ editor }: Props) => {
                 onClick={() => editor.commands.deleteSelection()}
             >
                 <Eraser size={16} />
-            </OptionBtn> 
+            </OptionBtn>
         </div>
     );
 };

@@ -6,7 +6,7 @@ interface Props {
 }
 const NewTask = ({ workspaceId }: Props) => {
     return (
-        <div>
+        <div className=''>
             <TaskContainer workspaceId={workspaceId} initialActiveTags={[]} />
         </div>
     )
