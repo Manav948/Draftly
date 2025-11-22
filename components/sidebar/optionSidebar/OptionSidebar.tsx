@@ -17,6 +17,7 @@ const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces }: Props) => {
   const urlWorkspaceId: string | undefined = pathname.split("/")[4]
   const workspaceId = urlWorkspaceId ? urlWorkspaceId : "";
   const url = pathname.includes(`/dashboard/workspace/${workspaceId}`)
+  const isTasksPage = pathname === `/en/dashboard/workspace/${workspaceId}/tasks`;
 
   return (
     <div
@@ -26,9 +27,13 @@ const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces }: Props) => {
         ${isSettings || url ? "w-52 p-4 opacity-100" : "w-0 opacity-0 p-0 overflow-hidden"} flex flex-col justify-between
       `}
     >
-      {isSettings && <Settings userAdminWorkspaces={userAdminWorkspaces} />}
-      {url && <WorkspaceOptions workspaceId={workspaceId} />}
-      {pathname === `/dashboard/workspace/${workspaceId}/tasks` && <p>Tasks</p>}
+      {isSettings && !isTasksPage && (
+        <Settings userAdminWorkspaces={userAdminWorkspaces} />
+      )}
+      {url && !isTasksPage && (
+        <WorkspaceOptions workspaceId={workspaceId} />
+      )}
+      {isTasksPage && <p>Tasks</p>}
       <ActiveWorkspaceInfo activeNumber={activeWorkspaces} />
     </div>
   );

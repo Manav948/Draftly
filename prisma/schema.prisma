@@ -112,10 +112,19 @@ model Task {
   emoji         String?
   content       Json?
   Tag           Tag[]
+  date          Date?     @relation(fields: [dateId], references: [id])
+  dateId        String?
 
   @@index([updatedUserId])
   @@index([creatorId])
   @@index([workspaceId])
+}
+
+model Date {
+  id   String  @id @default(cuid())
+  from String?
+  to   String?
+  Task Task[]
 }
 
 model Tag {
