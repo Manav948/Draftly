@@ -197,7 +197,7 @@ const NewTag = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form  className="space-y-6">
         <div>
           <FormField
             control={form.control}
@@ -258,7 +258,7 @@ const NewTag = ({
           {edit ? "Delete" : "Cancel"}
         </Button>
 
-        <Button className="" size={"sm"} type="submit" variant={"ghost"}>
+        <Button className="" size={"sm"} type="submit" variant={"ghost"} onClick={form.handleSubmit(onSubmit)}>
           {edit ? "Edit Tag" : "Create Tag"}
         </Button>
       </form>

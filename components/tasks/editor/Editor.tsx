@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -16,8 +16,12 @@ import Placeholder from "@tiptap/extension-placeholder";
 import FloatingContainer from "./tools/FloatingContainer";
 import { Button } from "@/components/ui/button";
 import Heading from "@tiptap/extension-heading";
+import { useDebounce } from "use-debounce";
 
-const EditorTask = () => {
+interface Props {
+  content?: string
+}
+const EditorTask = ({ content }: Props) => {
   const [version, setVersion] = useState(0);
 
   const editor = useEditor({
@@ -52,10 +56,16 @@ const EditorTask = () => {
       }),
     ],
 
-    content: "",
+    content: content ? content : "",
 
     onUpdate: () => setVersion(v => v + 1)
   });
+
+  const [deboundedEditor] = useDebounce(editor?.state.doc, 2000)
+
+  useEffect(() => {
+    const json = deboundedEditor?.toJSON();
+  }, [deboundedEditor])
 
   return (
     <div className="w-full flex justify-center items-center mt-5">

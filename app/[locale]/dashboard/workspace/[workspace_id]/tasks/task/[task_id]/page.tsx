@@ -7,13 +7,13 @@ import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboar
 import React from 'react'
 
 interface Params {
-    params: Promise<{ workspace_id: string }>
+    params: Promise<{ workspace_id: string, task_id: string }>
 }
 
 const Tasks = async ({ params }: Params) => {
-    const { workspace_id } = await params
+    const { workspace_id, task_id } = await params
 
-    const session = await checkIfUserCompletedOnboarding(`/dashboard/workspace/${workspace_id}`)
+    const session = await checkIfUserCompletedOnboarding(`/dashboard/workspace/${workspace_id}/task/task/${task_id}`)
     const [workspace, userRole] = await Promise.all([getWorkspace(workspace_id, session.user.id), getWorkspaceRole(workspace_id, session.user.id)])
     return (
         <>
@@ -23,8 +23,10 @@ const Tasks = async ({ params }: Params) => {
                 )}
             </DashboardHeader>
             <main className="flex flex-col gap-2">
-                {/* <NewTask workspaceId={workspace_id} /> */}
-                <TaskContainer workspaceId={workspace_id} initialActiveTags={[]} />
+                <TaskContainer
+                    workspaceId={workspace_id}
+                    taskId={task_id}
+                    initialActiveTags={[]} />
             </main>
         </>
     )

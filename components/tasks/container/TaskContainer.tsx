@@ -12,25 +12,31 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TaskCalendar from "@/components/editor/TaskCalender";
 import Logo from "@/components/editor/Logo";
 import EditorTask from "../editor/Editor";
+import { useDebounce } from "use-debounce"
 
 interface Props {
     workspaceId: string;
     initialActiveTags?: Tag[];
+    taskId: string
+    title?: string
+    content?: JSON;
+    emoji?: string
+    from?: Date;
+    to?: Date;
 }
-const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
+const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to, content, emoji }: Props) => {
     const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(
         initialActiveTags || []
     );
     const [isMounted, setIsMounted] = useState(false);
+    const [deboundedCurrentActiveTags] = useDebounce(currentActiveTags, 200)
     const _titleRef = useRef<HTMLTextAreaElement | null>(null);
 
     const form = useForm<TaskSchema>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
-            icon: "🧠",
-            title: "",
-            date: null,
-            content: null,
+            icon: emoji ? emoji : "🧠",
+            title: title ? title : "",
         },
     });
 
@@ -83,6 +89,18 @@ const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
 
     const { ref: titleRef, ...rest } = form.register("title");
 
+    const [deboundedTitle] = useDebounce(form.watch("title"), 2000)
+
+    useEffect(() => {
+        if (!isMounted) return
+        console.log(deboundedTitle)
+    }, [deboundedTitle, isMounted])
+
+    useEffect(() => {
+        if (!isMounted) return
+        const tagsId = deboundedCurrentActiveTags.map((tag) => tag.id)
+    }, [deboundedCurrentActiveTags, isMounted])
+
     return (
         <Card className="dark:bg-gradient-to-b from-gray-900 via-gray-950 to-gray-950 border border-border/40 shadow-xl overflow-hidden rounded-none">
             <form className="w-full">
@@ -105,7 +123,12 @@ const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
                                 />
 
                                 <div className="mt-4 flex flex-wrap gap-3 items-center">
-                                    <TaskCalendar onUpdateForm={onUpdateSelectHandler} />
+                                    <TaskCalendar onUpdateForm={onUpdateSelectHandler}
+                                        workspaceId={workspaceId}
+                                        taskId={taskId}
+                                        from={from}
+                                        to={to}
+                                    />
                                     <TagSelector
                                         isLoading={isLoading}
                                         tags={tags ?? []}
@@ -129,7 +152,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags }: Props) => {
                         </div>
                     </div>
                     <div>
-                        <EditorTask />
+                        <EditorTask content={content} />
                     </div>
                 </CardContent>
             </form>

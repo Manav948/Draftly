@@ -4,6 +4,7 @@ import ActiveLink from "@/components/ui/active-link";
 import { Brain, CalendarRange, Files, Map, PencilRuler } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
+import NewTask from "./action/NewTask";
 
 interface Props {
   workspaceId: string;
@@ -68,6 +69,10 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
             <span>{field.title}</span>
           </ActiveLink>
         ))}
+      </div>
+      <div>
+        <p>Actions</p>
+        <NewTask />
       </div>
     </div>
   );
