@@ -4,87 +4,74 @@ import { updateTaskSchema } from "@/schema/updateTaskSchema";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-    const session = await getAuthSession();
+  const session = await getAuthSession();
 
-    if (!session?.user) {
-        return new NextResponse("Unauthorized", { status: 400, statusText: "Unauthorized User" })
+  if (!session?.user) {
+    return new NextResponse("Unauthorized", { status: 400 });
+  }
+
+  const body = await request.json();
+
+  const result = updateTaskSchema.safeParse(body);
+  if (!result.success) {
+    return new NextResponse("Invalid payload", { status: 401 });
+  }
+
+  const { workspaceId, taskId, date } = result.data;
+
+  try {
+    // Check permissions
+    const user = await db.user.findUnique({
+      where: { id: session.user.id },
+      include: {
+        subscriptions: {
+          where: { workspaceId },
+          select: { userRole: true },
+        },
+      },
+    });
+
+    if (!user) {
+      return new NextResponse("User not found", { status: 404 });
     }
-    const body: unknown = await request.json();
 
-    const result = updateTaskSchema.safeParse(body)
-
-    if (!result.success) {
-        return new NextResponse("Something went wrong", { status: 401 })
+    const role = user.subscriptions[0]?.userRole;
+    if (role === "CAN_EDIT" || role === "READ_ONLY") {
+      return new NextResponse("No permission", { status: 403 });
     }
-    const { workspaceId, tasksId, debouncedDate } = result.data;
 
-    try {
-        const user = await db.user.findUnique({
-            where: {
-                id: session.user.id
-            },
-            include: {
-                subscriptions: {
-                    where: {
-                        workspaceId: workspaceId
-                    },
-                    select: {
-                        userRole: true
-                    }
-                }
-            }
-        })
+    // Fetch task with date relation
+    const task = await db.task.findUnique({
+      where: { id: taskId },
+      include: { date: true },
+    });
 
-        if (!user) {
-            return new NextResponse("User Not Found", { status: 404, statusText: "User not Found" })
-        }
-
-        if (user.subscriptions[0].userRole === "CAN_EDIT" || user.subscriptions[0].userRole === "READ_ONLY") {
-            return NextResponse.json("You don't have permisson to delete a picture", { status: 403 })
-        }
-
-        const task = await db.task.findUnique({
-            where: {
-                id: tasksId
-            },
-            include: {
-                date: true
-            }
-        })
-
-        if (!task) {
-            return NextResponse.json("No Task Found", { status: 403 })
-        }
-
-        await db.date.update({
-            where: {
-                id: task.date?.id
-            },
-            data: {
-                from: debouncedDate?.from
-                    ? (typeof debouncedDate.from === "string"
-                        ? debouncedDate.from
-                        : debouncedDate.from.toISOString())
-                    : null,
-                to: debouncedDate?.to
-                    ? (typeof debouncedDate.to === "string"
-                        ? debouncedDate.to
-                        : debouncedDate.to.toISOString())
-                    : null
-            }
-        })
-
-        const updatedTaskId = await db.task.update({
-            where: {
-                id: task.id
-            },
-            data: {
-                updatedUserId: session.user.id
-            }
-        })
-        return NextResponse.json(updatedTaskId, { status: 200 })
-    } catch (error) {
-        console.log("Error in db connection : ", error)
-        return new NextResponse("Error during db connection", { status: 405 })
+    if (!task) {
+      return new NextResponse("Task not found", { status: 404 });
     }
+
+    // Update date table
+    await db.date.update({
+      where: { id: task.date?.id },
+      data: {
+        from: date?.from
+          ? new Date(date.from).toISOString()
+          : null,
+        to: date?.to
+          ? new Date(date.to).toISOString()
+          : null,
+      },
+    });
+
+    // Update task metadata
+    const updatedTask = await db.task.update({
+      where: { id: taskId },
+      data: { updatedUserId: session.user.id },
+    });
+
+    return NextResponse.json(updatedTask, { status: 200 });
+  } catch (error) {
+    console.error("Error updating task date:", error);
+    return new NextResponse("Server error", { status: 500 });
+  }
 }

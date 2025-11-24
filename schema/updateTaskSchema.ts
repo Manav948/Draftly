@@ -2,8 +2,8 @@ import z from "zod";
 
 export const updateTaskSchema = z.object({
     workspaceId: z.string(),
-    tasksId: z.string(),
-    debouncedDate: z.object({
+    taskId: z.string(),
+    date: z.object({
         from: z.date().nullable(),
         to: z.date().nullable()
     }).nullable()
