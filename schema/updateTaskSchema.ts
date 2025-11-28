@@ -4,10 +4,10 @@ export const updateTaskSchema = z.object({
     workspaceId: z.string(),
     taskId: z.string(),
     date: z.object({
-        from: z.date().nullable(),
-        to: z.date().nullable()
+        from: z.union([z.string() , z.date()]).nullable().optional(),
+        to: z.union([z.string(), z.date()]).nullable().optional()
     }).nullable()
-        .optional()
+        .optional() 
 })
 
 export type UpdateTaskSchema = z.infer<typeof updateTaskSchema>;

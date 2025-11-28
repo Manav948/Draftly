@@ -8,6 +8,7 @@ import NewTask from "./action/NewTask";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { WorkspaceShortCuts } from "@/types/extended";
+import WorkspaceOption from "./WorkspaceOption";
 
 interface Props {
   workspaceId: string;
@@ -47,16 +48,16 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
     [workspaceId, t]
   );
 
-  const {data : workspaceShortcuts , isLoading} = useQuery({
-    queryKey :  async () => {
+  const { data: workspaceShortcuts, isLoading } = useQuery({
+    queryFn: async () => {
       const res = await fetch(`/api/workspace/get/workspace_shortcuts?workspaceId=${workspaceId}`)
-      if(!res.ok){
+      if (!res.ok) {
         return null;
       }
-      const data =  await res.json()
+      const data = await res.json()
       return data as WorkspaceShortCuts
     },
-    queryKey : ["getWorkspaceShortcuts"]
+    queryKey: ["getWorkspaceShortcuts"]
   })
 
   return (
@@ -66,8 +67,18 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
       </p>
 
       {/* Links */}
-      <div className="flex flex-col w-full mt-2">
-       <p>Shortcuts</p>
+      <div className="flex flex-col w-full mt-2 bg-red-500">
+        <div className="">
+          <WorkspaceOption
+            workspaceId={workspaceId}
+            href={`tasks/task`}
+            fields={workspaceShortcuts?.tasks ?? []}
+            defaultName="test"
+          >
+            <PencilRuler size={18}  />  
+            Tasks
+          </WorkspaceOption>
+        </div>
       </div>
       <div>
         <p>Actions</p>

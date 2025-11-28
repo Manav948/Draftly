@@ -38,7 +38,7 @@ const NewTask = ({ workspaceId }: Props) => {
         onClick={() => {
           newTask()
         }}
-        className='justify-start items-center gap-3'
+        className='justify-start items-center'
         variant={"ghost"}
         size={"sm"}
       >

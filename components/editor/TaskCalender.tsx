@@ -39,7 +39,7 @@ const TaskCalendar = ({ className, onUpdateForm, from, to, workspaceId, taskId }
   });
 
   useEffect(() => {
-    if (!debouncedDate) return;
+    if (!debouncedDate?.from && !debouncedDate?.to) return;
     updateTaskDate();
   }, [debouncedDate]);
 
