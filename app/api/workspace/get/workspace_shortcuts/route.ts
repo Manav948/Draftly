@@ -17,9 +17,9 @@ export const GET = async (request: Request,) => {
             include: {
                 Task: {
                     select: {
-                        emoji: true,
-                        title : true,
-                        id : true
+                        id: true,
+                        title: true,
+                        emoji: true
                     }
                 }
             }
@@ -27,7 +27,7 @@ export const GET = async (request: Request,) => {
         if (!workspaceShortCuts) {
             return NextResponse.json("WorkspaceShortcuts not found", { status: 200 })
         }
-        return NextResponse.json(workspaceShortCuts, { status: 202 })
+        return NextResponse.json({ tasks: workspaceShortCuts.Task }, { status: 202 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

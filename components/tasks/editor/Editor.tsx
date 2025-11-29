@@ -84,7 +84,7 @@ const EditorTask = ({ content }: Props) => {
 
         {editor && (
           <div className="flex items-center justify-between pt-4 border-t border-gray-300 dark:border-gray-700">
-            <Button>Save Task</Button>
+            <Button>Add Task</Button>
 
             <div className="text-sm text-gray-600 dark:text-gray-400">
               <span><strong>{editor.storage.characterCount.words()}</strong> words</span>

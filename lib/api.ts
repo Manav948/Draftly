@@ -63,13 +63,18 @@ export const getWorkspaceRole = async (workspace_id: string, userId: string) => 
 }
 
 export const getTask = async (task_id: string, userId: string) => {
-    const res = await fetch(`${domain}/api/task/get/details/${task_id}&userId=${userId}`, {
-        method: "GET",
-        cache: "no-store"
-    })
-    if (!res.ok) {
-        console.log("workspaceRole : ", res)
-        return null
+  const res = await fetch(
+    `${domain}/api/task/get/details/${task_id}?userId=${userId}`,
+    {
+      method: "GET",
+      cache: "no-store",
     }
-    return res.json() as Promise<ExtendedTask>
-}
+  );
+
+  if (!res.ok) {
+    console.log("getTask error:", res);
+    return null;
+  }
+
+  return res.json();
+};

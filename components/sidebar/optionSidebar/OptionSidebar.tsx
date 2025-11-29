@@ -17,7 +17,7 @@ const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces }: Props) => {
   const urlWorkspaceId: string | undefined = pathname.split("/")[4]
   const workspaceId = urlWorkspaceId ? urlWorkspaceId : "";
   const url = pathname.includes(`/dashboard/workspace/${workspaceId}`)
-  const isTasksPage = pathname === `/en/dashboard/workspace/${workspaceId}/tasks`;
+  const isTasksPage = pathname === `/dashboard/workspace/${workspaceId}/tasks`;
 
   return (
     <div

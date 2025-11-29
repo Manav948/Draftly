@@ -34,13 +34,13 @@ const WorkspaceOption = ({ workspaceId, children, defaultName, href, fields }: P
       </Button>
 
       {isOpen && (
-        <div className="mt-2 pl-4 flex flex-col gap-1">
+        <div className="mt-2 flex flex-col gap-1">
           {fields.map((field) => (
             <ActiveLink
               key={field.id}
               size="sm"
               variant="ghost"
-              href={`/dashboard/workspace/${workspaceId}/${href}/${field.id}`}
+              href={`/en/dashboard/workspace/${workspaceId}/${href}/${field.id}`}
               className="
                 flex items-center gap-2 px-2 py-2 rounded-lg
                 text-sm text-gray-700 dark:text-gray-300

@@ -1,12 +1,17 @@
 "use client";
 
 import ActiveLink from "@/components/ui/active-link";
-import { Brain, CalendarRange, Files, Map, PencilRuler } from "lucide-react";
+import {
+  Brain,
+  CalendarRange,
+  Files,
+  Map,
+  PencilRuler,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
 import NewTask from "./action/NewTask";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { WorkspaceShortCuts } from "@/types/extended";
 import WorkspaceOption from "./WorkspaceOption";
 
@@ -50,38 +55,48 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
 
   const { data: workspaceShortcuts, isLoading } = useQuery({
     queryFn: async () => {
-      const res = await fetch(`/api/workspace/get/workspace_shortcuts?workspaceId=${workspaceId}`)
-      if (!res.ok) {
-        return null;
-      }
-      const data = await res.json()
-      return data as WorkspaceShortCuts
+      const res = await fetch(
+        `/api/workspace/get/workspace_shortcuts?workspaceId=${workspaceId}`
+      );
+
+      if (!res.ok) return null;
+
+      return (await res.json()) as WorkspaceShortCuts;
     },
-    queryKey: ["getWorkspaceShortcuts"]
-  })
+    queryKey: ["getWorkspaceShortcuts", workspaceId],
+  });
 
   return (
-    <div className="space-y-3">
-      <p className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-1">
+    <div className="space-y-5">
+      {/* Section Title */}
+      <p className="text-[11px] font-semibold tracking-wider uppercase text-gray-500 dark:text-gray-400 px-1">
         {t("SHORTCUTS")}
       </p>
 
-      {/* Links */}
-      <div className="flex flex-col w-full mt-2 bg-red-500">
-        <div className="">
+      {/* Tasks Dropdown */}
+      <div className="rounded-xl border bg-white dark:bg-gray-950 dark:border-gray-800 shadow-sm overflow-hidden">
+        {isLoading ? (
+          <p className="px-4 py-3 text-sm text-gray-500">Loading tasks...</p>
+        ) : (
           <WorkspaceOption
             workspaceId={workspaceId}
             href={`tasks/task`}
-            fields={workspaceShortcuts?.tasks ?? []}
-            defaultName="test"
+            fields={workspaceShortcuts?.tasks || []}
+            defaultName="Untitled Task"
           >
-            <PencilRuler size={18}  />  
-            Tasks
+            <div className="flex items-center gap-2">
+              <PencilRuler size={18} className="text-primary" />
+              <span className="font-medium">Tasks</span>
+            </div>
           </WorkspaceOption>
-        </div>
+        )}
       </div>
-      <div>
-        <p>Actions</p>
+
+      {/* Actions */}
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
+        <p className="text-xs uppercase tracking-wide font-semibold text-gray-400 mb-2">
+          Actions
+        </p>
         <NewTask workspaceId={workspaceId} />
       </div>
     </div>

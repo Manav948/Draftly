@@ -21,11 +21,12 @@ export const GET = async (request: Request, { params }: Params) => {
                 id: task_id,
             },
             include : {
-                // tags: true,
+                Tag : true,
                 date : true
 
             }
         })
+        console.log("Tasks",task)
         if (!task) {
             return NextResponse.json("Task not found", { status: 200 })
         }
