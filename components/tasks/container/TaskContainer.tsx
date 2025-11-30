@@ -152,7 +152,11 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
                         </div>
                     </div>
                     <div>
-                        <EditorTask content={typeof content === "string" ? content : content ? JSON.stringify(content) : undefined} />
+                        <EditorTask
+                            content={typeof content === "string" ? content : content ? JSON.stringify(content) : undefined}
+                            workspaceId={workspaceId}
+                            taskId={taskId}
+                        />
                     </div>
                 </CardContent>
             </form>

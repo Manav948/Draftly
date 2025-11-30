@@ -8,6 +8,7 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import { QueryProvider } from "@/providers/QueryProvider";
 import ClientThemeProvider from "@/components/ui/ClientThemeProvider";
+import { SaveTaskStateProvider } from "@/context/TaskSavingContext";
 
 const locales = ["en", "hi"];
 
@@ -44,16 +45,19 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <AuthProvider>
-            <QueryProvider>
-              <ClientThemeProvider>
-                <Toaster position="top-center" reverseOrder={false} />
-                {children}
-              </ClientThemeProvider>
-            </QueryProvider>
-          </AuthProvider>
-        </NextIntlClientProvider>
+        <SaveTaskStateProvider>
+
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <AuthProvider>
+              <QueryProvider>
+                <ClientThemeProvider>
+                  <Toaster position="top-center" reverseOrder={false} />
+                  {children}
+                </ClientThemeProvider>
+              </QueryProvider>
+            </AuthProvider>
+          </NextIntlClientProvider>
+        </SaveTaskStateProvider>
       </body>
     </html>
   );

@@ -16,13 +16,19 @@ import Placeholder from "@tiptap/extension-placeholder";
 import FloatingContainer from "./tools/FloatingContainer";
 import { Button } from "@/components/ui/button";
 import Heading from "@tiptap/extension-heading";
-import { useDebounce } from "use-debounce";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
+import { useSaveTaskState } from "@/context/TaskSavingContext";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 interface Props {
   content?: string
+  taskId: string
+  workspaceId: string
 }
-const EditorTask = ({ content }: Props) => {
+const EditorTask = ({ content, taskId, workspaceId }: Props) => {
   const [version, setVersion] = useState(0);
+  const { onSetStatus, status } = useSaveTaskState();
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -35,6 +41,11 @@ const EditorTask = ({ content }: Props) => {
       },
     },
 
+    onUpdate: () => {
+      setVersion(v => v + 1)
+      if (status === "unsaved") onSetStatus("unsaved")
+      deboundedEditor()
+    },
     extensions: [
       StarterKit,
       Heading.configure({
@@ -57,15 +68,30 @@ const EditorTask = ({ content }: Props) => {
     ],
 
     content: content ? content : "",
-
-    onUpdate: () => setVersion(v => v + 1)
   });
 
-  const [deboundedEditor] = useDebounce(editor?.state.doc, 2000)
+  const { mutate: updateTaskContent } = useMutation({
+    mutationFn: async (content: JSON) => {
+      await axios.post(`/api/task/update/content`, {
+        workspaceId,
+        taskId,
+        content
+      })
+    },
+    onSuccess: () => {
+      onSetStatus("saved")
+    },
+    onError: () => {
+      onSetStatus("unsaved")
+    }
+  })
 
-  useEffect(() => {
-    const json = deboundedEditor?.toJSON();
-  }, [deboundedEditor])
+
+  const deboundedEditor = useDebouncedCallback(() => {
+    onSetStatus("pending")
+    const json = editor?.state.doc.toJSON() as JSON;
+    updateTaskContent(json)
+  }, 5000)
 
   return (
     <div className="w-full flex justify-center items-center mt-5">
@@ -84,7 +110,6 @@ const EditorTask = ({ content }: Props) => {
 
         {editor && (
           <div className="flex items-center justify-between pt-4 border-t border-gray-300 dark:border-gray-700">
-            <Button>Add Task</Button>
 
             <div className="text-sm text-gray-600 dark:text-gray-400">
               <span><strong>{editor.storage.characterCount.words()}</strong> words</span>
