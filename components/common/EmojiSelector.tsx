@@ -32,7 +32,6 @@ const EmojiSelector = ({ asChild, children, onSelectedEmoji }: Props) => {
         if (theme === "system") return systemTheme === "dark" ? "dark" : "light";
         return theme === "dark" ? "dark" : "light";
     }, [theme, systemTheme]);
-
     return (
         <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>

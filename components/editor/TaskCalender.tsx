@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useSaveTaskState } from "@/context/TaskSavingContext";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { format } from "date-fns";
@@ -9,7 +10,7 @@ import { enUS } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
-import { useDebounce } from "use-debounce";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
 
 interface Props {
   onUpdateForm?: (e: DateRange | undefined) => void;
@@ -26,26 +27,35 @@ const TaskCalendar = ({ className, onUpdateForm, from, to, workspaceId, taskId }
     to: to ? new Date(to) : undefined,
   });
 
-  const [debouncedDate] = useDebounce(date, 2000);
+  const {status , onSetStatus} = useSaveTaskState();
 
   const { mutate: updateTaskDate } = useMutation({
     mutationFn: async () => {
       await axios.post("/api/task/update/date", {
         workspaceId,
         taskId,
-        date: debouncedDate,
+        date,
       });
     },
+    onSuccess : () => {
+      onSetStatus("saved")
+    },
+    onError : () => {
+      onSetStatus("unsaved")
+    }
   });
 
-  useEffect(() => {
-    if (!debouncedDate?.from && !debouncedDate?.to) return;
-    updateTaskDate();
-  }, [debouncedDate]);
+  const debounded = useDebouncedCallback(() => {
+      onSetStatus("pending")
+      updateTaskDate()
+  },2000)
+  
 
   const onSelectDateChange = (d: DateRange | undefined) => {
+    if(status === "unsaved") return onSetStatus("unsaved")
     setDate(d);
     onUpdateForm?.(d);
+    debounded()
   };
 
   return (

@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   const { workspaceId, taskId, date } = result.data;
 
   try {
-    // Check permissions
+    // Permission check
     const user = await db.user.findUnique({
       where: { id: session.user.id },
       include: {
@@ -31,16 +31,13 @@ export async function POST(request: Request) {
       },
     });
 
-    if (!user) {
-      return new NextResponse("User not found", { status: 404 });
-    }
+    if (!user) return new NextResponse("User not found", { status: 404 });
 
     const role = user.subscriptions[0]?.userRole;
     if (role === "CAN_EDIT" || role === "READ_ONLY") {
       return new NextResponse("No permission", { status: 403 });
     }
 
-    // Fetch task with date relation
     const task = await db.task.findUnique({
       where: { id: taskId },
       include: { date: true },
@@ -50,23 +47,41 @@ export async function POST(request: Request) {
       return new NextResponse("Task not found", { status: 404 });
     }
 
-    // Update date table
-    await db.date.update({
-      where: { id: task.date?.id },
-      data: {
-        from: date?.from
-          ? new Date(date.from).toISOString()
-          : null,
-        to: date?.to
-          ? new Date(date.to).toISOString()
-          : null,
-      },
-    });
+    // ✅ FIXED create/update logic
+    if (task.date?.id) {
+      await db.date.update({
+        where: { id: task.date.id },
+        data: {
+          from: date?.from
+            ? new Date(date.from).toISOString()
+            : null,
+          to: date?.to
+            ? new Date(date.to).toISOString()
+            : null,
+        },
+      });
+    } else {
+      await db.date.create({
+        data: {
+          from: date?.from
+            ? new Date(date.from).toISOString()
+            : null,
+          to: date?.to
+            ? new Date(date.to).toISOString()
+            : null,
+          Task: {
+            connect: { id: taskId },
+          },
+        },
+      });
+    }
 
-    // Update task metadata
+    // Touch task update
     const updatedTask = await db.task.update({
       where: { id: taskId },
-      data: { updatedUserId: session.user.id },
+      data: {
+        updatedUserId: session.user.id,
+      },
     });
 
     return NextResponse.json(updatedTask, { status: 200 });

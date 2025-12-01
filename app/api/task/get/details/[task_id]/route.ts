@@ -20,17 +20,20 @@ export const GET = async (request: Request, { params }: Params) => {
             where: {
                 id: task_id,
             },
-            include : {
+            select : {
+                id : true,
+                title: true,
                 Tag : true,
-                date : true
-
+                date : true,
+                emoji : true,
+                content : true
             }
         })
         console.log("Tasks",task)
         if (!task) {
             return NextResponse.json("Task not found", { status: 200 })
         }
-        return NextResponse.json(task, { status: 202 })
+        return NextResponse.json({...task,tags : task.Tag}, { status: 202 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

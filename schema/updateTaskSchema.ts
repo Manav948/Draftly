@@ -13,7 +13,7 @@ export const updateTaskSchema = z.object({
 export const updateTaskContentSchema = z.object({
     workspaceId: z.string(),
     taskId: z.string(),
-    content: z.any()
+    content: z.string()
 })
 
 export const updateTaskActiveTagsSchema = z.object({

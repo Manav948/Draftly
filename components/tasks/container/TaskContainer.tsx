@@ -1,18 +1,20 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import TextareaAutoSize from "react-textarea-autosize";
 import TagSelector from "@/components/common/tag/tagSelector/TagSelector";
 import LinkTag from "@/components/common/tag/LinkTag";
 import { Tag, WorkspaceIconColor } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { taskSchema, TaskSchema } from "@/schema/taskSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TaskCalendar from "@/components/editor/TaskCalender";
 import Logo from "@/components/editor/Logo";
 import EditorTask from "../editor/Editor";
-import { useDebounce } from "use-debounce"
+import { useDebounce, useDebouncedCallback } from "use-debounce"
+import { useSaveTaskState } from "@/context/TaskSavingContext";
+import axios from "axios";
 
 interface Props {
     workspaceId: string;
@@ -31,11 +33,12 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
     const [isMounted, setIsMounted] = useState(false);
     const [deboundedCurrentActiveTags] = useDebounce(currentActiveTags, 200)
     const _titleRef = useRef<HTMLTextAreaElement | null>(null);
+    const { status, onSetStatus } = useSaveTaskState();
 
     const form = useForm<TaskSchema>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
-            icon: emoji ? emoji : "🧠",
+            icon: emoji ? emoji : "",
             title: title ? title : "",
         },
     });
@@ -65,12 +68,14 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
     };
 
     const onSelectActiveTagHandler = (tagId: string) => {
+        if (status === "unsaved") return onSetStatus("unsaved")
         setCurrentActiveTags((prev) => {
             const found = prev.find((t) => t.id === tagId);
             if (found) return prev.filter((t) => t.id !== tagId);
             const sel = tags?.find((t) => t.id === tagId);
             return sel ? [...prev, sel] : prev;
         });
+
     };
 
     const onUpdateActiveTagsHandler = (
@@ -84,22 +89,57 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
     };
 
     const onDeleteActiveTagHandler = (tagId: string) => {
+        if (status === "unsaved") return onSetStatus("unsaved")
         setCurrentActiveTags((prev) => prev.filter((tag) => tag.id !== tagId));
     };
 
     const { ref: titleRef, ...rest } = form.register("title");
 
-    const [deboundedTitle] = useDebounce(form.watch("title"), 2000)
+    const { mutate: updatTaskTitle } = useMutation({
+        mutationFn: async (title: string) => {
+            await axios.post(`/api/task/update/title`, {
+                workspaceId,
+                taskId,
+                title
+            })
+        },
+        onError: () => {
+            onSetStatus("unsaved")
+        },
+        onSuccess: () => {
+            onSetStatus("saved")
+        }
+    })
 
-    useEffect(() => {
-        if (!isMounted) return
-        console.log(deboundedTitle)
-    }, [deboundedTitle, isMounted])
+    const { mutate: updatTaskActiveTag } = useMutation({
+        mutationFn: async (tagsID: string[]) => {
+            await axios.post(`/api/task/update/tag`, {
+                workspaceId,
+                taskId,
+                tagsID
+            })
+        },
+        onError: () => {
+            onSetStatus("unsaved")
+        },
+        onSuccess: () => {
+            onSetStatus("saved")
+        }
+    })
 
-    useEffect(() => {
-        if (!isMounted) return
-        const tagsId = deboundedCurrentActiveTags.map((tag) => tag.id)
-    }, [deboundedCurrentActiveTags, isMounted])
+    const deboundedTitle = useDebouncedCallback(
+        useCallback((value: string) => {
+            onSetStatus("pending")
+            updatTaskTitle(value)
+        }, [])
+        , 2000
+    )
+
+    const deboundedActiveTag = useDebouncedCallback(() => {
+        onSetStatus("pending")
+        const tagsId = currentActiveTags.map((tagId) => tagId.id)
+        updatTaskActiveTag(tagsId)
+    }, 2000)
 
     return (
         <Card className="dark:bg-gradient-to-b from-gray-900 via-gray-950 to-gray-950 border border-border/40 shadow-xl overflow-hidden rounded-none">
@@ -107,9 +147,15 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
                 <CardContent className="p-6">
                     <div className="flex flex-col gap-4">
                         <div className="flex items-start gap-4">
-                            <Logo onFormSelect={onFormSelectHandler} />
+                            <Logo
+                                onFormSelect={onFormSelectHandler}
+                                emoji={emoji ? emoji : "✌️"}
+                                taskId={taskId}
+                                workspaceId={workspaceId}
+                            />
                             <div className="flex-1">
                                 <TextareaAutoSize
+                                {...rest}
                                     ref={(e) => {
                                         titleRef(e);
                                         _titleRef.current = e;
@@ -117,7 +163,10 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter") e.preventDefault();
                                     }}
-                                    {...rest}
+                                    onChange={(e) => {
+                                        if (status === "unsaved") return onSetStatus("unsaved")
+                                        deboundedTitle(e.target.value)
+                                    }}
                                     placeholder="Editor Content"
                                     className="min-h-[56px] resize-none w-full bg-transparent text-lg placeholder:text-muted-foreground focus:outline-none"
                                 />

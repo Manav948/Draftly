@@ -12,33 +12,46 @@ interface Params {
 }
 
 const EditTasks = async ({ params }: Params) => {
-    const { workspace_id, task_id } = await params
+  const { workspace_id, task_id } = await params;
 
-    const session = await checkIfUserCompletedOnboarding(`/dashboard/workspace/${workspace_id}/task/task/${task_id}`)
-    const [workspace, userRole, task] = await Promise.all([getWorkspace(workspace_id, session.user.id), getWorkspaceRole(workspace_id, session.user.id), getTask(task_id, session.user.id)])
-    return (
-        <>
-            <SaveTaskStateProvider>
-                <DashboardHeader addManualRoutes={["dashboard", workspace.name]} >
-                    {(userRole === "ADMIN" || userRole === "OWNER") && (
-                        <InviteUsers workspace={workspace} />
-                    )}
-                </DashboardHeader>
-                <main className="flex flex-col gap-2">
-                    <TaskContainer
-                        workspaceId={workspace_id}
-                        taskId={task_id}
-                        initialActiveTags={task?.tags}
-                        title={task?.title ?? undefined}
-                        content={task?.content as unknown as JSON}
-                        from={task?.date?.from}
-                        to={task?.date?.to}
-                        emoji={task?.emoji ?? undefined}
-                    />
-                </main>
-            </SaveTaskStateProvider>
-        </>
-    )
-}
+  const session = await checkIfUserCompletedOnboarding(
+    `/dashboard/workspace/${workspace_id}/task/task/${task_id}`
+  );
+
+  const [workspace, userRole, task] = await Promise.all([
+    getWorkspace(workspace_id, session.user.id),
+    getWorkspaceRole(workspace_id, session.user.id),
+    getTask(task_id, session.user.id),
+  ]);
+
+  const from =
+    task?.date?.from ? new Date(task.date.from as string | Date) : undefined;
+
+  const to =
+    task?.date?.to ? new Date(task.date.to as string | Date) : undefined;
+
+  return (
+    <SaveTaskStateProvider>
+      <DashboardHeader addManualRoutes={["dashboard", workspace.name]}>
+        {(userRole === "ADMIN" || userRole === "OWNER") && (
+          <InviteUsers workspace={workspace} />
+        )}
+      </DashboardHeader>
+
+      <main className="flex flex-col gap-2">
+        <TaskContainer
+          workspaceId={workspace_id}
+          taskId={task_id}
+          initialActiveTags={task?.tags}
+          title={task?.title ?? undefined}
+          content={task?.content as unknown as JSON}
+          from={from} 
+          to={to}       
+          emoji={task?.emoji ?? undefined}
+        />
+      </main>
+    </SaveTaskStateProvider>
+  );
+};
 
 export default EditTasks

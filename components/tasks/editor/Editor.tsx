@@ -71,7 +71,7 @@ const EditorTask = ({ content, taskId, workspaceId }: Props) => {
   });
 
   const { mutate: updateTaskContent } = useMutation({
-    mutationFn: async (content: JSON) => {
+    mutationFn: async (content: string) => {
       await axios.post(`/api/task/update/content`, {
         workspaceId,
         taskId,
@@ -88,9 +88,10 @@ const EditorTask = ({ content, taskId, workspaceId }: Props) => {
 
 
   const deboundedEditor = useDebouncedCallback(() => {
+    if(!editor) return
     onSetStatus("pending")
-    const json = editor?.state.doc.toJSON() as JSON;
-    updateTaskContent(json)
+    const text = editor?.getText()
+    updateTaskContent(text)
   }, 5000)
 
   return (

@@ -19,15 +19,20 @@ export interface ShortTask {
     title: string
 }
 
-export interface ExtendedTask extends Task {
-    tags : Tag[]
-    date?: {
-        id : string;
-        from : Date | undefined
-        to : Date | undefined
-    } 
-} 
+export type ExtendedTask = {
+  id: string;
+  title?: string;
+  emoji?: string;
+  content?: JSON;
 
+  tags?: Tag[];
+
+  date?: {
+    id?: string;
+    from?: Date | string | null;
+    to?: Date | string | null;
+  } | null;
+};
 export interface WorkspaceShortCuts  extends Workspace {
     tasks : ShortTask[]
 }

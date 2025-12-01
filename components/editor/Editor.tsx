@@ -16,8 +16,9 @@ import EditorTask from "../editor/Editor";
 interface Props {
     workspaceId: string;
     initialActiveTags?: Tag[];
+    taskId : string
 }
-const Editor = ({ workspaceId, initialActiveTags }: Props) => {
+const Editor = ({ workspaceId, initialActiveTags,taskId }: Props) => {
     const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(
         initialActiveTags || []
     );
@@ -105,7 +106,7 @@ const Editor = ({ workspaceId, initialActiveTags }: Props) => {
                                 />
 
                                 <div className="mt-4 flex flex-wrap gap-3 items-center">
-                                    <TaskCalendar onUpdateForm={onUpdateSelectHandler} />
+                                    {/* <TaskCalendar onUpdateForm={onUpdateSelectHandler}  taskId={taskId} workspaceId={workspaceId}/> */}
                                     <TagSelector
                                         isLoading={isLoading}
                                         tags={tags ?? []}
@@ -138,7 +139,7 @@ const Editor = ({ workspaceId, initialActiveTags }: Props) => {
                         </div>
                     </div>
                     <div>
-                        <EditorTask workspaceId={workspaceId} />
+                        <EditorTask workspaceId={workspaceId} taskId={taskId}  />
                     </div>
                 </CardContent>
             </form>
