@@ -6,13 +6,17 @@ import OpenSidebar from "./OpenSidebar";
 import SavingStatus from "./SavingStatus";
 
 interface Props {
-  addManualRoutes?: string[];
+  addManualRoutes?: {
+    name: string,
+    href: string,
+    useTranslate?: boolean
+  }[];
   children?: React.ReactNode;
   workspaceHref?: string
-  showingSavingStatus ?: string
+  showingSavingStatus?: string
 }
 
-const DashboardHeader = ({ addManualRoutes, children, workspaceHref , showingSavingStatus }: Props) => {
+const DashboardHeader = ({ addManualRoutes, children, workspaceHref, showingSavingStatus }: Props) => {
   return (
     <header className="
       sticky top-0 z-40
@@ -24,7 +28,7 @@ const DashboardHeader = ({ addManualRoutes, children, workspaceHref , showingSav
       border-b border-border/30 shadow-sm
       transition-all duration-300
     ">
-      {showingSavingStatus  && <SavingStatus />}
+      {showingSavingStatus && <SavingStatus />}
       {/* Sidebar open button */}
       <div className="flex items-center gap-2">
         <OpenSidebar />

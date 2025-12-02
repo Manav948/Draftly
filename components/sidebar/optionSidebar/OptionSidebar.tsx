@@ -15,9 +15,15 @@ const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces }: Props) => {
   const pathname = usePathname();
   const isSettings = pathname.includes("/dashboard/settings");
   const urlWorkspaceId: string | undefined = pathname.split("/")[4]
+  const urlTaskId: string | undefined = pathname.split("/")[6]
   const workspaceId = urlWorkspaceId ? urlWorkspaceId : "";
   const url = pathname.includes(`/dashboard/workspace/${workspaceId}`)
   const isTasksPage = pathname === `/dashboard/workspace/${workspaceId}/tasks`;
+
+  if (pathname === "/dashboard" || (
+    urlTaskId && pathname === `/dashboard/workspace/${workspaceId}/tasks/task/${urlTaskId}/edit`)) {
+    return null
+  }
 
   return (
     <div

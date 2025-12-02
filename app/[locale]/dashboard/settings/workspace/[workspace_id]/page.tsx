@@ -20,7 +20,23 @@ const Workspace = async ({ params: { workspace_id } }: Props) => {
     );
     return (
         <>
-            <DashboardHeader addManualRoutes={["dashboard", "settings", workspace.name]} >
+            <DashboardHeader addManualRoutes={[
+                {
+                    name: "DASHBOARD",
+                    href: "/dashboard",
+                    useTranslate: true
+                },
+
+                {
+                    name: "settings",
+                    href: "/dashboard/settings",
+                },
+
+                {
+                    name: workspace.name,
+                    href: "/",
+                }
+            ]} >
                 {(user?.userRole === "ADMIN" || user?.userRole === "OWNER") && <InviteUsers workspace={workspace} />}
 
             </DashboardHeader>

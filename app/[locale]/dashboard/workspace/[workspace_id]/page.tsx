@@ -15,7 +15,17 @@ const page = async ({ params }: Params) => {
   const [workspace, userRole] = await Promise.all([getWorkspace(workspace_id, session.user.id), getWorkspaceRole(workspace_id, session.user.id)])
   return (
     <>
-      <DashboardHeader addManualRoutes={["dashboard", workspace.name]} >
+      <DashboardHeader addManualRoutes={[
+        {
+          name: "DASHBOARD",
+          href: "/dashboard",
+          useTranslate: true
+        },
+        {
+          name: workspace.name,
+          href: `/dashboard/workspace/${workspace_id}`
+        } 
+      ]} >
         {(userRole === "ADMIN" || userRole === "OWNER") && (
           <InviteUsers workspace={workspace} />
         )}
