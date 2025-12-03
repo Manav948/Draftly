@@ -23,39 +23,44 @@ export async function POST(request: Request) {
     const subscription = await db.subscription.findFirst({
       where: {
         userId: session.user.id,
-        workspaceId: workspaceId,
+        workspaceId,
       },
     });
 
-    if (!subscription) {
-      return new NextResponse("Workspace subscription not found", { status: 404 });
-    }
-
-    if (subscription.userRole !== "OWNER" ) {
-      return new NextResponse("You don't have permission to create a tag", {
-        status: 403,
-      });
-    }
-
     const workspace = await db.workspace.findUnique({
       where: { id: workspaceId },
-      include: {
-        tags: {
-          where: { workspaceId },
-          select: { name: true },
-        },
-      },
+      select: { id: true, creatorId: true },
     });
 
     if (!workspace) {
       return new NextResponse("Workspace not found", { status: 404 });
     }
 
-    const tagExist = workspace.tags.find(
-      (tag) => tag.name.toLowerCase() === tagName.toLowerCase()
-    );
+    const role =
+      subscription?.userRole ??
+      (workspace.creatorId === session.user.id ? "OWNER" : null);
 
-    if (tagExist) {
+    if (!role) {
+      return new NextResponse("Workspace subscription not found", { status: 404 });
+    }
+
+    if (!["OWNER", "ADMIN"].includes(role)) {
+      return new NextResponse("You don't have permission to create a tag", {
+        status: 403,
+      });
+    }
+
+    const existingTag = await db.tag.findFirst({
+      where: {
+        workspaceId,
+        name: {
+          equals: tagName,
+          mode: "insensitive",
+        },
+      },
+    });
+
+    if (existingTag) {
       return NextResponse.json(
         "Tag name already exists. Try another name.",
         { status: 405 }
@@ -72,7 +77,6 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(newTag, { status: 200 });
-
   } catch (error) {
     console.log("Route Error:", error);
     return new NextResponse("Internal server error", { status: 500 });

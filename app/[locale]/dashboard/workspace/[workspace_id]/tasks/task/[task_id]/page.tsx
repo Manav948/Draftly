@@ -41,6 +41,7 @@ const Tasks = async ({ params }: Params) => {
                     userRole={userRole}
                     task={task}
                     isSavedByUser={isSavedByUser}
+                    workspaceId={workspace_id}
                 />
 
             </main>

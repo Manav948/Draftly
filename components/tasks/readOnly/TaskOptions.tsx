@@ -50,7 +50,6 @@ const TaskOptions = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // DELETE TASK
   const { mutate: deleteTask, isPending } = useMutation({
     mutationFn: async () => {
       await axios.post("/api/task/delete", {
@@ -70,7 +69,6 @@ const TaskOptions = ({
     mutationKey: ["deleteTask"],
   });
 
-  // TOGGLE FAVORITE
   const { mutate: toggleTask } = useMutation({
     mutationFn: async () => {
       await axios.post(`/api/saved/tasks/toggleTasks`, {
@@ -95,11 +93,13 @@ const TaskOptions = ({
             variant="ghost"
             className="
               h-9 w-9 rounded-full
-              hover:bg-white/10
-              transition-all
+              bg-white border border-black text-black
+              hover:bg-gray-800 hover:text-white
+              hover:dark:bg-black hover:dark:border-white hover:dark:text-white
+              transition-all cursor-pointer
             "
           >
-            <MoreHorizontal size={16} className="text-muted-foreground" />
+            <MoreHorizontal size={20} />
           </Button>
         </DropdownMenuTrigger>
 
@@ -109,8 +109,8 @@ const TaskOptions = ({
             sideOffset={6}
             className="
               min-w-[175px]
-              rounded-xl border border-white/10
-              bg-gradient-to-br from-gray-950 via-black to-gray-900
+              rounded-xl border border-white/90
+              dark:bg-gradient-to-br from-gray-950 via-black to-gray-900
               backdrop-blur-md
               shadow-xl
               p-1
@@ -135,7 +135,6 @@ const TaskOptions = ({
               )}
             </DropdownMenuItem>
 
-            {/* EDIT + DELETE (NOT READ ONLY) */}
             {userRole && userRole !== "READ_ONLY" && (
               <>
                 <DropdownMenuItem
@@ -174,7 +173,6 @@ const TaskOptions = ({
         </DropdownMenuPortal>
       </DropdownMenu>
 
-      {/* CONFIRM DELETE DIALOG */}
       <DialogPortal>
         <DialogOverlay className="bg-black/70 backdrop-blur-sm" />
         <DialogContent
