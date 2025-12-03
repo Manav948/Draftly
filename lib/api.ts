@@ -73,7 +73,7 @@ export const getTask = async (task_id: string, userId: string) => {
 
   if (!res.ok) {
     console.log("getTask error:", res);
-    return null;
+    return notFound();
   }
   console.log(res)
   return res.json() as Promise<ExtendedTask>;

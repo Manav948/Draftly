@@ -40,7 +40,7 @@ const WorkspaceOption = ({ workspaceId, children, defaultName, href, fields }: P
               key={field.id}
               size="sm"
               variant="ghost"
-              href={`/en/dashboard/workspace/${workspaceId}/${href}/${field.id}/edit`}
+              href={`/en/dashboard/workspace/${workspaceId}/${href}/${field.id}`}
               className="
                 flex items-center gap-2 px-2 py-2 rounded-lg
                 text-sm text-gray-700 dark:text-gray-300

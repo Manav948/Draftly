@@ -76,6 +76,7 @@ const NewTag = ({
     onError: (err: AxiosError, variables, context) => {
       queryClient.setQueryData(["getWorkspaceTags", workspaceId], context?.previousTags);
       toast.error("Unable to create tag. Please try again.");
+      console.log("Tag Creation Error : " , err)
     },
     onSuccess: (createdTag) => {
       queryClient.setQueryData(["getWorkspaceTags", workspaceId], (old: Tag[] | undefined) => {

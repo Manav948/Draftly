@@ -1,7 +1,6 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers'
-import TaskContainer from '@/components/tasks/container/TaskContainer'
-import NewTask from '@/components/tasks/newTask/NewTask'
+import ReadOnlyContent from '@/components/tasks/readOnly/ReadOnlyContent'
 import { getTask, getWorkspace, getWorkspaceRole } from '@/lib/api'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import React from 'react'
@@ -15,6 +14,7 @@ const Tasks = async ({ params }: Params) => {
 
     const session = await checkIfUserCompletedOnboarding(`/dashboard/workspace/${workspace_id}/task/task/${task_id}`)
     const [workspace, userRole, task] = await Promise.all([getWorkspace(workspace_id, session.user.id), getWorkspaceRole(workspace_id, session.user.id), getTask(task_id, session.user.id)])
+    const isSavedByUser = task?.savedTask?.some((s) => s.userId === session.user.id) ?? false;
     return (
         <>
             <DashboardHeader addManualRoutes={[
@@ -37,10 +37,12 @@ const Tasks = async ({ params }: Params) => {
                 )}
             </DashboardHeader>
             <main className="flex flex-col gap-2">
-                <TaskContainer
-                    workspaceId={workspace_id}
-                    taskId={task_id}
-                    initialActiveTags={[]} />
+                <ReadOnlyContent
+                    userRole={userRole}
+                    task={task}
+                    isSavedByUser={isSavedByUser}
+                />
+
             </main>
         </>
     )

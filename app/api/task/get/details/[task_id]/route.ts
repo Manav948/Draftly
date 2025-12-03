@@ -26,8 +26,9 @@ export const GET = async (request: Request, { params }: Params) => {
                 Tag : true,
                 date : true,
                 emoji : true,
-                content : true
-            }
+                content : true,
+                savedTask : true
+            },
         })
         console.log("Tasks",task)
         if (!task) {

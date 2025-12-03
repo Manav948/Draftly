@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       return new NextResponse("Workspace subscription not found", { status: 404 });
     }
 
-    if (subscription.userRole !== "OWNER") {
+    if (subscription.userRole !== "OWNER" ) {
       return new NextResponse("You don't have permission to create a tag", {
         status: 403,
       });

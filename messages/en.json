@@ -279,5 +279,20 @@
     "MIND_MAPS": "Mind_Maps",
     "STUDY": "Study",
     "FILES": "Files"
+  },
+  "READ_ONLY": {
+    "NO_DATE": "No date scheduled",
+    "NO_TITLE": "Untitled Task",
+    "NO_CONTENT": "This task has no details yet.",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "ADD_TO_FAV": "Add to Favorites",
+    "REMOVE_FROM_FAV": "Remove from Favorites",
+    "DIALOG": {
+      "TITLE": "Delete Task",
+      "DESC": "Are you sure you want to delete this task? This action is permanent and all associated notes and activity will be lost.",
+      "BTN_DELETE": "Delete Task",
+      "BTN_PENDING": "Deleting..."
+    }
   }
 }

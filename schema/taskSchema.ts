@@ -8,4 +8,10 @@ export const taskSchema = z.object({
     content: z.any()
 })
 
+export const deleteTaskSchema = z.object({
+   workspaceId : z.string(),
+   taskId : z.string() 
+})
+
+export type DeleteTaskSchema = z.infer<typeof deleteTaskSchema>
 export type TaskSchema = z.infer<typeof taskSchema>
