@@ -3,14 +3,17 @@ import Sidebar from "@/components/sidebar/Sidebar";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ToggleSidebarProvider>
-      <main className="flex min-h-screen bg-white dark:bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 dark:text-white">
-        <Sidebar />
-        <section className="flex flex-col flex-grow">
-          <div className="flex-grow">{children}</div>
-        </section>
-      </main>
-    </ToggleSidebarProvider>
+      <ToggleSidebarProvider>
+        <main className=" min-h-screen
+          bg-gradient-to-b from-white via-white to-gray-50
+          dark:bg-gradient-to-b dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 
+          dark:text-gray-100">
+          <Sidebar />
+          <section className="flex flex-col flex-1 min-h-screen">
+            <div className="flex-1">{children}</div>
+          </section>
+        </main>
+      </ToggleSidebarProvider>
   );
 };
 

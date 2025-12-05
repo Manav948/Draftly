@@ -15,7 +15,7 @@ interface Props {
 
 const WorkspaceTab = ({ workspace , workspaceId }: Props) => {
   return (
-    <div className="w-full max-w-4xl mx-auto mt-12 px-4 sm:px-6">
+    <div className="w-full max-w-4xl mx-auto mt-12">
       {/* Outer Card */}
       <div className="rounded-2xl bg-gradient-to-br from-background/70 via-background/90 to-background/95 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 backdrop-blur-xl border border-border/40 shadow-xl p-6 sm:p-8 transition-all duration-300 hover:shadow-2xl">
 
