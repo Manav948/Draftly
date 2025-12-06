@@ -1,5 +1,6 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers'
+import MindMaps from '@/components/mindMaps/MindMaps'
 import { getWorkspace, getWorkspaceRole } from '@/lib/api'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import React from 'react'
@@ -30,8 +31,9 @@ const page = async ({ params }: Params) => {
           <InviteUsers workspace={workspace} />
         )}
       </DashboardHeader>
-      <main className="flex flex-col gap-2">
+      <main className="flex flex-col gap-2 h-full">
         {workspace.name}
+        <MindMaps />
       </main>
     </>
   )

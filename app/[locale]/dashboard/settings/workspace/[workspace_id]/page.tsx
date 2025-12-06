@@ -6,12 +6,11 @@ import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboar
 import { notFound } from 'next/navigation';
 import React from 'react'
 interface Props {
-    params: {
-        workspace_id: string;
-    };
+    params: Promise<{ workspace_id: string }>
 }
 
-const Workspace = async ({ params: { workspace_id } }: Props) => {
+const Workspace = async ({ params }: Props) => {
+    const { workspace_id } = await params
     const session = await checkIfUserCompletedOnboarding(`/dashboard/settings/workspace/${workspace_id}`)
     const workspace = await getWorkspaceSettings(workspace_id, session.user.id)
     if (!workspace) return notFound()
