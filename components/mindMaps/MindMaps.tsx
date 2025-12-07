@@ -1,6 +1,5 @@
 "use client"
 import React, { useCallback, useMemo, useState } from 'react'
-import { Dialog } from '../ui/dialog'
 import { Button } from '../ui/button'
 import EdgeOptions from './EdgeOptions'
 import TextNode from './nodes/TextNode'
@@ -17,9 +16,7 @@ import ReactFlow, {
 } from 'reactflow'
 
 import "reactflow/dist/style.css"
-import { CupSoda } from 'lucide-react'
 import CustomBeziar from './labels/CustomBeziar'
-import customStaraight from './labels/CustomStraight'
 import CustomStaraight from './labels/CustomStraight'
 import CustomStepRounded from './labels/CustomStepRounded'
 import CustomStepSharp from './labels/CustomStepSharp'
@@ -58,19 +55,14 @@ const MindMaps = () => {
     const [edges, setEdges] = useState<Edge[]>(initialEdges)
     const nodeTypes = useMemo(() => ({ textNode: TextNode }), [])
 
-    const onAddNode = useCallback(() => {
-        setNodes((prev) => {
-            return [
-                ...prev,
-                {
-                    id: Math.random().toString(),
-                    type: "textNode",
-                    position: { x: 0, y: 0 },
-                    data: { label: "test" }
-
-                }
-            ]
-        })
+    const AddNode = useCallback(() => {
+        const newNode = {
+            id: Math.random().toString(),
+            type: "textNode",
+            position: { x: 0, y: 0 },
+            data: { label: "test" }
+        }
+        setNodes((nds) => nds.concat(newNode))
     }, [])
 
     const onNodeChage = useCallback((changes: any) => {
@@ -103,11 +95,27 @@ const MindMaps = () => {
     const nodeType = { textNode: TextNode }
 
     const onSaveChange = useCallback((data: EdgeOptionSchema) => {
-        console.log(data)
+        const { animate, label, edgeId, type } = data;
+        setEdges((prev) => {
+            const edges = prev.map((edge) => edge.id === edgeId ? {
+                ...edge,
+                data: label ? { label } : undefined,
+                type,
+                animated: animate
+            }
+                : edge
+            )
+            return edges
+        })
+        setOpenSheet(false)
     }, [])
 
-    const onDeleteChange = useCallback((edgeId: string) => {
-        console.log(edgeId)
+    const onDeleteEdge = useCallback((edgeId: string) => {
+        setEdges((prev) => {
+            const edges = prev.filter((edge) => edge.id !== edgeId)
+            return edges
+        })
+        setOpenSheet(false)
     }, [])
 
     return (
@@ -118,12 +126,17 @@ const MindMaps = () => {
                         clickedEdge={clickedEdge}
                         isOpen={openSheet}
                         onSave={onSaveChange}
-                        onDeleteLabel={onDeleteChange}
+                        onDeleteEdge={onDeleteEdge}
                     />
                 </Sheet>
             )}
             <div>
-                <Button>Add</Button>
+                <Button
+                    className='bg-red-300 w-12 h-12 z-50'
+                    onClick={AddNode}
+                >
+                    Add
+                </Button>
             </div>
             <div className='h-full'>
                 <ReactFlow

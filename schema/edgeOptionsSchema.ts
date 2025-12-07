@@ -7,7 +7,7 @@ export const edgeOptionSchema = z.object({
         "customStraight",
         "customStepSharp",
         "customStepRounded",
-        "customBaizar"
+        "customBeziar"
     ]),
     animate: z.boolean()
 })

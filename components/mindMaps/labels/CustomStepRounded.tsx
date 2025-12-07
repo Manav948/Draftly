@@ -35,7 +35,7 @@ const CustomStepRounded = ({ id,
         <>
             <BaseEdge id={id} path={edgePath} markerEnd={markerEnd} style={style} />
             <EdgeLabelRenderer>
-                <EdgeLabel labelX={labelX} labelY={labelY} label={data.label} />
+                <EdgeLabel labelX={labelX} labelY={labelY} label={data?.label} />
             </EdgeLabelRenderer>
         </>
     )

@@ -18,7 +18,7 @@ const CustomBeziar = ({ id, sourceX, sourceY, targetX, targetY, sourcePosition, 
         <>
             <BaseEdge id={id} path={edgePath} />
             <EdgeLabelRenderer>
-                <EdgeLabel labelX={labelX} labelY={labelY} label={data.label} />
+                <EdgeLabel labelX={labelX} labelY={labelY} label={data?.label} />
             </EdgeLabelRenderer>
         </>
     )
