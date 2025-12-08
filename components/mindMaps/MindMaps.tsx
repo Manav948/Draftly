@@ -1,5 +1,5 @@
 "use client"
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Button } from '../ui/button'
 import EdgeOptions from './EdgeOptions'
 import TextNode from './nodes/TextNode'
@@ -13,7 +13,9 @@ import ReactFlow, {
     EdgeTypes,
     Node,
     OnConnect,
-    Panel
+    Panel,
+    ReactFlowInstance,
+    ReactFlowJsonObject
 } from 'reactflow'
 
 import "reactflow/dist/style.css"
@@ -24,15 +26,76 @@ import CustomStepSharp from './labels/CustomStepSharp'
 import { Sheet } from '../ui/sheet'
 import { EdgeOptionSchema } from '@/schema/edgeOptionsSchema'
 import { EdgeColors } from '@/types/enum'
+import { MindMap as MindMapType } from '@prisma/client'
+import { useDebouncedCallback } from 'use-debounce'
+import { useMutation } from '@tanstack/react-query'
+import axios, { AxiosError } from 'axios'
+import toast from 'react-hot-toast'
+import { LoadingScreen } from '../common/LoadingScreen'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card'
+import { PlusSquare, SaveIcon } from 'lucide-react'
+import DeleteAllNodes from './DeleteAllNodes'
 
+interface Props {
+    initialInfo: MindMapType,
+    workspaceId: string
+}
 
-const MindMaps = () => {
+const MindMaps = ({ initialInfo, workspaceId }: Props) => {
     const [clickedEdge, setClickedEdge] = useState<Edge | null>(null)
     const [openSheet, setOpenSheet] = useState(false)
-    const [nodes, setNodes] = useState<Node[]>([])
-    const [edges, setEdges] = useState<Edge[]>([])
+    const [nodes, setNodes] = useState<Node[]>([]);
+    const [edges, setEdges] = useState<Edge[]>([]);
     const nodeTypes = useMemo(() => ({ textNode: TextNode }), [])
+    const [isMounted, setIsMounted] = useState(false);
+    const [rfInstace, setRfInstance] = useState<null | ReactFlowInstance>(null)
 
+    const debounced = useDebouncedCallback(() => {
+        console.log("ok")
+    }, 2000)
+
+    const { mutate: updateMindMap } = useMutation({
+        mutationFn: async (flow: ReactFlowJsonObject) => {
+            await axios.post(`/api/mind_maps/update`, {
+                content: flow,
+                workspaceId,
+                mindMapId: initialInfo.id
+            })
+        },
+        onError: (err: AxiosError) => {
+            toast.error("MindMap not Updated")
+        },
+        onSuccess: () => {
+            toast.success("MindMap Updated Successfully")
+        }
+    })
+
+    const onSave = useCallback(() => {
+        if (rfInstace) {
+            const flow = rfInstace.toObject();
+            updateMindMap(flow)
+        }
+    }, [rfInstace, updateMindMap])
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
+    useEffect(() => {
+
+        if (!initialInfo) return;
+
+        const { content } = initialInfo;
+
+        if (content) {
+            const { nodes = [], edges = [] } =
+                content as unknown as ReactFlowJsonObject;
+
+            setNodes(nodes);
+            setEdges(edges);
+        }
+
+    }, [initialInfo]);
     const AddNode = useCallback(() => {
         const newNode = {
             id: Math.random().toString(),
@@ -104,6 +167,7 @@ const MindMaps = () => {
         setOpenSheet(false)
     }, [])
 
+    if (!isMounted) return <LoadingScreen />
     return (
         <div className='w-full h-full flex flex-col'>
             {clickedEdge && (
@@ -121,6 +185,7 @@ const MindMaps = () => {
                     fitView
                     nodes={nodes}
                     nodeTypes={nodeTypes}
+                    onInit={setRfInstance}
                     edges={edges}
                     edgeTypes={edgeTypes}
                     onNodesChange={onNodeChage}
@@ -128,11 +193,30 @@ const MindMaps = () => {
                     onConnect={onConnect}
                     onEdgeClick={onEdgeClick}
                 >
-                    <Panel position='top-left' className='w-1/2 z-50' >
-                    <Button onClick={AddNode}>Add</Button>
+                    <Panel position='top-left' className='bg-background z-50 shadow-sm border rounded-sm py-0.5 px-3' >
+                        <div className='w-full flex gap-2'>
+                            <HoverCard openDelay={250} closeDelay={250}>
+                                <HoverCardTrigger asChild>
+                                    <Button variant={"ghost"} size={"icon"} onClick={AddNode}>
+                                        <PlusSquare size={16} />
+                                    </Button>
+                                </HoverCardTrigger>
+                                <HoverCardContent align='start'>Add Node</HoverCardContent>
+                            </HoverCard>
+
+                             <HoverCard openDelay={250} closeDelay={250}>
+                                <HoverCardTrigger asChild>
+                                    <Button variant={"ghost"} size={"icon"} onClick={onSave}>
+                                        <SaveIcon size={16} />
+                                    </Button>
+                                </HoverCardTrigger>
+                                <HoverCardContent align='start'>Save</HoverCardContent>
+                            </HoverCard>
+
+                            <DeleteAllNodes />
+                        </div>
                     </Panel>
                     <Background />
-                    <Controls />
                 </ReactFlow>
 
             </div>

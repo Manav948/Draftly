@@ -6,6 +6,7 @@ import {
   CalendarRange,
   Files,
   Map,
+  MapIcon,
   PencilRuler,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -14,6 +15,7 @@ import NewTask from "./action/NewTask";
 import { useQuery } from "@tanstack/react-query";
 import { WorkspaceShortCuts } from "@/types/extended";
 import WorkspaceOption from "./WorkspaceOption";
+import NewMindMap from "./action/NewMindMap";
 
 interface Props {
   workspaceId: string;
@@ -90,6 +92,23 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
             </div>
           </WorkspaceOption>
         )}
+
+        {isLoading ? (
+          <p className="px-4 py-3 text-sm text-gray-500">Loading MindMaps...</p>
+        ) : (
+           <WorkspaceOption
+            workspaceId={workspaceId}
+            href={`mind_maps/mind_map`}
+            fields={workspaceShortcuts?.tasks || []}
+            defaultName="Untitled MindMap"
+          >
+            <div className="flex items-center gap-2">
+              <MapIcon size={18} className="text-primary" />
+              <span className="font-medium">MindMap</span>
+            </div>
+          </WorkspaceOption>
+        )}
+
       </div>
 
       {/* Actions */}
@@ -98,6 +117,7 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
           Actions
         </p>
         <NewTask workspaceId={workspaceId} />
+        <NewMindMap workspaceId={workspaceId} />
       </div>
     </div>
   );
