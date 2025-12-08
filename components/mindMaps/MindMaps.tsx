@@ -12,7 +12,8 @@ import ReactFlow, {
     Edge,
     EdgeTypes,
     Node,
-    OnConnect
+    OnConnect,
+    Panel
 } from 'reactflow'
 
 import "reactflow/dist/style.css"
@@ -22,37 +23,14 @@ import CustomStepRounded from './labels/CustomStepRounded'
 import CustomStepSharp from './labels/CustomStepSharp'
 import { Sheet } from '../ui/sheet'
 import { EdgeOptionSchema } from '@/schema/edgeOptionsSchema'
+import { EdgeColors } from '@/types/enum'
 
-const initialNodes: Node[] = [
-    {
-        id: "1",
-        data: { label: "Node 1" },
-        position: { x: 5, y: 5 }
-    },
-    {
-        id: "2",
-        data: { label: "Node 2" },
-        position: { x: 5, y: 100 }
-    },
-    {
-        id: "node-1",
-        type: "textNode",
-        data: { value: 123 },
-        position: { x: 0, y: 0 }
-    }
-];
-
-const initialEdges: Edge[] = [
-    {
-        id: "1-2", source: "1", target: "2", label: "to-the", type: "step", animated: true
-    }
-]
 
 const MindMaps = () => {
     const [clickedEdge, setClickedEdge] = useState<Edge | null>(null)
     const [openSheet, setOpenSheet] = useState(false)
-    const [nodes, setNodes] = useState<Node[]>(initialNodes)
-    const [edges, setEdges] = useState<Edge[]>(initialEdges)
+    const [nodes, setNodes] = useState<Node[]>([])
+    const [edges, setEdges] = useState<Edge[]>([])
     const nodeTypes = useMemo(() => ({ textNode: TextNode }), [])
 
     const AddNode = useCallback(() => {
@@ -60,7 +38,7 @@ const MindMaps = () => {
             id: Math.random().toString(),
             type: "textNode",
             position: { x: 0, y: 0 },
-            data: { label: "test" }
+            data: { text: "test", color: EdgeColors.DEFAULT }
         }
         setNodes((nds) => nds.concat(newNode))
     }, [])
@@ -95,20 +73,28 @@ const MindMaps = () => {
     const nodeType = { textNode: TextNode }
 
     const onSaveChange = useCallback((data: EdgeOptionSchema) => {
-        const { animate, label, edgeId, type } = data;
-        setEdges((prev) => {
-            const edges = prev.map((edge) => edge.id === edgeId ? {
-                ...edge,
-                data: label ? { label } : undefined,
-                type,
-                animated: animate
-            }
-                : edge
+        const { animate, label, edgeId, color, type } = data;
+
+        setEdges((prev) =>
+            prev.map((edge) =>
+                edge.id === edgeId
+                    ? {
+                        ...edge,
+                        type,
+                        animated: animate,
+                        data: {
+                            ...(edge.data ?? {}),
+                            label,
+                            color,
+                        },
+                    }
+                    : edge
             )
-            return edges
-        })
-        setOpenSheet(false)
-    }, [])
+        );
+
+        setOpenSheet(false);
+    }, []);
+
 
     const onDeleteEdge = useCallback((edgeId: string) => {
         setEdges((prev) => {
@@ -130,14 +116,6 @@ const MindMaps = () => {
                     />
                 </Sheet>
             )}
-            <div>
-                <Button
-                    className='bg-red-300 w-12 h-12 z-50'
-                    onClick={AddNode}
-                >
-                    Add
-                </Button>
-            </div>
             <div className='h-full'>
                 <ReactFlow
                     fitView
@@ -150,6 +128,9 @@ const MindMaps = () => {
                     onConnect={onConnect}
                     onEdgeClick={onEdgeClick}
                 >
+                    <Panel position='top-left' className='w-1/2 z-50' >
+                    <Button onClick={AddNode}>Add</Button>
+                    </Panel>
                     <Background />
                     <Controls />
                 </ReactFlow>

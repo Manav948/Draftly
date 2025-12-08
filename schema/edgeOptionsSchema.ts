@@ -9,7 +9,22 @@ export const edgeOptionSchema = z.object({
         "customStepRounded",
         "customBeziar"
     ]),
-    animate: z.boolean()
+    animate: z.boolean(),
+    color : z.enum([
+        "PURPLE",
+        "GREEN",
+        "RED",
+        "YELLOW",
+        "PINK",
+        "EMERALD",
+        "INDIGO",
+        "LIME",
+        "DEFAULT",
+        "CYAN",
+        "ORANGE",
+        'FUCHSIA',
+        "BLUE"
+    ])
 })
 
 export type EdgeOptionSchema = z.infer<typeof edgeOptionSchema>

@@ -14,14 +14,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { NodeColors } from '@/types/enum';
-import { CheckCheck, MoreHorizontal } from 'lucide-react';
+import { CheckCheck, MoreHorizontal, Pencil } from 'lucide-react';
 import React, { useCallback, useState } from 'react'
 import { Handle, Position } from 'reactflow';
 
 interface Props {
     children: React.ReactNode;
     className?: string;
-    color?: NodeColors
+    color?: NodeColors,
+    isEditing: boolean
+    onIsEdit: () => void
 }
 
 const colors = [
@@ -38,7 +40,7 @@ const colors = [
     NodeColors.RED,
     NodeColors.YELLOW
 ]
-const NodeWrapper = ({ children, className, color }: Props) => {
+const NodeWrapper = ({ children, className, color, onIsEdit, isEditing }: Props) => {
 
     const [currentColor, setCurrentColor] = useState<NodeColors | undefined>(color)
     const nodeColor = useCallback((color: NodeColors) => {
@@ -83,45 +85,51 @@ const NodeWrapper = ({ children, className, color }: Props) => {
                     <Handle type='source' position={Position.Right} className={`transition-colors !border-popover duration-200 p-1`} />
                 </>
             </div>
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant={"ghost"}
-                        size={"icon"}
-                        className={`w-6 h-6 hover:bg-transparent ${currentColor === NodeColors.DEFAULT ? "" : "text-white hover:text-white"}`}
-                    >
-                        <MoreHorizontal size={16} />
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent sideOffset={-10} align='start'>
-                    <DropdownMenuGroup>
-                        <DropdownMenuSub>
-                            <DropdownMenuSubTrigger className='cursor-pointer'>
-                                <span>Color</span>
-                            </DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                                <DropdownMenuSubContent className='hover:bg-popover' sideOffset={10}>
-                                    <DropdownMenuItem className='grid grid-cols-3 gap-2 focus:bg-popover'>
-                                        {colors.map((clr, i) => (
-                                            <Button
-                                                key={i}
-                                                onClick={() => onColorSet(clr)}
-                                                className={`w-5 h-5 p-1 rounded-full ${nodeColor(clr)}`}
-                                            >
-                                                {clr === currentColor && <CheckCheck size={16} className={`${clr !== NodeColors.DEFAULT ? "text-white" : ""}`} />}
-                                            </Button>
-                                        ))}
-                                    </DropdownMenuItem>
-                                </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        More
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+            {isEditing && (
+
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant={"ghost"}
+                            size={"icon"}
+                            className={`w-6 h-6 hover:bg-transparent ${currentColor === NodeColors.DEFAULT ? "" : "text-white hover:text-white"}`}
+                        >
+                            <MoreHorizontal size={16} />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent sideOffset={-10} align='start'>
+                        <DropdownMenuItem onClick={() => {onIsEdit()}} className='cursor-pointer gap-2'>
+                        <Pencil size={16}    />
+                        </DropdownMenuItem>
+                        <DropdownMenuGroup>
+                            <DropdownMenuSub>
+                                <DropdownMenuSubTrigger className='cursor-pointer'>
+                                    <span>Color</span>
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuPortal>
+                                    <DropdownMenuSubContent className='hover:bg-popover' sideOffset={10}>
+                                        <DropdownMenuItem className='grid grid-cols-3 gap-2 focus:bg-popover'>
+                                            {colors.map((clr, i) => (
+                                                <Button
+                                                    key={i}
+                                                    onClick={() => onColorSet(clr)}
+                                                    className={`w-5 h-5 p-1 rounded-full ${nodeColor(clr)}`}
+                                                >
+                                                    {clr === currentColor && <CheckCheck size={16} className={`${clr !== NodeColors.DEFAULT ? "text-white" : ""}`} />}
+                                                </Button>
+                                            ))}
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                        </DropdownMenuGroup>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                            More
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )}
         </div>
     )
 }
