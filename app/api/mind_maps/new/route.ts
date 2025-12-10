@@ -1,6 +1,5 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { newTaskSchema } from "@/schema/newTaskSchema";
 import { NextResponse } from "next/server";
 import z from "zod";
 

@@ -31,7 +31,7 @@ const EditTasks = async ({ params }: Params) => {
 
   return (
     <SaveTaskStateProvider>
-      <DashboardHeader addManualRoutes={["dashboard", workspace.name]}>
+      <DashboardHeader>
         {(userRole === "ADMIN" || userRole === "OWNER") && (
           <InviteUsers workspace={workspace} />
         )}

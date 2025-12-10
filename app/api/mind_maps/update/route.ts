@@ -1,8 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { mindMapSchema } from "@/schema/mindMapSchema";
-import { newTaskSchema } from "@/schema/newTaskSchema";
-import { updateTaskSchema } from "@/schema/updateTaskSchema";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -12,13 +10,14 @@ export async function POST(request: Request) {
         return new NextResponse("Unauthorized", { status: 400, statusText: "Unauthorized User" })
     }
     const body: unknown = await request.json();
-
+    console.log(body)
     const result = mindMapSchema.safeParse(body)
+    console.log("result", result)   
 
     if (!result.success) {
         return new NextResponse("Something went wrong", { status: 401 })
     }
-    const { workspaceId, mindmapId, content } = result.data;
+    const { workspaceId, mindMapId, content } = result.data;    
 
     try {
         const user = await db.user.findUnique({
@@ -41,13 +40,9 @@ export async function POST(request: Request) {
             return new NextResponse("User Not Found", { status: 404, statusText: "User not Found" })
         }
 
-        if (user.subscriptions[0].userRole === "CAN_EDIT" || user.subscriptions[0].userRole === "READ_ONLY") {
-            return NextResponse.json("You don't have permisson to delete a picture", { status: 403 })
-        }
-
         const mindmap = await db.mindMap.findUnique({
             where: {
-                id: mindmapId
+                id: mindMapId
             }
         })
 

@@ -20,7 +20,7 @@ export const GET = async (request: Request) => {
         if (!tags) {
             return NextResponse.json("Tag not Found, Please Try again", { status: 401 })
         }
-        return NextResponse.json([], { status: 200 })
+        return NextResponse.json(tags, { status: 200 })
     } catch (_) {
         return NextResponse.json("SomeThing Went Wrong in database, try sometime latter", { status: 404 })
     }

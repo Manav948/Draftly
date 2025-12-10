@@ -8,7 +8,7 @@ interface Params {
 }
 
 export const GET = async (request: Request, { params }: Params) => {
-    const {mind_map_id} = await params
+    const { mind_map_id } = await params
     const url = new URL(request.url)
     const userId = url.searchParams.get("userId")
 
@@ -17,14 +17,14 @@ export const GET = async (request: Request, { params }: Params) => {
     }
     try {
         const mindMap = await db.mindMap.findUnique({
-           where :{
-            id : mind_map_id
-           }
+            where: {
+                id: mind_map_id,
+            },
         })
         if (!mindMap) {
-            return NextResponse.json("mindMap not found", { status: 200 })
+            return NextResponse.json(null, { status: 404 })
         }
-        return NextResponse.json({mindMap}, { status: 202 })
+        return NextResponse.json(mindMap, { status: 202 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

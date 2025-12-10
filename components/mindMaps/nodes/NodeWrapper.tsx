@@ -16,9 +16,10 @@ import { cn } from '@/lib/utils';
 import { NodeColors } from '@/types/enum';
 import { CheckCheck, MoreHorizontal, Pencil } from 'lucide-react';
 import React, { useCallback, useState } from 'react'
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, useReactFlow } from 'reactflow';
 
 interface Props {
+    nodeId: string
     children: React.ReactNode;
     className?: string;
     color?: NodeColors,
@@ -40,8 +41,17 @@ const colors = [
     NodeColors.RED,
     NodeColors.YELLOW
 ]
-const NodeWrapper = ({ children, className, color, onIsEdit, isEditing }: Props) => {
+const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId }: Props) => {
 
+    const { setNodes } = useReactFlow()
+
+    const onSaveNode = useCallback((color: NodeColors) => {
+        setNodes((prevNodes) => {
+            const nodes = prevNodes.map((node) => node.id === nodeId ? { ...node, data: { ...node.data, color } } : node)
+
+            return nodes
+        })
+    }, [])
     const [currentColor, setCurrentColor] = useState<NodeColors | undefined>(color)
     const nodeColor = useCallback((color: NodeColors) => {
         switch (color) {
@@ -74,6 +84,7 @@ const NodeWrapper = ({ children, className, color, onIsEdit, isEditing }: Props)
 
     const onColorSet = useCallback((newColor: NodeColors) => {
         setCurrentColor(newColor)
+        onSaveNode(newColor)
     }, [])
 
     return (
@@ -98,8 +109,8 @@ const NodeWrapper = ({ children, className, color, onIsEdit, isEditing }: Props)
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent sideOffset={-10} align='start'>
-                        <DropdownMenuItem onClick={() => {onIsEdit()}} className='cursor-pointer gap-2'>
-                        <Pencil size={16}    />
+                        <DropdownMenuItem onClick={() => { onIsEdit() }} className='cursor-pointer gap-2'>
+                            <Pencil size={16} />
                         </DropdownMenuItem>
                         <DropdownMenuGroup>
                             <DropdownMenuSub>

@@ -1,20 +1,33 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react'
-import { NodeProps } from 'reactflow'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { NodeProps, useReactFlow } from 'reactflow'
 import NodeWrapper from './NodeWrapper'
 import { useForm } from 'react-hook-form'
 import { nodeSchema, NodeSchema } from '@/schema/nodeSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import TextAreaAutoSize from "react-textarea-autosize"
 import { Button } from '@/components/ui/button'
-import useOnEditNode from '@/hooks/react-flow/useOnEditNode'
 import { cn } from '@/lib/utils'
+import { NodeColors } from '@/types/enum'
 
 type NodeData = {
     text: string
+    colors: NodeColors
 }
 
 const TextNode = ({ data, id }: NodeProps<NodeData>) => {
+
+    const { setNodes } = useReactFlow()
+
+    const onSaveNode = useCallback((nodeId: string, nodeText: string) => {
+        setNodes((prevNodes) => {
+            const nodes = prevNodes.map((node) => node.id === nodeId
+                ? { ...node, data: { ...node.data, text: nodeText } } : node
+            )
+            return nodes
+        })
+    }, [setNodes])
+
     const [isEdit, setIsEdit] = useState(false);
     const _nodeText = useRef<HTMLTextAreaElement>(null)
 
@@ -29,7 +42,7 @@ const TextNode = ({ data, id }: NodeProps<NodeData>) => {
         setIsEdit((prev) => !prev)
     }
     const onSubmit = (data: NodeSchema) => {
-        onEditNode(id, data.text)
+        onSaveNode(id, data.text)
         onIsEdit();
 
     }
@@ -41,9 +54,7 @@ const TextNode = ({ data, id }: NodeProps<NodeData>) => {
 
     const { ref: nodeText, ...rest } = form.register("text")
 
-    const { onEdit: onEditNode } = useOnEditNode()
-
-    return <NodeWrapper isEditing={true} onIsEdit={onIsEdit}>
+    return <NodeWrapper nodeId={id} color={data.colors} isEditing={true} onIsEdit={onIsEdit}>
         <div className={cn(
             "relative w-[220px] rounded-lg border px-3 py-2 transition-all duration-200",
         )}>

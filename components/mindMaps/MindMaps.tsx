@@ -25,7 +25,7 @@ import CustomStepRounded from './labels/CustomStepRounded'
 import CustomStepSharp from './labels/CustomStepSharp'
 import { Sheet } from '../ui/sheet'
 import { EdgeOptionSchema } from '@/schema/edgeOptionsSchema'
-import { EdgeColors } from '@/types/enum'
+import { NodeColors } from '@/types/enum'
 import { MindMap as MindMapType } from '@prisma/client'
 import { useDebouncedCallback } from 'use-debounce'
 import { useMutation } from '@tanstack/react-query'
@@ -63,6 +63,7 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
             })
         },
         onError: (err: AxiosError) => {
+            console.log(err)
             toast.error("MindMap not Updated")
         },
         onSuccess: () => {
@@ -71,11 +72,14 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
     })
 
     const onSave = useCallback(() => {
-        if (rfInstace) {
-            const flow = rfInstace.toObject();
-            updateMindMap(flow)
-        }
-    }, [rfInstace, updateMindMap])
+        if (!rfInstace) return;
+
+        
+
+        const flow = rfInstace.toObject();
+        updateMindMap(flow);
+
+    }, [rfInstace, initialInfo, updateMindMap]);
 
     useEffect(() => {
         setIsMounted(true)
@@ -101,7 +105,7 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
             id: Math.random().toString(),
             type: "textNode",
             position: { x: 0, y: 0 },
-            data: { text: "test", color: EdgeColors.DEFAULT }
+            data: { text: "test", colors: NodeColors.CYAN }
         }
         setNodes((nds) => nds.concat(newNode))
     }, [])
@@ -110,7 +114,8 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
         setNodes((nds) => {
             return applyNodeChanges(changes, nds)
         })
-    }, [])
+        debounced()
+    }, [debounced])
 
     const onEdgeChage = useCallback((changes: any) => {
         setEdges((eds) => {
@@ -204,7 +209,7 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
                                 <HoverCardContent align='start'>Add Node</HoverCardContent>
                             </HoverCard>
 
-                             <HoverCard openDelay={250} closeDelay={250}>
+                            <HoverCard openDelay={250} closeDelay={250}>
                                 <HoverCardTrigger asChild>
                                     <Button variant={"ghost"} size={"icon"} onClick={onSave}>
                                         <SaveIcon size={16} />

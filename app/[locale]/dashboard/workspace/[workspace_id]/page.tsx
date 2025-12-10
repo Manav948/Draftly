@@ -33,7 +33,7 @@ const page = async ({ params }: Params) => {
       </DashboardHeader>
       <main className="flex flex-col gap-2 h-full">
         {workspace.name}
-        <MindMaps />
+        {/* <MindMaps initialInfo={} /> */}
       </main>
     </>
   )
