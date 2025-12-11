@@ -35,24 +35,32 @@ import { LoadingScreen } from '../common/LoadingScreen'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card'
 import { PlusSquare, SaveIcon } from 'lucide-react'
 import DeleteAllNodes from './DeleteAllNodes'
+import { useAutoSaveMindMap } from '@/context/AutoSaveMindMap'
+import { useSaveTaskState } from '@/context/TaskSavingContext'
 
 interface Props {
     initialInfo: MindMapType,
     workspaceId: string
+    canEdit: boolean
 }
 
-const MindMaps = ({ initialInfo, workspaceId }: Props) => {
+const MindMaps = ({ initialInfo, workspaceId, canEdit }: Props) => {
     const [clickedEdge, setClickedEdge] = useState<Edge | null>(null)
     const [openSheet, setOpenSheet] = useState(false)
     const [nodes, setNodes] = useState<Node[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const nodeTypes = useMemo(() => ({ textNode: TextNode }), [])
     const [isMounted, setIsMounted] = useState(false);
-    const [rfInstace, setRfInstance] = useState<null | ReactFlowInstance>(null)
+    const [isEdit, setIdEdit] = useState(canEdit)
 
-    const debounced = useDebouncedCallback(() => {
-        console.log("ok")
-    }, 2000)
+    const { setRfInstance, onSaved, onSetIds } = useAutoSaveMindMap();
+    const { onSetStatus } = useSaveTaskState()
+
+
+    const debouncedMindMapInfo = useDebouncedCallback(() => {
+        onSetStatus("pending")
+        onSaved()
+    }, 3000)
 
     const { mutate: updateMindMap } = useMutation({
         mutationFn: async (flow: ReactFlowJsonObject) => {
@@ -71,15 +79,15 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
         }
     })
 
-    const onSave = useCallback(() => {
-        if (!rfInstace) return;
+    // const onSave = useCallback(() => {
+    //     if (!rfInstace) return;
 
-        
 
-        const flow = rfInstace.toObject();
-        updateMindMap(flow);
 
-    }, [rfInstace, initialInfo, updateMindMap]);
+    //     const flow = rfInstace.toObject();
+    //     updateMindMap(flow);
+
+    // }, [rfInstace, initialInfo, updateMindMap]);
 
     useEffect(() => {
         setIsMounted(true)
@@ -98,8 +106,9 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
             setNodes(nodes);
             setEdges(edges);
         }
+        onSetIds(initialInfo.id, workspaceId)
 
-    }, [initialInfo]);
+    }, [initialInfo, onSetIds, workspaceId, initialInfo.id]);
     const AddNode = useCallback(() => {
         const newNode = {
             id: Math.random().toString(),
@@ -108,14 +117,29 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
             data: { text: "test", colors: NodeColors.CYAN }
         }
         setNodes((nds) => nds.concat(newNode))
+        onSetStatus("unsaved")
+        debouncedMindMapInfo()
+    }, [onSetStatus, debouncedMindMapInfo])
+
+    const onNodeDrag = useCallback(() => {
+        onSetStatus("unsaved")
+        debouncedMindMapInfo()
+    }, [])
+
+    const onNodeDelete = useCallback(() => {
+        onSetStatus("unsaved"),
+            debouncedMindMapInfo()
     }, [])
 
     const onNodeChage = useCallback((changes: any) => {
         setNodes((nds) => {
             return applyNodeChanges(changes, nds)
         })
-        debounced()
-    }, [debounced])
+    }, [])
+
+    useEffect(() => {
+        setIdEdit(canEdit)
+    }, [canEdit])
 
     const onEdgeChage = useCallback((changes: any) => {
         setEdges((eds) => {
@@ -124,13 +148,16 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
     }, [])
 
     const onEdgeClick = useCallback((event: React.MouseEvent, edges: Edge) => {
+        if (!isEdit) return
         setClickedEdge(edges)
         setOpenSheet(true)
-    }, [])
+    }, [isEdit])
 
     const onConnect: OnConnect = useCallback((params) => {
         setEdges((eds) => addEdge(params, eds))
-    }, [])
+        onSetStatus("unsaved")
+        debouncedMindMapInfo()
+    }, [onSetStatus, debouncedMindMapInfo])
 
     const edgeTypes: EdgeTypes = {
         customBeziar: CustomBeziar,
@@ -161,7 +188,9 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
         );
 
         setOpenSheet(false);
-    }, []);
+        onSetStatus("unsaved")
+        debouncedMindMapInfo()
+    }, [debouncedMindMapInfo, onSetStatus]);
 
 
     const onDeleteEdge = useCallback((edgeId: string) => {
@@ -170,7 +199,9 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
             return edges
         })
         setOpenSheet(false)
-    }, [])
+        onSetStatus("unsaved")
+        debouncedMindMapInfo()
+    }, [onSetStatus, debouncedMindMapInfo])
 
     if (!isMounted) return <LoadingScreen />
     return (
@@ -197,30 +228,45 @@ const MindMaps = ({ initialInfo, workspaceId }: Props) => {
                     onEdgesChange={onEdgeChage}
                     onConnect={onConnect}
                     onEdgeClick={onEdgeClick}
+                    onNodeDrag={onNodeDrag}
+                    onNodesDelete={onNodeDelete}
+                    connectOnClick={isEdit}
+                    edgesUpdatable={isEdit}
+                    edgesFocusable={isEdit}
+                    nodesDraggable={isEdit}
+                    nodesConnectable={isEdit}
+                    nodesFocusable={isEdit}
+                    elementsSelectable={isEdit}
                 >
-                    <Panel position='top-left' className='bg-background z-50 shadow-sm border rounded-sm py-0.5 px-3' >
-                        <div className='w-full flex gap-2'>
-                            <HoverCard openDelay={250} closeDelay={250}>
-                                <HoverCardTrigger asChild>
-                                    <Button variant={"ghost"} size={"icon"} onClick={AddNode}>
-                                        <PlusSquare size={16} />
-                                    </Button>
-                                </HoverCardTrigger>
-                                <HoverCardContent align='start'>Add Node</HoverCardContent>
-                            </HoverCard>
+                    {isEdit && (
+                        <Panel position='top-left' className='bg-background z-50 shadow-sm border rounded-sm py-0.5 px-3' >
+                            <div className='w-full flex gap-2'>
+                                <HoverCard openDelay={250} closeDelay={250}>
+                                    <HoverCardTrigger asChild>
+                                        <Button variant={"ghost"} size={"icon"} onClick={AddNode}>
+                                            <PlusSquare size={16} />
+                                        </Button>
+                                    </HoverCardTrigger>
+                                    <HoverCardContent align='start'>Add Node</HoverCardContent>
+                                </HoverCard>
 
-                            <HoverCard openDelay={250} closeDelay={250}>
-                                <HoverCardTrigger asChild>
-                                    <Button variant={"ghost"} size={"icon"} onClick={onSave}>
-                                        <SaveIcon size={16} />
-                                    </Button>
-                                </HoverCardTrigger>
-                                <HoverCardContent align='start'>Save</HoverCardContent>
-                            </HoverCard>
+                                <HoverCard openDelay={250} closeDelay={250}>
+                                    <HoverCardTrigger asChild>
+                                        <Button variant={"ghost"} size={"icon"} onClick={() => {
+                                            onSetStatus("pending")
+                                            onSaved()
+                                        }}
+                                        >
+                                            <SaveIcon size={16} />
+                                        </Button>
+                                    </HoverCardTrigger>
+                                    <HoverCardContent align='start'>Save</HoverCardContent>
+                                </HoverCard>
 
-                            <DeleteAllNodes />
-                        </div>
-                    </Panel>
+                                <DeleteAllNodes />
+                            </div>
+                        </Panel>
+                    )}
                     <Background />
                 </ReactFlow>
 

@@ -21,13 +21,19 @@ export const GET = async (request: Request,) => {
                         title: true,
                         emoji: true
                     }
+                },
+                mindMaps : {
+                    select : {
+                        id : true,
+                        title : true
+                    }
                 }
             }
         })
         if (!workspaceShortCuts) {
             return NextResponse.json("WorkspaceShortcuts not found", { status: 200 })
         }
-        return NextResponse.json({ tasks: workspaceShortCuts.Task }, { status: 202 })
+        return NextResponse.json({ tasks: workspaceShortCuts.Task,mindMaps : workspaceShortCuts.mindMaps }, { status: 202 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

@@ -9,6 +9,9 @@ import TextAreaAutoSize from "react-textarea-autosize"
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { NodeColors } from '@/types/enum'
+import { useSaveTaskState } from '@/context/TaskSavingContext'
+import { useAutoSaveMindMap } from '@/context/AutoSaveMindMap'
+import { useDebouncedCallback } from 'use-debounce'
 
 type NodeData = {
     text: string
@@ -18,6 +21,13 @@ type NodeData = {
 const TextNode = ({ data, id }: NodeProps<NodeData>) => {
 
     const { setNodes } = useReactFlow()
+    const { onSaved } = useAutoSaveMindMap();
+    const { onSetStatus } = useSaveTaskState()
+
+    const debouncedMindMapInfo = useDebouncedCallback(() => {
+        onSetStatus("pending")
+        onSaved()
+    }, 3000)
 
     const onSaveNode = useCallback((nodeId: string, nodeText: string) => {
         setNodes((prevNodes) => {
@@ -26,7 +36,9 @@ const TextNode = ({ data, id }: NodeProps<NodeData>) => {
             )
             return nodes
         })
-    }, [setNodes])
+        onSetStatus("unsaved")
+        debouncedMindMapInfo()
+    }, [setNodes , onSetStatus , debouncedMindMapInfo])
 
     const [isEdit, setIsEdit] = useState(false);
     const _nodeText = useRef<HTMLTextAreaElement>(null)

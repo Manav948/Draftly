@@ -1,6 +1,7 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers'
 import MindMaps from '@/components/mindMaps/MindMaps'
+import { AutoSaveMindMapProvider } from '@/context/AutoSaveMindMap'
 import { SaveTaskStateProvider } from '@/context/TaskSavingContext'
 import { getMindMap, getWorkspace, getWorkspaceRole } from '@/lib/api'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
@@ -19,19 +20,21 @@ const MindMapPage = async ({ params }: Params) => {
     getWorkspaceRole(workspace_id, session.user.id),
     getMindMap(mind_map_id, session.user.id)])
 
-  console.log("MindMap id : ", mind_map_id)
-  console.log("MindMap : ", mindMap)
+    const canEdit = userRole === "ADMIN" || userRole === "OWNER" ? true : false
   return (
     <SaveTaskStateProvider>
-      <DashboardHeader>
-        {(userRole === "ADMIN" || userRole === "OWNER") && (
-          <InviteUsers workspace={workspace} />
-        )}
-      </DashboardHeader>
+      <AutoSaveMindMapProvider>
+        <DashboardHeader>
+          { canEdit && (
+            <InviteUsers workspace={workspace} />
+          )}
+        </DashboardHeader>
 
-      <main className="flex flex-col gap-2 h-full">
-        <MindMaps initialInfo={mindMap} workspaceId={workspace_id} />
-      </main>
+        <main className="flex flex-col gap-2 h-full">
+          <MindMaps initialInfo={mindMap} workspaceId={workspace_id} canEdit={canEdit} />
+        </main>
+      </AutoSaveMindMapProvider>
+
     </SaveTaskStateProvider>
   )
 }

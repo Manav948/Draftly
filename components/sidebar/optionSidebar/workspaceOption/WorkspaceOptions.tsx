@@ -99,7 +99,7 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
            <WorkspaceOption
             workspaceId={workspaceId}
             href={`mind_maps/mind_map`}
-            fields={workspaceShortcuts?.tasks || []}
+            fields={workspaceShortcuts?.mindMaps || []}
             defaultName="Untitled MindMap"
           >
             <div className="flex items-center gap-2">

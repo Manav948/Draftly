@@ -35,6 +35,12 @@ export type ExtendedTask = {
 
   savedTask?: savedTask[]; 
 };
+
+export interface ShortMindMap {
+    id : string,
+    title : string
+}
 export interface WorkspaceShortCuts  extends Workspace {
     tasks : ShortTask[]
+    mindMaps : ShortMindMap[]
 }

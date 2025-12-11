@@ -12,11 +12,14 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { useAutoSaveMindMap } from '@/context/AutoSaveMindMap';
+import { useSaveTaskState } from '@/context/TaskSavingContext';
 import { cn } from '@/lib/utils';
 import { NodeColors } from '@/types/enum';
 import { CheckCheck, MoreHorizontal, Pencil } from 'lucide-react';
 import React, { useCallback, useState } from 'react'
 import { Handle, Position, useReactFlow } from 'reactflow';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface Props {
     nodeId: string
@@ -44,14 +47,23 @@ const colors = [
 const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId }: Props) => {
 
     const { setNodes } = useReactFlow()
+    const { onSaved } = useAutoSaveMindMap();
+    const { onSetStatus } = useSaveTaskState()
+
+    const debouncedMindMapInfo = useDebouncedCallback(() => {
+        onSetStatus("pending")
+        onSaved()
+    }, 3000)
 
     const onSaveNode = useCallback((color: NodeColors) => {
         setNodes((prevNodes) => {
             const nodes = prevNodes.map((node) => node.id === nodeId ? { ...node, data: { ...node.data, color } } : node)
-
             return nodes
         })
-    }, [])
+        onSetStatus("unsaved")
+        debouncedMindMapInfo()
+    }, [onSetStatus, debouncedMindMapInfo, onSaved])
+
     const [currentColor, setCurrentColor] = useState<NodeColors | undefined>(color)
     const nodeColor = useCallback((color: NodeColors) => {
         switch (color) {
@@ -85,7 +97,7 @@ const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId }
     const onColorSet = useCallback((newColor: NodeColors) => {
         setCurrentColor(newColor)
         onSaveNode(newColor)
-    }, [])
+    }, [onSaveNode])
 
     return (
         <div className={cn(`max-w-md text-xs px-3 py-1.5 rounded-sm flex items-start justify-between transition-colors duration-200 gap-2 ${nodeColor(currentColor!)}`, className)}>
