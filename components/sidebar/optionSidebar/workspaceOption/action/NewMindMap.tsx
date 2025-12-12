@@ -27,7 +27,7 @@ const NewMindMap = ({ workspaceId }: Props) => {
     },
     onSuccess: (data: MindMap) => {
       toast.success("MindMap has been created")
-      router.push(`/dashboard/workspace/${workspaceId}/mind_maps/mind_map/${data.id}`)
+      router.push(`/dashboard/workspace/${workspaceId}/mind_maps/mind_map/${data.id}/edit`)
     },
     mutationKey: ["newMindMap"]
   })

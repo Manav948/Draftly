@@ -15,6 +15,7 @@ import EditorTask from "../editor/Editor";
 import { useDebounce, useDebouncedCallback } from "use-debounce"
 import { useSaveTaskState } from "@/context/TaskSavingContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 interface Props {
     workspaceId: string;
@@ -75,7 +76,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
             const sel = tags?.find((t) => t.id === tagId);
             return sel ? [...prev, sel] : prev;
         });
-
+        deboundedActiveTag()
     };
 
     const onUpdateActiveTagsHandler = (
@@ -86,11 +87,13 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
         setCurrentActiveTags((prev) =>
             prev.map((tag) => (tag.id === id ? { ...tag, color, name } : tag))
         );
+        deboundedActiveTag()
     };
 
     const onDeleteActiveTagHandler = (tagId: string) => {
         if (status === "unsaved") return onSetStatus("unsaved")
         setCurrentActiveTags((prev) => prev.filter((tag) => tag.id !== tagId));
+        deboundedActiveTag()
     };
 
     const { ref: titleRef, ...rest } = form.register("title");
@@ -107,6 +110,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
             onSetStatus("unsaved")
         },
         onSuccess: () => {
+            toast.success("Task Saved")
             onSetStatus("saved")
         }
     })
@@ -123,6 +127,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
             onSetStatus("unsaved")
         },
         onSuccess: () => {
+            toast.success("Task Saved")
             onSetStatus("saved")
         }
     })
@@ -131,6 +136,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
         useCallback((value: string) => {
             onSetStatus("pending")
             updatTaskTitle(value)
+            toast.success("Task Saved")
         }, [])
         , 2000
     )
@@ -139,6 +145,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
         onSetStatus("pending")
         const tagsId = currentActiveTags.map((tagId) => tagId.id)
         updatTaskActiveTag(tagsId)
+        toast.success("Task Saved")
     }, 2000)
 
     return (

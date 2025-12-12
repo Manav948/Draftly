@@ -37,6 +37,8 @@ import { PlusSquare, SaveIcon } from 'lucide-react'
 import DeleteAllNodes from './DeleteAllNodes'
 import { useAutoSaveMindMap } from '@/context/AutoSaveMindMap'
 import { useSaveTaskState } from '@/context/TaskSavingContext'
+import { Separator } from '../ui/separator'
+import MindMapTagSelector from './MindMapTagSelector'
 
 interface Props {
     initialInfo: MindMapType,
@@ -78,16 +80,6 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit }: Props) => {
             toast.success("MindMap Updated Successfully")
         }
     })
-
-    // const onSave = useCallback(() => {
-    //     if (!rfInstace) return;
-
-
-
-    //     const flow = rfInstace.toObject();
-    //     updateMindMap(flow);
-
-    // }, [rfInstace, initialInfo, updateMindMap]);
 
     useEffect(() => {
         setIsMounted(true)
@@ -264,6 +256,10 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit }: Props) => {
                                 </HoverCard>
 
                                 <DeleteAllNodes />
+                                <div>
+                                    <Separator orientation='vertical' />
+                                </div>
+                                <MindMapTagSelector />
                             </div>
                         </Panel>
                     )}

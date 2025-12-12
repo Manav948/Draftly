@@ -149,6 +149,7 @@ model Tag {
   color       WorkspaceIconColor
   workspace   Workspace?         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String?
+  mindMaps    MindMap[]
 
   @@index([workspaceId])
 }
@@ -192,6 +193,7 @@ model MindMap {
   workspaceId   String
   content       Json?
   title         String
+  tags          Tag[]
 
   @@index([workspaceId])
   @@index([updatedUserId])

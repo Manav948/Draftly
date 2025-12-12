@@ -5,17 +5,18 @@ import { SaveTaskStateProvider } from '@/context/TaskSavingContext'
 import { AutoSaveMindMapProvider } from '@/context/AutoSaveMindMap'
 import { getMindMap, getWorkspace, getWorkspaceRole } from '@/lib/api'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
 interface Params {
   params: Promise<{ mind_map_id: string; workspace_id: string }>
 }
 
-const ViewMindMapPage = async ({ params }: Params) => {
+const EditMindMapPage = async ({ params }: Params) => {
   const { mind_map_id, workspace_id } = await params
 
   const session = await checkIfUserCompletedOnboarding(
-    `/dashboard/workspace/${workspace_id}/mind_maps/mind_map/${mind_map_id}`
+    `/dashboard/workspace/${workspace_id}/mind_maps/mind_map/${mind_map_id}/edit`
   )
 
   const [workspace, userRole, mindMap] = await Promise.all([
@@ -26,6 +27,12 @@ const ViewMindMapPage = async ({ params }: Params) => {
 
   const canEdit = userRole === 'ADMIN' || userRole === 'OWNER'
 
+  if (!canEdit) {
+    return redirect(
+      `/dashboard/workspace/${workspace_id}/mind_maps/mind_map/${mind_map_id}`
+    )
+  }
+
   return (
     <SaveTaskStateProvider>
       <AutoSaveMindMapProvider>
@@ -34,11 +41,15 @@ const ViewMindMapPage = async ({ params }: Params) => {
         </DashboardHeader>
 
         <main className="flex flex-col gap-2 h-full">
-          <MindMaps initialInfo={mindMap} workspaceId={workspace.id} canEdit={canEdit} />
+          <MindMaps
+            initialInfo={mindMap}
+            workspaceId={workspace.id}
+            canEdit={canEdit}
+          />
         </main>
       </AutoSaveMindMapProvider>
     </SaveTaskStateProvider>
   )
 }
 
-export default ViewMindMapPage
+export default EditMindMapPage

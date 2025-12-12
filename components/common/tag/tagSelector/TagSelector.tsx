@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import CommandContainer from "./CommandContainer";
 import { Tag, WorkspaceIconColor } from "@prisma/client";
 import { LoadingState } from "@/components/ui/LoadingState";
+import { cn } from "@/lib/utils";
 
 interface Props {
   tags?: Tag[];
@@ -19,6 +20,8 @@ interface Props {
   onUpdateActiveTags?: (id: string, color: WorkspaceIconColor, name: string) => void;
   isLoading?: boolean;
   onDeleteActiveTag?: (tagId: string) => void;
+  className?: string
+  plusIconSize?: number
 }
 
 const TagSelector = ({
@@ -29,8 +32,10 @@ const TagSelector = ({
   onUpdateActiveTags,
   isLoading = false,
   onDeleteActiveTag,
+  className,
+  plusIconSize = 16
 }: Props) => {
-  
+
   const [localTags, setLocalTags] = useState<Tag[]>(tags);
   useEffect(() => {
     if (tags.length !== localTags.length) {
@@ -52,9 +57,9 @@ const TagSelector = ({
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 rounded-md transition-all hover:bg-accent"
+          className={cn(`flex items-center gap-2 rounded-md transition-all hover:bg-accent`, className)}
         >
-          <Plus size={16} />
+          <Plus size={plusIconSize} />
           <span className="hidden sm:inline">New Tag</span>
           <span className="sm:hidden">Tag</span>
         </Button>
@@ -77,7 +82,7 @@ const TagSelector = ({
             workspaceId={workspaceId}
             onUpdateActiveTags={onUpdateActiveTags}
             onDeleteActiveTag={onDeleteActiveTag}
-            onCreateLocalTag={handleCreateLocalTag}   
+            onCreateLocalTag={handleCreateLocalTag}
           />
         )}
       </DropdownMenuContent>
