@@ -45,6 +45,7 @@ const EditMindMapPage = async ({ params }: Params) => {
             initialInfo={mindMap}
             workspaceId={workspace.id}
             canEdit={canEdit}
+            initialActiveTag={mindMap.tags || []}
           />
         </main>
       </AutoSaveMindMapProvider>

@@ -20,11 +20,14 @@ export const GET = async (request: Request, { params }: Params) => {
             where: {
                 id: mind_map_id,
             },
+            include : {
+                tags : true
+            }
         })
         if (!mindMap) {
             return NextResponse.json(null, { status: 404 })
         }
-        return NextResponse.json(mindMap, { status: 202 })
+        return NextResponse.json({...mindMap , tags : mindMap.tags}, { status: 202 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

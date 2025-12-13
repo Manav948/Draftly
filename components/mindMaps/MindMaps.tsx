@@ -14,7 +14,6 @@ import ReactFlow, {
     Node,
     OnConnect,
     Panel,
-    ReactFlowInstance,
     ReactFlowJsonObject
 } from 'reactflow'
 
@@ -26,7 +25,7 @@ import CustomStepSharp from './labels/CustomStepSharp'
 import { Sheet } from '../ui/sheet'
 import { EdgeOptionSchema } from '@/schema/edgeOptionsSchema'
 import { NodeColors } from '@/types/enum'
-import { MindMap as MindMapType } from '@prisma/client'
+import { MindMap as MindMapType, Tag } from '@prisma/client'
 import { useDebouncedCallback } from 'use-debounce'
 import { useMutation } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
@@ -44,9 +43,10 @@ interface Props {
     initialInfo: MindMapType,
     workspaceId: string
     canEdit: boolean
+    initialActiveTag: Tag[]
 }
 
-const MindMaps = ({ initialInfo, workspaceId, canEdit }: Props) => {
+const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props) => {
     const [clickedEdge, setClickedEdge] = useState<Edge | null>(null)
     const [openSheet, setOpenSheet] = useState(false)
     const [nodes, setNodes] = useState<Node[]>([]);
@@ -259,7 +259,12 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit }: Props) => {
                                 <div>
                                     <Separator orientation='vertical' />
                                 </div>
-                                <MindMapTagSelector />
+                                <MindMapTagSelector
+                                    workspaceId={workspaceId}
+                                    initialActiveTag={initialActiveTag}
+                                    mindMapId={initialInfo.id}
+                                    isMounted={isMounted}
+                                />
                             </div>
                         </Panel>
                     )}

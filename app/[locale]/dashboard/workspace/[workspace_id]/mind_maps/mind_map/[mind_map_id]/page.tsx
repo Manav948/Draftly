@@ -34,7 +34,12 @@ const ViewMindMapPage = async ({ params }: Params) => {
         </DashboardHeader>
 
         <main className="flex flex-col gap-2 h-full">
-          <MindMaps initialInfo={mindMap} workspaceId={workspace.id} canEdit={canEdit} />
+          <MindMaps
+            initialInfo={mindMap}
+            workspaceId={workspace.id}
+            canEdit={canEdit}
+            initialActiveTag={mindMap.tags || []}
+          />
         </main>
       </AutoSaveMindMapProvider>
     </SaveTaskStateProvider>
