@@ -25,7 +25,8 @@ export const GET = async (request: Request,) => {
                 mindMaps : {
                     select : {
                         id : true,
-                        title : true
+                        title : true,
+                        emoji : true
                     }
                 }
             }

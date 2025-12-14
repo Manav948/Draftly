@@ -38,9 +38,11 @@ import { useAutoSaveMindMap } from '@/context/AutoSaveMindMap'
 import { useSaveTaskState } from '@/context/TaskSavingContext'
 import { Separator } from '../ui/separator'
 import MindMapTagSelector from './MindMapTagSelector'
+import EditInfo from './editInfo/EditInfo'
+import { ExtendedMindMap } from '@/types/extended'
 
 interface Props {
-    initialInfo: MindMapType,
+    initialInfo: ExtendedMindMap,
     workspaceId: string
     canEdit: boolean
     initialActiveTag: Tag[]
@@ -196,6 +198,7 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
     }, [onSetStatus, debouncedMindMapInfo])
 
     if (!isMounted) return <LoadingScreen />
+
     return (
         <div className='w-full h-full flex flex-col'>
             {clickedEdge && (
@@ -242,6 +245,13 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
                                     <HoverCardContent align='start'>Add Node</HoverCardContent>
                                 </HoverCard>
 
+                                <EditInfo
+                                    workspaceId={workspaceId}
+                                    icon={initialInfo.emoji}
+                                    title={initialInfo.title}
+                                    mapId={initialInfo.id}
+                                />
+
                                 <HoverCard openDelay={250} closeDelay={250}>
                                     <HoverCardTrigger asChild>
                                         <Button variant={"ghost"} size={"icon"} onClick={() => {
@@ -255,7 +265,7 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
                                     <HoverCardContent align='start'>Save</HoverCardContent>
                                 </HoverCard>
 
-                                <DeleteAllNodes />
+                                <DeleteAllNodes workspaceId={workspaceId} mindMapId={initialInfo.id} />
                                 <div>
                                     <Separator orientation='vertical' />
                                 </div>

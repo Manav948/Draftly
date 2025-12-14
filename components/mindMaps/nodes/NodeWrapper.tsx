@@ -16,7 +16,7 @@ import { useAutoSaveMindMap } from '@/context/AutoSaveMindMap';
 import { useSaveTaskState } from '@/context/TaskSavingContext';
 import { cn } from '@/lib/utils';
 import { NodeColors } from '@/types/enum';
-import { CheckCheck, MoreHorizontal, Pencil } from 'lucide-react';
+import { CheckCheck, MoreHorizontal, Palette, Pencil, Trash2 } from 'lucide-react';
 import React, { useCallback, useState } from 'react'
 import { Handle, Position, useReactFlow } from 'reactflow';
 import { useDebouncedCallback } from 'use-debounce';
@@ -28,6 +28,7 @@ interface Props {
     color?: NodeColors,
     isEditing: boolean
     onIsEdit: () => void
+    onDelete: () => void
 }
 
 const colors = [
@@ -44,7 +45,7 @@ const colors = [
     NodeColors.RED,
     NodeColors.YELLOW
 ]
-const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId }: Props) => {
+const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId, onDelete }: Props) => {
 
     const { setNodes } = useReactFlow()
     const { onSaved } = useAutoSaveMindMap();
@@ -63,6 +64,14 @@ const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId }
         onSetStatus("unsaved")
         debouncedMindMapInfo()
     }, [onSetStatus, debouncedMindMapInfo, onSaved])
+
+    const onDeleteNode = useCallback(() => {
+        setNodes((prevNodes) => {
+            const node = prevNodes.filter((node) => node.id !== nodeId)
+            return node
+        })
+        onDelete()
+    }, [setNodes, nodeId, onDelete])
 
     const [currentColor, setCurrentColor] = useState<NodeColors | undefined>(color)
     const nodeColor = useCallback((color: NodeColors) => {
@@ -126,7 +135,8 @@ const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId }
                         </DropdownMenuItem>
                         <DropdownMenuGroup>
                             <DropdownMenuSub>
-                                <DropdownMenuSubTrigger className='cursor-pointer'>
+                                <DropdownMenuSubTrigger className='cursor-pointer gap-2'>
+                                    <Palette size={16}  />
                                     <span>Color</span>
                                 </DropdownMenuSubTrigger>
                                 <DropdownMenuPortal>
@@ -146,6 +156,13 @@ const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId }
                                 </DropdownMenuPortal>
                             </DropdownMenuSub>
                         </DropdownMenuGroup>
+                        <DropdownMenuItem
+                            onClick={() => {onDeleteNode()}}
+                            className='cursor-pointer gap-2 text-destructive'
+                        >
+                            <Trash2 size={16} />
+                            Delete
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                             More

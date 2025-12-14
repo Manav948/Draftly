@@ -12,10 +12,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TaskCalendar from "@/components/editor/TaskCalender";
 import Logo from "@/components/editor/Logo";
 import EditorTask from "../editor/Editor";
-import { useDebounce, useDebouncedCallback } from "use-debounce"
+import { useDebouncedCallback } from "use-debounce"
 import { useSaveTaskState } from "@/context/TaskSavingContext";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useTags } from "@/hooks/useTags";
 
 interface Props {
     workspaceId: string;
@@ -28,11 +29,7 @@ interface Props {
     to?: Date;
 }
 const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to, content, emoji }: Props) => {
-    const [currentActiveTags, setCurrentActiveTags] = useState<Tag[]>(
-        initialActiveTags || []
-    );
     const [isMounted, setIsMounted] = useState(false);
-    const [deboundedCurrentActiveTags] = useDebounce(currentActiveTags, 200)
     const _titleRef = useRef<HTMLTextAreaElement | null>(null);
     const { status, onSetStatus } = useSaveTaskState();
 
@@ -66,34 +63,6 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
 
     const onUpdateSelectHandler = (date: any) => {
         form.setValue("date", date);
-    };
-
-    const onSelectActiveTagHandler = (tagId: string) => {
-        if (status === "unsaved") return onSetStatus("unsaved")
-        setCurrentActiveTags((prev) => {
-            const found = prev.find((t) => t.id === tagId);
-            if (found) return prev.filter((t) => t.id !== tagId);
-            const sel = tags?.find((t) => t.id === tagId);
-            return sel ? [...prev, sel] : prev;
-        });
-        deboundedActiveTag()
-    };
-
-    const onUpdateActiveTagsHandler = (
-        id: string,
-        color: WorkspaceIconColor,
-        name: string
-    ) => {
-        setCurrentActiveTags((prev) =>
-            prev.map((tag) => (tag.id === id ? { ...tag, color, name } : tag))
-        );
-        deboundedActiveTag()
-    };
-
-    const onDeleteActiveTagHandler = (tagId: string) => {
-        if (status === "unsaved") return onSetStatus("unsaved")
-        setCurrentActiveTags((prev) => prev.filter((tag) => tag.id !== tagId));
-        deboundedActiveTag()
     };
 
     const { ref: titleRef, ...rest } = form.register("title");
@@ -148,6 +117,19 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
         toast.success("Task Saved")
     }, 2000)
 
+    const {
+        currentActiveTags,
+        onDeleteActiveTagHandler,
+        onSelectActiveTagHandler,
+        onUpdateActiveTagHandler,
+        isLoadingTags, } =
+        useTags(
+            workspaceId,
+            isMounted,
+            initialActiveTags ?? [],
+            deboundedActiveTag,
+        )
+
     return (
         <Card className="dark:bg-gradient-to-b from-gray-900 via-gray-950 to-gray-950 border border-border/40 shadow-xl overflow-hidden rounded-none">
             <form className="w-full">
@@ -156,13 +138,13 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
                         <div className="flex items-start gap-4">
                             <Logo
                                 onFormSelect={onFormSelectHandler}
-                                emoji={emoji ? emoji : "✌️"}
+                                emoji={form.getValues("icon")}
                                 taskId={taskId}
                                 workspaceId={workspaceId}
                             />
                             <div className="flex-1">
                                 <TextareaAutoSize
-                                {...rest}
+                                    {...rest}
                                     ref={(e) => {
                                         titleRef(e);
                                         _titleRef.current = e;
@@ -186,12 +168,12 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
                                         to={to}
                                     />
                                     <TagSelector
-                                        isLoading={isLoading}
+                                        isLoading={isLoadingTags}
                                         tags={tags ?? []}
                                         currentActiveTags={currentActiveTags}
                                         onSelectActiveTag={onSelectActiveTagHandler}
                                         workspaceId={workspaceId}
-                                        onUpdateActiveTags={onUpdateActiveTagsHandler}
+                                        onUpdateActiveTags={onUpdateActiveTagHandler}
                                         onDeleteActiveTag={onDeleteActiveTagHandler}
                                     />
 

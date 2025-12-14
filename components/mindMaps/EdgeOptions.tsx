@@ -36,6 +36,7 @@ import { Button } from '../ui/button'
 import { EdgeColors } from '@/types/enum'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { cn } from '@/lib/utils'
+import { ScrollArea } from '../ui/scroll-area'
 
 interface Props {
     clickedEdge: Edge | null
@@ -141,185 +142,187 @@ const EdgeOptions = ({
         bg-background
       "
         >
+            <ScrollArea className='h-full p-6'>
 
-            {/* HEADER */}
-            <SheetHeader className="px-6 pt-6 pb-4 border-b">
-                <SheetTitle className="text-xl">
-                    Edge Settings
-                </SheetTitle>
+                {/* HEADER */}
+                <SheetHeader className="px-6 pt-6 pb-4 border-b">
+                    <SheetTitle className="text-xl">
+                        Edge Settings
+                    </SheetTitle>
 
-                <SheetDescription className="text-sm">
-                    Configure your connection style, label, and animation options.
-                </SheetDescription>
-            </SheetHeader>
-
-
-            {/* FORM BODY */}
-            <div className="flex-1 overflow-y-auto px-6 py-5">
-
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-6"
-                    >
-
-                        {/* LABEL INPUT */}
-                        <FormField
-                            control={form.control}
-                            name="label"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Label</FormLabel>
-
-                                    <FormControl>
-                                        <Input
-                                            placeholder="Enter edge label..."
-                                            className="bg-muted"
-                                            {...field}
-                                        />
-                                    </FormControl>
-
-                                    <FormDescription>
-                                        This text is displayed on the edge.
-                                    </FormDescription>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <SheetDescription className="text-sm">
+                        Configure your connection style, label, and animation options.
+                    </SheetDescription>
+                </SheetHeader>
 
 
-                        {/* EDGE TYPE */}
-                        <FormField
-                            control={form.control}
-                            name="type"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Edge Style</FormLabel>
+                {/* FORM BODY */}
+                <div className="flex-1 overflow-y-auto px-6 py-5">
 
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Choose style" />
-                                            </SelectTrigger>
-                                        </FormControl>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-6"
+                        >
 
-                                        <SelectContent>
-                                            <SelectItem value='customBeziar'>
-                                                Bezier (Smooth Curve)
-                                            </SelectItem>
-
-                                            <SelectItem value='customStraight'>
-                                                Straight Line
-                                            </SelectItem>
-
-                                            <SelectItem value='customStepSharp'>
-                                                Step Sharp
-                                            </SelectItem>
-
-                                            <SelectItem value='customStepRounded'>
-                                                Step Rounded
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <div className="space-y-1.5">
+                            {/* LABEL INPUT */}
                             <FormField
                                 control={form.control}
-                                name="color"
+                                name="label"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-sm font-medium">Colors</FormLabel>
+                                        <FormLabel>Label</FormLabel>
+
                                         <FormControl>
-                                            <RadioGroup
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                                className="grid grid-cols-10 grid-rows-2">
-                                                {color.map((color) => (
-                                                    <FormItem
-                                                        key={color}
-                                                        className="flex items-center space-x-3 space-y-0">
-                                                        <FormControl>
-                                                            <RadioGroupItem
-                                                                value={color}
-                                                                className={cn(`transition-colors duration-200 ${workspaceColor(color)}`)}
-                                                            ></RadioGroupItem>
-                                                        </FormControl>
-                                                    </FormItem>
-                                                ))}
-                                            </RadioGroup>
+                                            <Input
+                                                placeholder="Enter edge label..."
+                                                className="bg-muted"
+                                                {...field}
+                                            />
                                         </FormControl>
+
+                                        <FormDescription>
+                                            This text is displayed on the edge.
+                                        </FormDescription>
+
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                        </div>
 
-                        {/* ANIMATE */}
-                        <FormField
-                            control={form.control}
-                            name="animate"
-                            render={({ field }) => (
-                                <FormItem className="flex items-center gap-3">
 
-                                    <FormControl>
-                                        <Checkbox
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
+                            {/* EDGE TYPE */}
+                            <FormField
+                                control={form.control}
+                                name="type"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Edge Style</FormLabel>
 
-                                    <div className="space-y-1 leading-none">
-                                        <FormLabel className="cursor-pointer">
-                                            Animated Edge
-                                        </FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Choose style" />
+                                                </SelectTrigger>
+                                            </FormControl>
 
-                                        <FormDescription>
-                                            Enable flowing animation on the edge
-                                        </FormDescription>
-                                    </div>
+                                            <SelectContent>
+                                                <SelectItem value='customBeziar'>
+                                                    Bezier (Smooth Curve)
+                                                </SelectItem>
 
-                                </FormItem>
-                            )}
-                        />
+                                                <SelectItem value='customStraight'>
+                                                    Straight Line
+                                                </SelectItem>
 
-                        {/* SPACER */}
-                        <div className="h-4" />
+                                                <SelectItem value='customStepSharp'>
+                                                    Step Sharp
+                                                </SelectItem>
 
-                        {/* ACTION BUTTONS */}
-                        <div className="space-y-3">
+                                                <SelectItem value='customStepRounded'>
+                                                    Step Rounded
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
 
-                            <Button
-                                type="submit"
-                                className="w-full"
-                            >
-                                Save Changes
-                            </Button>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="space-y-1.5">
+                                <FormField
+                                    control={form.control}
+                                    name="color"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-sm font-medium">Colors</FormLabel>
+                                            <FormControl>
+                                                <RadioGroup
+                                                    value={field.value}
+                                                    onValueChange={field.onChange}
+                                                    className="grid grid-cols-10 grid-rows-2">
+                                                    {color.map((color) => (
+                                                        <FormItem
+                                                            key={color}
+                                                            className="flex items-center space-x-3 space-y-0">
+                                                            <FormControl>
+                                                                <RadioGroupItem
+                                                                    value={color}
+                                                                    className={cn(`transition-colors duration-200 ${workspaceColor(color)}`)}
+                                                                ></RadioGroupItem>
+                                                            </FormControl>
+                                                        </FormItem>
+                                                    ))}
+                                                </RadioGroup>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
 
-                            <Button
-                                type="button"
-                                variant="destructive"
-                                className="w-full"
-                                onClick={() =>
-                                    onDeleteEdge(form.getValues("edgeId"))
-                                }
-                            >
-                                Delete Edge
-                            </Button>
+                            {/* ANIMATE */}
+                            <FormField
+                                control={form.control}
+                                name="animate"
+                                render={({ field }) => (
+                                    <FormItem className="flex items-center gap-3">
 
-                        </div>
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
 
-                    </form>
-                </Form>
+                                        <div className="space-y-1 leading-none">
+                                            <FormLabel className="cursor-pointer">
+                                                Animated Edge
+                                            </FormLabel>
 
-            </div>
+                                            <FormDescription>
+                                                Enable flowing animation on the edge
+                                            </FormDescription>
+                                        </div>
+
+                                    </FormItem>
+                                )}
+                            />
+
+                            {/* SPACER */}
+                            <div className="h-4" />
+
+                            {/* ACTION BUTTONS */}
+                            <div className="space-y-3">
+
+                                <Button
+                                    type="submit"
+                                    className="w-full"
+                                >
+                                    Save Changes
+                                </Button>
+
+                                <Button
+                                    type="button"
+                                    variant="destructive"
+                                    className="w-full"
+                                    onClick={() =>
+                                        onDeleteEdge(form.getValues("edgeId"))
+                                    }
+                                >
+                                    Delete Edge
+                                </Button>
+
+                            </div>
+
+                        </form>
+                    </Form>
+
+                </div>
+            </ScrollArea>
         </SheetContent>
     )
 }

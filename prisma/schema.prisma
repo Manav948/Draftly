@@ -194,6 +194,7 @@ model MindMap {
   content       Json?
   title         String
   tags          Tag[]
+  emoji         String @default("🧠")
 
   @@index([workspaceId])
   @@index([updatedUserId])
