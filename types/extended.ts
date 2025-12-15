@@ -34,6 +34,8 @@ export type ExtendedTask = {
     } | null;
 
     savedTask?: savedTask[];
+    creator: UserInfo,
+    updatedBy?: UserInfo | null
 };
 
 export interface ShortMindMap {
@@ -43,9 +45,19 @@ export interface ShortMindMap {
 
 export type ExtendedMindMap = MindMap & {
     tags?: Tag[]
-    savedMindMaps?: savedMindMaps[] 
+    savedMindMaps?: savedMindMaps[]
+    creator: UserInfo
+    updatedBy?: UserInfo | null
 }
 export interface WorkspaceShortCuts extends Workspace {
     tasks: ShortTask[]
     mindMaps: ShortMindMap[]
+}
+
+export interface UserInfo {
+    id: string,
+    username: string,
+    surname?: string | null,
+    image?: string | null
+    name?: string | null
 }

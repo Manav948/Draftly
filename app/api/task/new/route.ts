@@ -60,6 +60,15 @@ export async function POST(request: Request) {
             }
         })
 
+        await db.task.update({
+            where : {
+                id : task.id
+            },
+            data : {
+                updatedUserId : session.user.id
+            }
+        })
+
         if (!task) {
             return NextResponse.json("No Task Found", { status: 403 })
         }

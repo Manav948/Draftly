@@ -209,8 +209,9 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
                     />
                 </Sheet>
             )}
-            <div className='h-full'>
+            <div className='w-full h-full relative'>
                 <ReactFlow
+                    className='w-full h-full'
                     fitView
                     nodes={nodes}
                     nodeTypes={nodeTypes}

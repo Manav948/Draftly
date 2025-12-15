@@ -20,15 +20,32 @@ export const GET = async (request: Request, { params }: Params) => {
             where: {
                 id: mind_map_id,
             },
-            include : {
-                tags : true,
-                savedMindMaps : true
+            include: {
+                tags: true,
+                savedMindMaps: true,
+                creator: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                        surname: true,
+                        image: true
+                    }
+                }, updatedBy: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                        surname: true,
+                        image: true
+                    }
+                }
             }
         })
         if (!mindMap) {
             return NextResponse.json(null, { status: 404 })
         }
-        return NextResponse.json({...mindMap , tags : mindMap.tags}, { status: 202 })
+        return NextResponse.json({ ...mindMap, tags: mindMap.tags }, { status: 202 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

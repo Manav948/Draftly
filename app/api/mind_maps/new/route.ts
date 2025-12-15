@@ -49,8 +49,17 @@ export async function POST(request: Request) {
         const mindmap = await db.mindMap.create({
             data: {
                 workspaceId,
-                creatorId : session.user.id,
-                title : ""
+                creatorId: session.user.id,
+                title: ""
+            }
+        })
+
+        await db.mindMap.update({
+            where: {
+                id: mindmap.id
+            },
+            data: {
+                updatedUserId: session.user.id
             }
         })
 

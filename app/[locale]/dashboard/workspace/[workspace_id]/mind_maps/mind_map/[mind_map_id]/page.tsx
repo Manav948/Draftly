@@ -58,13 +58,13 @@ const ViewMindMapPage = async ({ params }: Params) => {
           <PreviewCardWrapper
             mindMap={mindMap}
             userRole={userRole}
-            isSavedByUser={isSavedByUser || true}
+            isSavedByUser={!!isSavedByUser}
           >
-            <div className='h-full'>
+            <div className="w-full h-[70vh] min-h-[500px]">
               <MindMaps
                 initialInfo={mindMap}
                 workspaceId={workspace.id}
-                canEdit={canEdit}
+                canEdit={false}
                 initialActiveTag={mindMap.tags || []}
               />
             </div>

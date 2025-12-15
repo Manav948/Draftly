@@ -1,14 +1,16 @@
 "use client"
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { ExtendedTask } from '@/types/extended'
 import { UserPermission } from '@prisma/client'
-import { useTranslations } from 'next-intl'
+import { useFormatter, useTranslations } from 'next-intl'
 import React, { useState } from 'react'
 import ReadOnlyEmoji from './ReadOnlyEmoji'
 import { Star } from 'lucide-react'
 import TaskOptions from './TaskOptions'
 import ReadOnlyCalender from './ReadOnlyCalender'
 import LinkTag from '@/components/common/tag/LinkTag'
+import UserHoverInfo from '@/components/common/UserHoverInfo'
+import { Separator } from '@/components/ui/separator'
 
 interface Props {
   task: ExtendedTask
@@ -20,6 +22,11 @@ interface Props {
 const ReadOnlyContent = ({ task, isSavedByUser, userRole, workspaceId }: Props) => {
   const [isSaved, setIsSaved] = useState(isSavedByUser)
   const t = useTranslations("READ_ONLY")
+  const [] = useState(task.updatedBy)
+  const format = useFormatter()
+  //@ts-ignore
+  const dateTime = new Date(task.date?.to)
+  const now = new Date()
 
   const onSetIsSaved = () => {
     setIsSaved(prev => !prev)
@@ -82,6 +89,20 @@ const ReadOnlyContent = ({ task, isSavedByUser, userRole, workspaceId }: Props) 
             </div>
           </div>
         </CardContent>
+        <CardFooter className="flex flex-col sm:flex-row gap-3 text-xs text-muted-foreground border-t border-border/40">
+          <div className="flex items-center gap-2">
+            <span>Created by</span>
+            <UserHoverInfo user={task.creator} />
+          </div>
+
+          <Separator orientation="vertical" className="hidden sm:block h-4" />
+
+          <div className="flex items-center gap-2">
+            <span>Updated by</span>
+            <UserHoverInfo user={task.updatedBy ?? task.creator} />
+            <p>at {format.relativeTime(dateTime, now)} ago. </p>
+          </div>
+        </CardFooter>
       </Card>
     </div>
   )

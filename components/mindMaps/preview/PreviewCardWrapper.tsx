@@ -2,98 +2,115 @@
 
 import LinkTag from "@/components/common/tag/LinkTag"
 import ReadOnlyEmoji from "@/components/tasks/readOnly/ReadOnlyEmoji"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { ExtendedMindMap } from "@/types/extended"
 import { UserPermission } from "@prisma/client"
 import { Info, Star } from "lucide-react"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import PreviewCard from "./PreviewCard"
+import UserHoverInfo from "@/components/common/UserHoverInfo"
+import { Separator } from "@/components/ui/separator"
+import { useFormatter } from "next-intl"
 
 interface Props {
-    mindMap: ExtendedMindMap
-    children: React.ReactNode
-    isSavedByUser: boolean
-    userRole: UserPermission | null
+  mindMap: ExtendedMindMap
+  children: React.ReactNode
+  isSavedByUser: boolean
+  userRole: UserPermission | null
 }
 
 const PreviewCardWrapper = ({
-    mindMap,
-    userRole,
-    isSavedByUser,
-    children,
+  mindMap,
+  userRole,
+  isSavedByUser,
+  children,
 }: Props) => {
-    const [isSaved, setIsSaved] = useState(isSavedByUser)
+    console.log("mindmap" , mindMap)
+  const [isSaved, setIsSaved] = useState(isSavedByUser)
+  const format = useFormatter()
+  // @ts-ignore
+  const dateTime = new Date(mindMap.createdAt)
+  const now = new Date()
 
-    const onSetIsSaved = () => {
-        setIsSaved((prev) => !prev)
-    }
+  const onSetIsSaved = () => setIsSaved((p) => !p)
 
-    return (
-        <div className="flex items-center justify-center mt-10">
-            <Card className="dark:bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 w-[94%] rounded-4xl border border-border/60 shadow-sm ">
-                <CardContent className="sm:p-6 space-y-6">
 
-                    <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 min-w-0">
-                            <ReadOnlyEmoji selectedEmoji={mindMap.emoji} />
 
-                            <div className="min-w-0">
-                                <div className="flex items-center gap-2">
-                                    <h2 className="text-lg sm:text-xl font-semibold truncate">
-                                        {mindMap.title || "Untitled Mind Map"}
-                                    </h2>
+  return (
+    <div className="flex justify-center mt-8">
+      <Card className="w-[96%] max-w-[1600px] rounded-2xl border border-border/60 shadow-sm dark:bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
+        <CardContent className="p-5 border-b border-border/40">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex gap-4 min-w-0">
+              <ReadOnlyEmoji selectedEmoji={mindMap.emoji} />
 
-                                    {isSaved && (
-                                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500 shrink-0" />
-                                    )}
-                                </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <h1 className="text-lg sm:text-xl font-semibold truncate">
+                    {mindMap.title || "Untitled Mind Map"}
+                  </h1>
+                  {isSaved && (
+                    <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                  )}
+                </div>
 
-                                {/* Info + Tags */}
-                                <div className="mt-2 flex flex-wrap items-center gap-3">
-                                    <HoverCard openDelay={250} closeDelay={250}>
-                                        <HoverCardTrigger asChild>
-                                            <button className="text-muted-foreground hover:text-foreground transition">
-                                                <Info className="h-4 w-4" />
-                                            </button>
-                                        </HoverCardTrigger>
-                                        <HoverCardContent className="text-sm max-w-xs">
-                                            Mind map details & metadata
-                                        </HoverCardContent>
-                                    </HoverCard>
+                <div className="mt-2 flex flex-wrap items-center gap-3">
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <button className="text-muted-foreground hover:text-foreground">
+                        <Info className="h-4 w-4" />
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="text-sm">
+                      Mind map metadata
+                    </HoverCardContent>
+                  </HoverCard>
 
-                                    <div className="flex flex-wrap gap-2">
-                                        {mindMap.tags?.map((tag) => (
-                                            <LinkTag key={tag.id} tag={tag} disabled />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                  {mindMap.tags?.map((tag) => (
+                    <LinkTag key={tag.id} tag={tag} disabled />
+                  ))}
+                </div>
+              </div>
+            </div>
 
-                        <div className="shrink-0">
-                            <PreviewCard
-                                isSaved={isSaved}
-                                mindMapId={mindMap.id}
-                                workspaceId={mindMap.workspaceId}
-                                userRole={userRole}
-                                onSetIsSaved={onSetIsSaved}
-                            />
-                        </div>
-                    </div>
+            <PreviewCard
+              isSaved={isSaved}
+              mindMapId={mindMap.id}
+              workspaceId={mindMap.workspaceId}
+              userRole={userRole}
+              onSetIsSaved={onSetIsSaved}
+            />
+          </div>
+        </CardContent>
 
-                    <div className="w-full">
-                        {children}
-                    </div>
+        <CardContent className="p-0">
+          <div className="w-full min-h-[70vh]">
+            {children}
+          </div>
+        </CardContent>
 
-                </CardContent>
-            </Card>
-        </div>
-    )
+        <CardFooter className="flex flex-col sm:flex-row gap-3 text-xs text-muted-foreground border-t border-border/40">
+          <div className="flex items-center gap-2">
+            <span>Created by</span>
+            <UserHoverInfo user={mindMap.creator} />
+          </div>
+
+          <Separator orientation="vertical" className="hidden sm:block h-4" />
+
+          <div className="flex items-center gap-2">
+            <span>Updated by</span>
+            <UserHoverInfo user={mindMap.updatedBy ?? mindMap.creator} />
+            <p>{format.relativeTime(dateTime , now)}</p>
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
+  )
 }
 
 export default PreviewCardWrapper
