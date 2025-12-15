@@ -21,7 +21,8 @@ export const GET = async (request: Request, { params }: Params) => {
                 id: mind_map_id,
             },
             include : {
-                tags : true
+                tags : true,
+                savedMindMaps : true
             }
         })
         if (!mindMap) {

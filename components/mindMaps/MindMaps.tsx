@@ -186,7 +186,6 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
         debouncedMindMapInfo()
     }, [debouncedMindMapInfo, onSetStatus]);
 
-
     const onDeleteEdge = useCallback((edgeId: string) => {
         setEdges((prev) => {
             const edges = prev.filter((edge) => edge.id !== edgeId)
@@ -198,7 +197,6 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
     }, [onSetStatus, debouncedMindMapInfo])
 
     if (!isMounted) return <LoadingScreen />
-
     return (
         <div className='w-full h-full flex flex-col'>
             {clickedEdge && (

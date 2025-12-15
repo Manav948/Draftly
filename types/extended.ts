@@ -1,4 +1,4 @@
-import { MindMap, savedTask, Tag, Task, UserPermission, Workspace } from "@prisma/client";
+import { MindMap, savedMindMaps, savedTask, Tag, Task, UserPermission, Workspace } from "@prisma/client";
 
 export interface SubscriptionUser {
     userRole: UserPermission;
@@ -43,6 +43,7 @@ export interface ShortMindMap {
 
 export type ExtendedMindMap = MindMap & {
     tags?: Tag[]
+    savedMindMaps?: savedMindMaps[] 
 }
 export interface WorkspaceShortCuts extends Workspace {
     tasks: ShortTask[]

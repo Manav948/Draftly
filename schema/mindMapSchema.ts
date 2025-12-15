@@ -18,11 +18,18 @@ export const titleAndEmojiSchema = z.object({
 })
 
 export const updateTaskAndEmojiSchema = z.object({
-    workspaceId : z.string(),
-    mapId : z.string(),
-    icon : z.string(),
-    title : z.string().optional()
+    workspaceId: z.string(),
+    mapId: z.string(),
+    icon: z.string(),
+    title: z.string().optional()
 })
+
+export const deleteMindMapSchema = z.object({
+    workspaceId: z.string(),
+    mindMapId: z.string()
+})
+
+export type DeleteMindMapSchema = z.infer <typeof deleteMindMapSchema>
 export type TitleAndEmojiSchema = z.infer<typeof titleAndEmojiSchema>
 export type UpdateTaskAndEmojiSchema = z.infer<typeof updateTaskAndEmojiSchema>
 export type UpdateMindMapScheam = z.infer<typeof updateMindMapSchema>

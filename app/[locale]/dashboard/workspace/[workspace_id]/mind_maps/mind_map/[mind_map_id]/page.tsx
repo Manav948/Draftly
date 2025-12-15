@@ -6,6 +6,8 @@ import { AutoSaveMindMapProvider } from '@/context/AutoSaveMindMap'
 import { getMindMap, getWorkspace, getWorkspaceRole } from '@/lib/api'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import React from 'react'
+import { changeCodeToEmoji } from '@/lib/changeCodetoEmoji'
+import PreviewCardWrapper from '@/components/mindMaps/preview/PreviewCardWrapper'
 
 interface Params {
   params: Promise<{ mind_map_id: string; workspace_id: string }>
@@ -25,21 +27,48 @@ const ViewMindMapPage = async ({ params }: Params) => {
   ])
 
   const canEdit = userRole === 'ADMIN' || userRole === 'OWNER'
+  const isSavedByUser = mindMap.savedMindMaps?.some((mindMap) => mindMap.userId === session.user.id)
+  console.log("saved by User", isSavedByUser)
 
   return (
     <SaveTaskStateProvider>
       <AutoSaveMindMapProvider>
-        <DashboardHeader>
+        <DashboardHeader
+          addManualRoutes={[
+            {
+              name: "DASHBOARD",
+              href: "/dashboard",
+              useTranslate: true
+            },
+            {
+              name: workspace.name,
+              href: `/dashboard/workspace/${workspace.id}`,
+            },
+            {
+              name: `${mindMap.title ? mindMap.title : "Untitled Mind Map"}`,
+              href: "/",
+              useTranslate: mindMap.title ? false : true
+            }
+          ]}
+        >
           {canEdit && <InviteUsers workspace={workspace} />}
         </DashboardHeader>
 
-        <main className="flex flex-col gap-2 h-full">
-          <MindMaps
-            initialInfo={mindMap}
-            workspaceId={workspace.id}
-            canEdit={canEdit}
-            initialActiveTag={mindMap.tags || []}
-          />
+        <main className="flex flex-col gap-2">
+          <PreviewCardWrapper
+            mindMap={mindMap}
+            userRole={userRole}
+            isSavedByUser={isSavedByUser || true}
+          >
+            <div className='h-full'>
+              <MindMaps
+                initialInfo={mindMap}
+                workspaceId={workspace.id}
+                canEdit={canEdit}
+                initialActiveTag={mindMap.tags || []}
+              />
+            </div>
+          </PreviewCardWrapper>
         </main>
       </AutoSaveMindMapProvider>
     </SaveTaskStateProvider>
