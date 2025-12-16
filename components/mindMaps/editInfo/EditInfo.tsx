@@ -172,7 +172,7 @@ const EditInfo = ({ workspaceId, mapId, title, icon }: Props) => {
 
               <Button
                 type="button"
-                className="w-full sm:w-auto px-6 bg-primary text-black hover:bg-primary/90"
+                className="w-full sm:w-auto px-6 bg-primary text-white hover:bg-primary/90"
                 onClick={onSaveEdit}
               >
                 Save Changes

@@ -35,27 +35,28 @@ model Session {
 }
 
 model User {
-  id                 String          @id @default(cuid())
+  id                 String             @id @default(cuid())
   name               String?
-  username           String          @unique
+  username           String             @unique
   surname            String?
-  email              String?         @unique
-  emailVerified      DateTime?       @map("email_verified")
+  email              String?            @unique
+  emailVerified      DateTime?          @map("email_verified")
   hashedPassword     String?
   image              String?
   language           String?
-  completeOnboarding Boolean         @default(false)
+  completeOnboarding Boolean            @default(false)
   accounts           Account[]
   sessions           Session[]
-  createdWorkspaces  Workspace[]     @relation("CreatedBy")
+  createdWorkspaces  Workspace[]        @relation("CreatedBy")
   subscriptions      Subscription[]
   useCase            UseCase?
-  createdTasks       Task[]          @relation("TaskCreatedByUser")
-  updatedTasks       Task[]          @relation("TaskUpdatedByUser")
+  createdTasks       Task[]             @relation("TaskCreatedByUser")
+  updatedTasks       Task[]             @relation("TaskUpdatedByUser")
   savedTask          savedTask[]
-  createdMindMaps    MindMap[]       @relation("MindMapCreatedByUser")
-  updatedMindMaps    MindMap[]       @relation("MindMapUpdatedByUser")
+  createdMindMaps    MindMap[]          @relation("MindMapCreatedByUser")
+  updatedMindMaps    MindMap[]          @relation("MindMapUpdatedByUser")
   savedMindMaps      savedMindMaps[]
+  pomodoroSettings   PomodoroSettings[]
 
   @@map("users")
 }
@@ -213,4 +214,17 @@ model MindMap {
   @@index([workspaceId])
   @@index([updatedUserId])
   @@index([creatorId])
+}
+
+model PomodoroSettings {
+  id                 String @id @default(cuid())
+  user               User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String
+  workDuration       Int    @default(25)
+  shortBreakDuration Int    @default(5)
+  longBreakDuration  Int    @default(15)
+  longBreakInterval  Int    @default(2)
+  rounds             Int    @default(3)
+
+  @@index([userId])
 }

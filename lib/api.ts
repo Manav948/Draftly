@@ -1,65 +1,65 @@
 import { ExtendedMindMap, ExtendedTask, SettingsWorkspace } from "@/types/extended"
-import { MindMap, UserPermission, Workspace } from "@prisma/client"
+import { MindMap, PomodoroSettings, UserPermission, Workspace } from "@prisma/client"
 import { notFound } from "next/navigation"
 
 export const domain =
-    process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "http://localhost:3000"
+  process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "http://localhost:3000"
 
 export const getWorkspace = async (workspace_id: string, userId: string) => {
-    const res = await fetch(`${domain}/api/workspace/get/workspace_detail/${workspace_id}?userId=${userId}`, {
-        method: "GET",
-        cache: "no-store"
-    })
-    if (!res.ok) {
-        return notFound()
-    }
-    return res.json() as Promise<Workspace>
+  const res = await fetch(`${domain}/api/workspace/get/workspace_detail/${workspace_id}?userId=${userId}`, {
+    method: "GET",
+    cache: "no-store"
+  })
+  if (!res.ok) {
+    return notFound()
+  }
+  return res.json() as Promise<Workspace>
 }
 
 export const getWorkspaces = async (userId: string) => {
-    const res = await fetch(`${domain}/api/workspace/get/user_workspaces?userId=${userId}`, {
-        method: "GET",
-        cache: "no-store"
-    })
-    if (!res.ok) {
-        return []
-    }
-    return res.json() as Promise<Workspace[]>
+  const res = await fetch(`${domain}/api/workspace/get/user_workspaces?userId=${userId}`, {
+    method: "GET",
+    cache: "no-store"
+  })
+  if (!res.ok) {
+    return []
+  }
+  return res.json() as Promise<Workspace[]>
 }
 
 export const getUserAdminWorkspaces = async (userId: string) => {
-    const res = await fetch(`${domain}/api/workspace/get/user_admin_workspaces?userId=${userId}`, {
-        method: "GET",
-        cache: "no-store"
-    })
-    if (!res.ok) {
-        return []
-    }
-    return res.json() as Promise<Workspace[]>
+  const res = await fetch(`${domain}/api/workspace/get/user_admin_workspaces?userId=${userId}`, {
+    method: "GET",
+    cache: "no-store"
+  })
+  if (!res.ok) {
+    return []
+  }
+  return res.json() as Promise<Workspace[]>
 }
 
 export const getWorkspaceSettings = async (workspace_id: string, userId: string) => {
-    const res = await fetch(`${domain}/api/workspace/get/settings/${workspace_id}?userId=${userId}`, {
-        method: "GET",
-        cache: "no-store"
-    })
-    if (!res.ok) {
-        console.log("WorkspaceSettings : ", res)
-        return notFound()
-    }
-    return res.json() as Promise<SettingsWorkspace>
+  const res = await fetch(`${domain}/api/workspace/get/settings/${workspace_id}?userId=${userId}`, {
+    method: "GET",
+    cache: "no-store"
+  })
+  if (!res.ok) {
+    console.log("WorkspaceSettings : ", res)
+    return notFound()
+  }
+  return res.json() as Promise<SettingsWorkspace>
 }
 
 export const getWorkspaceRole = async (workspace_id: string, userId: string) => {
-    const res = await fetch(`${domain}/api/workspace/get/user_role?workspaceId=${workspace_id}&userId=${userId}`, {
-        method: "GET",
-        cache: "no-store"
-    })
-    if (!res.ok) {
-        console.log("workspaceRole : ", res)
-        return null
-    }
-    return res.json() as Promise<UserPermission>
+  const res = await fetch(`${domain}/api/workspace/get/user_role?workspaceId=${workspace_id}&userId=${userId}`, {
+    method: "GET",
+    cache: "no-store"
+  })
+  if (!res.ok) {
+    console.log("workspaceRole : ", res)
+    return null
+  }
+  return res.json() as Promise<UserPermission>
 }
 
 export const getTask = async (task_id: string, userId: string) => {
@@ -89,9 +89,25 @@ export const getMindMap = async (mind_map_id: string, userId: string) => {
   );
 
   if (!res.ok) {
-    console.log("getMindMap error:", res);
     return notFound();
   }
   console.log(res)
   return res.json() as Promise<ExtendedMindMap>;
 };
+
+export const getPomodoro = async (userId: string) => {
+  const res = await fetch(
+    `${domain}/api/pomodoro/get_settings?userId=${userId}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    console.log("getPomodoro error:", res);
+    return notFound();
+  }
+  console.log(res)
+  return res.json() as Promise<PomodoroSettings>;
+}
