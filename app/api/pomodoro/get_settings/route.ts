@@ -8,16 +8,15 @@ export const GET = async (request: Request) => {
         return NextResponse.json("User id not found", { status: 404 })
     }
     try {
-        const pomodoroSettings = await db.pomodoroSettings.findFirst({
+        let pomodoroSettings = await db.pomodoroSettings.findFirst({
             where: {
                 userId: userId
             }
         })
-        if (!pomodoroSettings) {
-            return NextResponse.json("Pomodoro Not Found", { status: 404 })
-        }
+
         return NextResponse.json(pomodoroSettings, { status: 200 })
     } catch (err) {
-        return NextResponse.json("Error during db connection", { status: 405 })
+        console.error("Pomodoro settings error:", err)
+        return NextResponse.json("Error during db connection", { status: 500 })
     }
 }

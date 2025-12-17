@@ -65,6 +65,7 @@ const WorkspaceComponent = ({ workspaces: { id, image, name, color }, href }: Pr
     <HoverCard openDelay={100} closeDelay={100}>
       <HoverCardTrigger asChild>
         <ActiveLink
+          include={`${href}/${id}`}
           workspaceIcon
           href={`${href}/${id}`}
           size="icon"

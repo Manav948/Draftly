@@ -12,7 +12,7 @@ const PomodoroLinks = () => {
                     size={"sm"}
                     className='w-full flex items-center justify-start gap2'
                 >
-                    <Clock />timer
+                    <Clock />Timer
                 </ActiveLink>
 
                 <ActiveLink
@@ -21,7 +21,7 @@ const PomodoroLinks = () => {
                     size={"sm"}
                     className='w-full flex items-center justify-start gap-2'
                 >
-                    <Settings />settings
+                    <Settings />Settings
                 </ActiveLink>
             </div>
         </div>

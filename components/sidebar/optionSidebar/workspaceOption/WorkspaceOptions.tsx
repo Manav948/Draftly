@@ -8,6 +8,7 @@ import {
   Map,
   MapIcon,
   PencilRuler,
+  Workflow,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
@@ -103,7 +104,7 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
             defaultName="Untitled MindMap"
           >
             <div className="flex items-center gap-2">
-              <MapIcon size={18} className="text-primary" />
+              <Workflow size={18} className="text-primary" />
               <span className="font-medium">MindMap</span>
             </div>
           </WorkspaceOption>

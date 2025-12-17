@@ -1,4 +1,4 @@
-import { MindMap, savedMindMaps, savedTask, Tag, Task, UserPermission, Workspace } from "@prisma/client";
+import { MindMap, PomodoroSettings, savedMindMaps, savedTask, Tag, Task, UserPermission, Workspace } from "@prisma/client";
 
 export interface SubscriptionUser {
     userRole: UserPermission;

@@ -57,6 +57,12 @@ export async function POST(request: Request) {
                 userRole: "OWNER"
             }
         })
+
+        await db.pomodoroSettings.create ({
+            data : {
+                userId : user.id
+            }
+        })
         return NextResponse.json("OK    ", { status: 200 })
     } catch (error) {
         console.log("Error in db connection : ", error)

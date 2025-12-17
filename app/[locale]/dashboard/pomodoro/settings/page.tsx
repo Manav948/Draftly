@@ -7,7 +7,6 @@ import React from 'react'
 const PomodoroSettingsPage = async () => {
     const session = await checkIfUserCompletedOnboarding(`/dashboard/pomodoro`)
     const pomodoroSettings = await getPomodoro(session.user.id)
-    console.log("pmododofsdofas", pomodoroSettings)
     return (
         <div>
             <DashboardHeader />

@@ -5,7 +5,9 @@ export const pomodoroSettingsSchema = z.object({
     shortBreakDuration: z.number().min(1).max(15),
     longBreakDuration: z.number().min(10).max(45),
     longBreakInterval: z.number().min(2).max(10),
-    rounds: z.number().min(1).max(10)
+    rounds: z.number().min(1).max(10),
+    soundEffect: z.string(),
+    soundEffectVolume: z.number().min(0).max(100)
 })
 
 export type PomodoroSettingsSchema = z.infer<typeof pomodoroSettingsSchema>

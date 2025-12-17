@@ -1,7 +1,7 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { pomodoroSettingsSchema } from "@/schema/pomodoroSettingsSchema";
-import { updateTaskContentSchema } from "@/schema/updateTaskSchema";
+import { PomodoroSoundEffect } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -22,7 +22,10 @@ export async function POST(request: Request) {
         shortBreakDuration,
         longBreakDuration,
         longBreakInterval,
-        rounds } = result.data;
+        rounds,
+        soundEffect,
+        soundEffectVolume
+    } = result.data;
 
     try {
         // Check permissions
@@ -47,15 +50,34 @@ export async function POST(request: Request) {
         )
 
         if (!pomodoro) {
-            return new NextResponse("pomodoro not found", { status: 404 });
+            await db.pomodoroSettings.create({
+                data: {
+                    userId: user.id,
+                    longBreakDuration,
+                    longBreakInterval,
+                    shortBreakDuration,
+                    soundEffect: soundEffect as PomodoroSoundEffect,
+                    soundEffectVolume: soundEffectVolume / 100,
+                    rounds,
+                    workDuration
+                }
+            })
+            return NextResponse.json("OK", { status: 200 })
+        } else {
+            await db.pomodoroSettings.update({
+                where: { id: pomodoro.id },
+                data: {
+                    workDuration,
+                    shortBreakDuration,
+                    longBreakDuration,
+                    longBreakInterval,
+                    rounds, soundEffect: soundEffect as PomodoroSoundEffect,
+                    soundEffectVolume: soundEffectVolume / 100
+                },
+            });
+            return NextResponse.json("OK", { status: 200 });
         }
 
-        await db.pomodoroSettings.update({
-            where: { id: pomodoro.id },
-            data: { workDuration, shortBreakDuration, longBreakDuration, longBreakInterval, rounds },
-        });
-
-        return NextResponse.json("OK", { status: 200 });
     } catch (error) {
         console.error("Error updating task date:", error);
         return new NextResponse("Server error", { status: 500 });

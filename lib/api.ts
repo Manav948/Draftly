@@ -108,6 +108,7 @@ export const getPomodoro = async (userId: string) => {
     console.log("getPomodoro error:", res);
     return notFound();
   }
-  console.log(res)
-  return res.json() as Promise<PomodoroSettings>;
+  const data = await res.json();
+  // Handle wrapped response: { pomodoro: PomodoroSettings }
+  return data.pomodoro ? (data.pomodoro as PomodoroSettings) : (data as PomodoroSettings);
 }
