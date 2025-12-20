@@ -61,3 +61,33 @@ export interface UserInfo {
     image?: string | null
     name?: string | null
 }
+
+export interface AssignedToTaskUser {
+    user : {
+        id : string,
+        username : string,
+        image : string | null,
+         assignedToTasks : {
+            userId : string
+         }[]
+    }
+}
+
+export interface UserAssigningToTaskInfo extends Workspace {
+    Subscribers : AssignedToTaskUser[] 
+}
+
+export interface AssignedToMindMapUser {
+    user : {
+        id : string,
+        username : string,
+        image : string | null,
+         assignedToMindMaps : {
+            userId : string
+         }[]
+    }
+}
+
+export interface UserAssigningToMindMapInfo extends Workspace {
+    Subscribers : AssignedToMindMapUser[]
+}

@@ -16,6 +16,7 @@ import PreviewCard from "./PreviewCard"
 import UserHoverInfo from "@/components/common/UserHoverInfo"
 import { Separator } from "@/components/ui/separator"
 import { useFormatter } from "next-intl"
+import AssignedToMindMapSelector from "../assignTo/AssignToMindMapSelector"
 
 interface Props {
   mindMap: ExtendedMindMap
@@ -30,7 +31,7 @@ const PreviewCardWrapper = ({
   isSavedByUser,
   children,
 }: Props) => {
-    console.log("mindmap" , mindMap)
+  console.log("mindmap", mindMap)
   const [isSaved, setIsSaved] = useState(isSavedByUser)
   const format = useFormatter()
   // @ts-ignore
@@ -70,7 +71,7 @@ const PreviewCardWrapper = ({
                       Mind map metadata
                     </HoverCardContent>
                   </HoverCard>
-
+                  <AssignedToMindMapSelector workspaceId={mindMap.workspaceId} mindMapId={mindMap.id} />
                   {mindMap.tags?.map((tag) => (
                     <LinkTag key={tag.id} tag={tag} disabled />
                   ))}
@@ -105,7 +106,7 @@ const PreviewCardWrapper = ({
           <div className="flex items-center gap-2">
             <span>Updated by</span>
             <UserHoverInfo user={mindMap.updatedBy ?? mindMap.creator} />
-            <p>{format.relativeTime(dateTime , now)}</p>
+            <p>{format.relativeTime(dateTime, now)}</p>
           </div>
         </CardFooter>
       </Card>
