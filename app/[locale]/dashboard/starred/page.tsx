@@ -8,7 +8,7 @@ const AssignToMePage = async () => {
     return (
         <div>
             <DashboardHeader />
-            <main className='w-full h-full'>
+            <main className='w-full h-full flex items-center gap-2'>
                 <StarredContainer userId={session.user.id} />
             </main>
         </div>
