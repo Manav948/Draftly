@@ -34,41 +34,63 @@ const StarredItem = ({ items, sortType, userId }: Props) => {
   }
 
   return (
-    <Link href={link}>
-      <Card className="bg-white dark:bg-gradient-to-b dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 transition">
-        <CardContent className="flex items-center justify-between gap-4 py-4">
-          <div className="flex items-center gap-4">
+    <Link href={link} className="group block">
+      <Card
+        className="
+          relative overflow-hidden
+          transition-all duration-200
+          hover:-translate-y-[1px] hover:shadow-lg
+          dark:bg-gradient-to-b
+          dark:from-gray-900 dark:via-gray-900 dark:to-black/30
+        "
+      >
+        <CardContent className="flex items-center justify-between gap-4 py-3">
+          <div className="flex items-center gap-4 min-w-0">
             <ReadOnlyEmoji
               selectedEmoji={emoji ?? undefined}
-              className="h-10 w-10"
+              className="h-10 w-10 shrink-0"
             />
-            <div>
-              <h3 className="font-medium">{title}</h3>
-              <div className="text-xs text-muted-foreground flex items-center gap-1">
-                <span>{type}</span>
+
+            <div className="min-w-0">
+              <h3 className="font-bold text-2xl truncate">{title}</h3>
+
+              <div className="mt-0.5 flex flex-wrap items-center gap-1  text-muted-foreground font-bold">
+                <span className="capitalize">{type}</span>
                 <span>•</span>
-                <span>{format.relativeTime(new Date(updated.at), new Date())}</span>
+                <span>
+                  {format.relativeTime(new Date(updated.at), new Date())}
+                </span>
+
                 {updated.by && (
                   <>
                     <span>•</span>
                     <UserHoverInfo user={updated.by} />
                   </>
                 )}
-                <span>• {workspaceName}</span>
+
+                <span className="truncate">• {workspaceName}</span>
               </div>
             </div>
           </div>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <MoreHorizontal />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }}
+              >
+                <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={handleUnstar}
-                className="text-destructive cursor-pointer"
+                className="cursor-pointer text-destructive"
               >
                 <StarOff className="mr-2 h-4 w-4" />
                 Unstar
@@ -76,6 +98,14 @@ const StarredItem = ({ items, sortType, userId }: Props) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </CardContent>
+
+        <div
+          className="
+            pointer-events-none absolute inset-0 opacity-0
+            group-hover:opacity-100 transition
+            dark:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.07),transparent_60%)]
+          "
+        />
       </Card>
     </Link>
   )

@@ -37,16 +37,16 @@ const UserHoverInfo = ({ user }: Props) => {
                     <UserAvatar
                         className="h-12 w-12 shrink-0"
                         profileImage={user?.image}
-                        size={12}
+                        size={45}
                     />
 
                     <div className="flex flex-col gap-1 min-w-0">
 
-                        <p className="text-xs text-muted-foreground line-clamp-3">
+                        <p className="text-xl font-bold text-muted-foreground line-clamp-3">
                             {user.username}
                         </p>
                         {user.name && user.surname && (
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-sm font-semibold text-muted-foreground">
                                 {user.name} {user.surname}
                             </p>
                         )}

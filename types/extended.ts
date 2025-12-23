@@ -63,31 +63,51 @@ export interface UserInfo {
 }
 
 export interface AssignedToTaskUser {
-    user : {
-        id : string,
-        username : string,
-        image : string | null,
-         assignedToTasks : {
-            userId : string
-         }[]
+    user: {
+        id: string,
+        username: string,
+        image: string | null,
+        assignedToTasks: {
+            userId: string
+        }[]
     }
 }
 
 export interface UserAssigningToTaskInfo extends Workspace {
-    Subscribers : AssignedToTaskUser[] 
+    Subscribers: AssignedToTaskUser[]
 }
 
 export interface AssignedToMindMapUser {
-    user : {
-        id : string,
-        username : string,
-        image : string | null,
-         assignedToMindMaps : {
-            userId : string
-         }[]
+    user: {
+        id: string,
+        username: string,
+        image: string | null,
+        assignedToMindMaps: {
+            userId: string
+        }[]
     }
 }
 
 export interface UserAssigningToMindMapInfo extends Workspace {
-    Subscribers : AssignedToMindMapUser[]
+    Subscribers: AssignedToMindMapUser[]
+}
+export type AssignedToMeTypes = "tasks"  | "mindMap"
+
+export interface AssignedToMeDataItems  {
+    id: string,
+    title: string,
+    emoji: string,
+    link: string,
+    workspaceName: string,
+    type : AssignedToMeTypes,
+    createdAt : Date,
+    workspaceId : string,
+    updated : {
+        at : Date,
+        by?: UserInfo | null
+    }
+}
+export interface AssignedToMeTasksAndMindMaps {
+    Task : AssignedToMeDataItems[],
+    mindMaps : AssignedToMeDataItems[]
 }

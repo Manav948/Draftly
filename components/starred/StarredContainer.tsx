@@ -1,6 +1,5 @@
 "use client"
 
-import React from "react"
 import { Card, CardContent, CardDescription, CardHeader } from "../ui/card"
 import { useSearchParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
@@ -23,49 +22,44 @@ const StarredContainer = ({ userId }: Props) => {
     isLoading,
     isError,
     refetch,
-  } = useQuery({
+  } = useQuery<StarredItemType[]>({
     queryKey: ["getStarredItems", userId, sortType],
     queryFn: async () => {
       const res = await fetch(
         `/api/saved/get?userId=${userId}&sort=${sortType}`
       )
       if (!res.ok) throw new Error("Failed to fetch starred items")
-      return (await res.json()) as StarredItemType[]
+      return res.json()
     },
   })
 
-
-  if (isLoading) {
-    return <LoadingScreen />
-  }
-
+  if (isLoading) return <LoadingScreen />
 
   if (isError) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-center">
+      <div className="flex flex-col items-center justify-center py-24 text-center">
         <h2 className="text-lg font-semibold">Something went wrong</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Please try refreshing the page.
+          Please refresh the page and try again.
         </p>
       </div>
     )
   }
 
-
   if (!starredItems || starredItems.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
+      <div className="flex flex-col items-center justify-center py-28 text-center">
         <h2 className="text-xl font-semibold">No starred items</h2>
         <p className="text-muted-foreground mt-2 max-w-sm">
-          Star tasks or mind maps to quickly access them later.
+          Star tasks or mind maps to access them quickly later.
         </p>
       </div>
     )
   }
 
   return (
-    <section className="mx-auto">
-      <Card className="border-none bg-white dark:bg-gradient-to-bl dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 shadow-none rounded-none">
+    <section className="mx-auto w-full">
+      <Card className="border-none shadow-none rounded-none bg-transparent">
         <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <h1 className="text-2xl font-semibold tracking-tight">
@@ -79,7 +73,7 @@ const StarredContainer = ({ userId }: Props) => {
           <SortSelect sortType={sortType} refetch={refetch} />
         </CardHeader>
 
-        <CardContent className="space-y-3 h-full flex gap-3 flex-col">
+        <CardContent className="space-y-3">
           {starredItems.map((item) => (
             <StarredItem
               key={item.id}

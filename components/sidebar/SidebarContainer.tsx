@@ -39,7 +39,7 @@ const SidebarContainer = ({ userWorkspace, userId, userAdminWorkspaces }: Props)
                 </div>
 
                 {/* Option Sidebar (only for Settings route) */}
-                <OptionSidebar activeWorkspaces={createdWorkspaces.length} userAdminWorkspaces={userAdminWorkspaces} />
+                <OptionSidebar activeWorkspaces={createdWorkspaces.length} userAdminWorkspaces={userAdminWorkspaces} userWorkspaces={userWorkspace} />
 
                 {/* Close button for mobile */}
                 <CloseSidebar />

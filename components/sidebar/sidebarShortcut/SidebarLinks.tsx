@@ -9,13 +9,14 @@ interface Props {
     href: string,
     Icon: LucideIcon,
     hoverTextKey: string
+    include?:string
 }
-const SidebarLinks = ({ hoverTextKey, Icon, href }: Props) => {
+const SidebarLinks = ({ hoverTextKey, Icon, href , include }: Props) => {
     return (
         <div>
             <HoverCard openDelay={250} closeDelay={250}>
                 <HoverCardTrigger asChild>
-                    <ActiveLink variant={"ghost"} size={"icon"} href={href}>
+                    <ActiveLink variant={"ghost"} size={"icon"} href={href} include={include}>
                         <Icon />
                     </ActiveLink>
                 </HoverCardTrigger>

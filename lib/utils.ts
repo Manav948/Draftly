@@ -24,6 +24,7 @@ export const topSidebarLinks = [
   {
     href : "/dashboard/pomodoro",
     Icon : Clock,
+    include : "dashboard/pomodoro",
     hoverTextKey : "Pomodoro"
   },
   {
