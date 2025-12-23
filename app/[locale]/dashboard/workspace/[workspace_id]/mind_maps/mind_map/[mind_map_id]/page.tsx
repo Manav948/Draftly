@@ -8,6 +8,7 @@ import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboar
 import React from 'react'
 import { changeCodeToEmoji } from '@/lib/changeCodetoEmoji'
 import PreviewCardWrapper from '@/components/mindMaps/preview/PreviewCardWrapper'
+import LeaveWorkspace from '@/components/leaveworkspace/LeaveWorkspace'
 
 interface Params {
   params: Promise<{ mind_map_id: string; workspace_id: string }>
@@ -51,7 +52,9 @@ const ViewMindMapPage = async ({ params }: Params) => {
             }
           ]}
         >
+          {(userRole !== "OWNER" && <LeaveWorkspace workspace={workspace} />)}
           {canEdit && <InviteUsers workspace={workspace} />}
+
         </DashboardHeader>
 
         <main className="flex flex-col gap-2">

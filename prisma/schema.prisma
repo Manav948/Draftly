@@ -259,7 +259,7 @@ model assignedToMindMap {
   id        String  @id @default(cuid())
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  task      MindMap @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
+  mindMap   MindMap @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
   mindMapId String
 
   @@index([userId])

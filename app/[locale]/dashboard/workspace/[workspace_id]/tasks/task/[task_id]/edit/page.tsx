@@ -1,5 +1,6 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers'
+import LeaveWorkspace from '@/components/leaveworkspace/LeaveWorkspace'
 import TaskContainer from '@/components/tasks/container/TaskContainer'
 import { SaveTaskStateProvider } from '@/context/TaskSavingContext'
 import { getTask, getWorkspace, getWorkspaceRole } from '@/lib/api'
@@ -43,6 +44,7 @@ const EditTasks = async ({ params }: Params) => {
         {(
           <InviteUsers workspace={workspace} />
         )}
+        {(userRole !== "OWNER" && <LeaveWorkspace workspace={workspace} />)}
       </DashboardHeader>
 
       <main className="flex flex-col gap-2">

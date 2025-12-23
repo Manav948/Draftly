@@ -7,6 +7,7 @@ import { getMindMap, getWorkspace, getWorkspaceRole } from '@/lib/api'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import { redirect } from 'next/navigation'
 import React from 'react'
+import LeaveWorkspace from '@/components/leaveworkspace/LeaveWorkspace'
 
 interface Params {
   params: Promise<{ mind_map_id: string; workspace_id: string }>
@@ -38,6 +39,7 @@ const EditMindMapPage = async ({ params }: Params) => {
       <AutoSaveMindMapProvider>
         <DashboardHeader>
           {canEdit && <InviteUsers workspace={workspace} />}
+          {(userRole !== "OWNER" && <LeaveWorkspace workspace={workspace} />)}
         </DashboardHeader>
 
         <main className="flex flex-col gap-2 h-full">
