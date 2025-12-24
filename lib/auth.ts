@@ -84,7 +84,6 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async session({ session, token }) {
-            console.log('Token', token)
             if (token) {
                 session.user.id = token.id as string
                 session.user.name = token.name
@@ -103,7 +102,6 @@ export const authOptions: NextAuthOptions = {
                 session.user.completeOnboarding = user.completeOnboarding
                 session.user.username = user.username;
             }
-            console.log('Session', session)
             return session
         },
         async jwt({ token, user }) {

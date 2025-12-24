@@ -44,7 +44,6 @@ export const getWorkspaceSettings = async (workspace_id: string, userId: string)
     cache: "no-store"
   })
   if (!res.ok) {
-    console.log("WorkspaceSettings : ", res)
     return notFound()
   }
   return res.json() as Promise<SettingsWorkspace>
@@ -56,7 +55,6 @@ export const getWorkspaceRole = async (workspace_id: string, userId: string) => 
     cache: "no-store"
   })
   if (!res.ok) {
-    console.log("workspaceRole : ", res)
     return null
   }
   return res.json() as Promise<UserPermission>
@@ -75,7 +73,6 @@ export const getTask = async (task_id: string, userId: string) => {
     console.log("getTask error:", res);
     return notFound();
   }
-  console.log(res)
   return res.json() as Promise<ExtendedTask>;
 };
 
@@ -94,7 +91,6 @@ export const getMindMap = async (mind_map_id: string, userId: string) => {
   console.log(res)
   return res.json() as Promise<ExtendedMindMap>;
 };
-
 export const getPomodoro = async (userId: string) => {
   const res = await fetch(
     `${domain}/api/pomodoro/get_settings?userId=${userId}`,
@@ -106,7 +102,6 @@ export const getPomodoro = async (userId: string) => {
 
   if (!res.ok) {
     console.log("getPomodoro error:", res);
-    return notFound();
   }
   const data = await res.json();
   // Handle wrapped response: { pomodoro: PomodoroSettings }

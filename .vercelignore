@@ -1,0 +1,10 @@
+.env.local
+.env.*.local
+node_modules
+.git
+.gitignore
+README.md
+npm-debug.log
+yarn-error.log
+.next/cache
+prisma/migrations/*/migration_lock.toml

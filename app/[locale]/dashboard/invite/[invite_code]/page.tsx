@@ -2,13 +2,14 @@ import { checkIfUserCompletedOnboarding } from "@/lib/checkIfUserCompletedOnboar
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
-interface Params {
-    params: {
+interface PageProps {
+    params: Promise<{
         invite_code: string;
-    };
-    searchParams: {
+        locale: string;
+    }>;
+    searchParams: Promise<{
         [key: string]: string | string[] | undefined;
-    };
+    }>;
 }
 
 interface inviteCodeValidWhere {
@@ -18,7 +19,9 @@ interface inviteCodeValidWhere {
     canEditCode?: string
 }
 
-const Workspace = async ({ searchParams, params: { invite_code } }: Params) => {
+const Workspace = async ({ searchParams: searchParamsPromise, params: paramsPromise }: PageProps) => {
+    const searchParams = await searchParamsPromise;
+    const { invite_code } = await paramsPromise;
 
     const session = await checkIfUserCompletedOnboarding(`/dashboard/invite/${invite_code}`)
     const role = searchParams.role as "editor" | "viewer" | "admin" | null | undefined;

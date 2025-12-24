@@ -90,7 +90,12 @@ const Editor = ({ workspaceId, initialActiveTags,taskId }: Props) => {
                 <CardContent className="p-6">
                     <div className="flex flex-col gap-4">
                         <div className="flex items-start gap-4">
-                            <Logo onFormSelect={onFormSelectHandler} />
+                            <Logo 
+                                onFormSelect={onFormSelectHandler}
+                                emoji={form.watch("icon") || "🧠"}
+                                taskId={taskId}
+                                workspaceId={workspaceId}
+                            />
                             <div className="flex-1">
                                 <TextareaAutoSize
                                     ref={(e) => {

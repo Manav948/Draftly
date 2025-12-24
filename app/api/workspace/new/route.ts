@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         }
 
         if (user.createdWorkspaces.length === MAX_USER_WORKSPACES) {
-            return new NextResponse("Workspace limit reached — you can’t create more workspaces right now."), { status: 402 }
+            return new NextResponse("Workspace limit reached — you can't create more workspaces right now.", { status: 402 })
         }
 
         const theSameWorkspace = user.createdWorkspaces.find(
@@ -66,8 +66,6 @@ export async function POST(request: Request) {
                 adminCode: uuidv4()
             }
         })
-
-        console.log("Workpace : ",workspace)
 
         await db.subscription.create({
             data: {

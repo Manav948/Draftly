@@ -1,0 +1,9 @@
+{
+  "buildCommand": "prisma generate && prisma migrate deploy && next build",
+  "outputDirectory": ".next",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "regions": ["iad1"],
+  "crons": []
+}
