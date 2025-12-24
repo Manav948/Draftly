@@ -1,4 +1,4 @@
-import { MindMap, PomodoroSettings, savedMindMaps, savedTask, Tag, Task, UserPermission, Workspace } from "@prisma/client";
+import { MindMap, PomodoroSettings, savedMindMaps, savedTask, Tag, Task, UserPermission, Workspace, WorkspaceIconColor } from "@prisma/client";
 
 export interface SubscriptionUser {
     userRole: UserPermission;
@@ -110,4 +110,17 @@ export interface AssignedToMeDataItems  {
 export interface AssignedToMeTasksAndMindMaps {
     Task : AssignedToMeDataItems[],
     mindMaps : AssignedToMeDataItems[]
+}
+
+export interface CalendarItem {
+    title : string,
+    date :  {
+        id : string,
+        from : Date | undefined
+        to : Date | undefined   
+    } | null
+    workspaceId : string,
+    workspaceName : string,
+    workspaceColor : WorkspaceIconColor,
+    taskId : string
 }

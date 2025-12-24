@@ -42,7 +42,7 @@ const UserHoverInfo = ({ user }: Props) => {
 
                     <div className="flex flex-col gap-1 min-w-0">
 
-                        <p className="text-xl font-bold text-muted-foreground line-clamp-3">
+                        <p className="text-xl font-medium text-muted-foreground line-clamp-3">
                             {user.username}
                         </p>
                         {user.name && user.surname && (

@@ -52,9 +52,9 @@ const StarredItem = ({ items, sortType, userId }: Props) => {
             />
 
             <div className="min-w-0">
-              <h3 className="font-bold text-2xl truncate">{title}</h3>
+              <h3 className="font-semibold text-xl truncate">{title}</h3>
 
-              <div className="mt-0.5 flex flex-wrap items-center gap-1  text-muted-foreground font-bold">
+              <div className="mt-0.5 flex flex-wrap items-center gap-1  text-muted-foreground font-medium">
                 <span className="capitalize">{type}</span>
                 <span>•</span>
                 <span>
