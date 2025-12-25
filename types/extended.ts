@@ -124,3 +124,21 @@ export interface CalendarItem {
     workspaceColor : WorkspaceIconColor,
     taskId : string
 }
+
+export interface DashboardSummary {
+  stats: {
+    totalTasks: number
+    workspaces: number
+    starred: number
+    assigned: number
+  }
+  recentActivity: {
+    id: string
+    title: string
+    emoji: string | null
+    updatedAt: Date
+    workspace: {
+      name: string
+    }
+  }[]
+}

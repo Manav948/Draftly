@@ -1,3 +1,4 @@
+import DashboardContainer from '@/components/dashboard/DashboardContainer'
 import DashboardHeader from '@/components/header/DashboardHeader'
 import Welcoming from '@/components/header/Welcoming'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
@@ -5,13 +6,11 @@ import React from 'react'
 
 const Dashboard = async () => {
   const session = await checkIfUserCompletedOnboarding("/dashboard")
-  console.log(session)
-
   return (
     <>
       <DashboardHeader />
-      <div className="flex items-start justify-between px-6 py-4">
-        <Welcoming hideOnMobile showOnlyOnPath="/dashboard" />
+      <div className="px-3">
+        <DashboardContainer userId={session.user.id} username={session.user.name || ""} />
       </div>
     </>
   )

@@ -19,9 +19,10 @@ const Day = ({ day, monthIndex, calendarItems }: Props) => {
     <div
       className={cn(
         "relative min-h-[140px] p-2",
-        "border border-gray-500",
+        "border border-border",
         "dark:bg-gray-900",
-        isWeekend && "bg-muted/40"
+        "cursor-pointer hover:bg-muted",
+        isWeekend && "bg-muted/30"
       )}
     >
       <div className="flex justify-end">
