@@ -51,12 +51,12 @@ const Step1 = () => {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-300 px-4">
+    <section className="min-h-screen flex items-center justify-center dark:bg-[#0e0707] dark:text-white transition-colors duration-300 px-4">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-lg bg-card rounded-2xl shadow-xl p-8 sm:p-10 border border-border"
+        className="w-full max-w-lg dark:bg-[#0e0707] rounded-2xl shadow-xl sm:p-10 border border-border dark:border-white"
       >
         {/* Heading */}
         <motion.div

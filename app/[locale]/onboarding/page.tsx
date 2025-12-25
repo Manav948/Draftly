@@ -9,17 +9,17 @@ const Onboarding = async () => {
 
   return (
     <OnboardingFormProvider session={session}>
-      <main className="min-h-screen bg-background flex items-start justify-center px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-6xl">
+      <main className="min-h-screen dark:bg-[#0e0707] dark:text-[#f03d3d] flex items-start justify-center">
+        <div className="flex items-center justify-center w-full max-w-auto">
           {/* Left: Steps */}
-          <div className="bg-card p-6 rounded-2xl shadow-md">
+          <div className="dark:bg-[#0e0707] rounded-2xl shadow-md">
             <AdditionalSetting/>
           </div>
 
           {/* Right: Summary */}
-          <div className="bg-card p-6 rounded-2xl shadow-md sticky top-10 h-fit flex items-center justify-center">
+          {/* <div className="bg-card p-6 rounded-2xl shadow-md sticky top-10 h-fit flex items-center justify-center">
             <Summary />
-          </div>
+          </div> */}
         </div>
       </main>
     </OnboardingFormProvider>

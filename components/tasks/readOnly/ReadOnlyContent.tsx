@@ -43,7 +43,7 @@ const ReadOnlyContent = ({ task, isSavedByUser, userRole, workspaceId }: Props) 
 
   return (
     <div className='flex items-center justify-center mt-10'>
-      <Card className="dark:bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 rounded-4xl w-[90%]">
+      <Card className="dark:bg-[#0e0707] dark:text-white rounded-4xl w-[90%]">
         <CardContent className="p-4 md:p-6 space-y-4">
           <div className="flex items-start gap-4">
             <ReadOnlyEmoji selectedEmoji={task.emoji ?? "✌️"} />

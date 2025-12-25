@@ -36,7 +36,7 @@ const EditorTask = ({ content, taskId, workspaceId }: Props) => {
     editorProps: {
       attributes: {
         class:
-          "prose dark:prose-invert min-h-[300px] p-6 rounded-xl bg-white dark:bg-gray-950 " +
+          "prose dark:prose-invert min-h-[300px] p-6 rounded-xl bg-white dark:bg-[#0e0707] " +
           "border shadow-md dark:border-gray-800 dark:shadow-lg focus:outline-none",
       },
     },

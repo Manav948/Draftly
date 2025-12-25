@@ -22,10 +22,9 @@ const DashboardHeader = ({ addManualRoutes, children, workspaceHref, showingSavi
       sticky top-0 z-40
       flex items-center justify-between
       w-full px-5 py-3
-      bg-gradient-to-r from-background/60 via-background/80 to-background/95
-      dark:from-gray-900 dark:via-gray-950 dark:to-gray-900
+      dark:bg-[#0e0707] dark:text-[#f03d3d]
       backdrop-blur-xl
-      border-b border-border/30 shadow-sm
+      border-b border-border/30 dark:border-white/20 shadow-sm
       transition-all duration-300
     ">
       {showingSavingStatus && <SavingStatus />}

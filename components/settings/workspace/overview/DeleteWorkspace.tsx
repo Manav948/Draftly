@@ -71,8 +71,7 @@ const DeleteWorkspace = ({ workspace: { id, name } }: Props) => {
       className="
         max-w-3xl mx-auto
         border-none shadow-md rounded-xl overflow-hidden
-        bg-gradient-to-b from-white via-gray-50 to-gray-100
-        dark:from-gray-950 dark:via-gray-900 dark:to-black
+        dark:bg-[#1e0f0f] dark:text-[#f03d3d]
       "
     >
       <CardHeader className="pb-2">

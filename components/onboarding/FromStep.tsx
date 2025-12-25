@@ -8,7 +8,7 @@ const FromStep = () => {
   const { currentStep } = useOnboardingForm();
 
   return (
-    <div className="flex items-center justify-center gap-6 mt-6">
+    <div className="flex items-center justify-center gap-6">
       {steps.map((s, index) => (
         <div key={s} className="flex items-center">
           <span

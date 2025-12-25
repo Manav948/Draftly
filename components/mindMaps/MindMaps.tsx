@@ -198,7 +198,7 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
 
     if (!isMounted) return <LoadingScreen />
     return (
-        <div className='w-full h-full flex flex-col'>
+        <div className='w-full h-full flex flex-col dark:text-white'>
             {clickedEdge && (
                 <Sheet open={openSheet} onOpenChange={setOpenSheet}>
                     <EdgeOptions

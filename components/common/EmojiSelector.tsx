@@ -35,7 +35,7 @@ const EmojiSelector = ({ asChild, children, onSelectedEmoji }: Props) => {
         <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 
-            <DropdownMenuContent className="p-2 w-[320px] sm:w-[360px] rounded-xl shadow-lg bg-white dark:bg-gray-900">
+            <DropdownMenuContent className="p-2 w-[320px] sm:w-[360px] rounded-xl shadow-lg bg-white dark:bg-[#0e0707] dark:text-[#f03d3d]">
                 <div className="rounded-md overflow-hidden">
                     <Picker
                         data={data}

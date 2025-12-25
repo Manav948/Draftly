@@ -42,9 +42,10 @@ const Welcoming = React.forwardRef<HTMLDivElement, Props>(
             hideOnMobile && "hidden lg:block",
             className
           )}>
-          <p className="font-semibold text-lg">
-            Hey, <span className="text-primary">{user?.username}</span> 👋
+          <p className="font-semibold text-3xl dark:text-white">
+            Hey, <span className="text-3xl">{user?.username}</span> 👋
           </p>
+          
         <span>{day}</span>
         <span className="ml-2">{time}</span>
         </div>

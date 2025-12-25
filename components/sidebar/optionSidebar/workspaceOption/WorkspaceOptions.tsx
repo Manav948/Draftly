@@ -77,7 +77,7 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
       </p>
 
       {/* Tasks Dropdown */}
-      <div className="rounded-xl border bg-white dark:bg-gray-950 dark:border-gray-800 shadow-sm overflow-hidden">
+      <div className="rounded-xl border bg-white dark:bg-[#0e0707] dark:text-white dark:border-gray-800 shadow-sm overflow-hidden">
         {isLoading ? (
           <p className="px-4 py-3 text-sm text-gray-500">Loading tasks...</p>
         ) : (

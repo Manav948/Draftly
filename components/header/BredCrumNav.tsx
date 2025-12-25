@@ -55,7 +55,7 @@ const BredCrumNav = ({ addManualRoutes, workspaceHref }: Props) => {
                             {route.useTranslate ? t(route.name) : route.name}
                           </Link>
                         ) : (
-                          <span className="font-medium text-gray-500">
+                          <span className="font-medium dark:text-[#f03d3d]">
                             {route.useTranslate ? t(route.name) : route.name}
                           </span>
                         )}
@@ -65,7 +65,7 @@ const BredCrumNav = ({ addManualRoutes, workspaceHref }: Props) => {
               <span
                 className={cn(
                   "font-semibold relative px-2 py-1 rounded-md",
-                  "bg-gray-200/70 text-gray-900 dark:bg-white/80 dark:text-black shadow-sm cursor-pointer"
+                  "bg-gray-200/70 text-gray-900 dark:bg-white/80 dark:text-[#f03d3d] shadow-sm cursor-pointer"
                 )}
               >
                 {route.useTranslate ? t(route.name) : route.name}
@@ -77,7 +77,7 @@ const BredCrumNav = ({ addManualRoutes, workspaceHref }: Props) => {
           </nav>
       </>
     ) : (
-      <nav className="flex items-center gap-2 text-sm text-black dark:text-white">
+      <nav className="flex items-center gap-2 text-sm text-black dark:text-[#f03d3d]">
         {pathNames.map((link, i) => {
           const href = `/${pathNames.slice(0, i + 1).join("/")}`;
           const isLast = i + 1 === pathNames.length;
@@ -101,7 +101,7 @@ const BredCrumNav = ({ addManualRoutes, workspaceHref }: Props) => {
                 <span
                   className={cn(
                     "font-semibold relative px-2 py-1 rounded-md",
-                    "bg-gray-200/70 text-gray-900 dark:bg-white/80 dark:text-black shadow-sm cursor-pointer"
+                    "bg-gray-200/70 text-gray-900 dark:bg-[#0e0707] dark:text-[#f03d3d] shadow-sm cursor-pointer"
                   )}
                 >
                   {availableRoutesWithTranselation.includes(link) ? t(link.toUpperCase()) : link}

@@ -40,8 +40,7 @@ const StarredItem = ({ items, sortType, userId }: Props) => {
           relative overflow-hidden
           transition-all duration-200
           hover:-translate-y-[1px] hover:shadow-lg
-          dark:bg-gradient-to-b
-          dark:from-gray-900 dark:via-gray-900 dark:to-black/30
+          dark:bg-[#0e0707] dark:text-[#f03d3d]
         "
       >
         <CardContent className="flex items-center justify-between gap-4 py-3">

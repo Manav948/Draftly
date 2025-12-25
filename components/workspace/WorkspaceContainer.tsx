@@ -53,7 +53,7 @@ const WorkspaceContainer = ({
   })
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-6 dark:bg-[#0e0707]">
       <WorkspaceHeader
         workspaceId={workspaceId}
         userWorkspace={userWorkspace}
@@ -63,7 +63,7 @@ const WorkspaceContainer = ({
         onWorkspaceChange={setActiveWorkspaceId}
       />
 
-      <Card className="border-none shadow-none">
+      <Card className="border-none shadow-none dark:bg-[#0e0707] dark:text-[#f03d3d]">
         <CardHeader>
           <CardTitle className="text-xl">Workspace Details</CardTitle>
           <CardDescription>

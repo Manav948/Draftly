@@ -16,7 +16,7 @@ const Shortcut = ({ userWorkspace,activeWorkspaces }: Props) => {
       className="
         flex flex-col justify-between
         w-16 md:w-20 h-full
-        bg-white dark:bg-gray-950 text-black dark:text-white
+        dark:bg-[#0e0707] text-black dark:text-white
         transition-all duration-300 ease-in-out
       "
     >

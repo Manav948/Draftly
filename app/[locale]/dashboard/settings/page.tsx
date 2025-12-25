@@ -15,9 +15,7 @@ const Settings = async () => {
       <div
         className="
           min-h-screen py-6 
-          bg-gradient-to-b from-white via-white to-gray-50
-          dark:bg-gradient-to-b dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 
-          dark:text-gray-100
+         dark:bg-[#0e0707] dark:text-[#f03d3d]
         "
       >
         {/* Page Heading */}

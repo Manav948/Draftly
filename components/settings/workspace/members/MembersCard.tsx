@@ -17,12 +17,12 @@ const MembersCard = ({ workspace, workspaceId }: Props) => {
     <Card
       className={cn(
         "rounded-2xl shadow-xl border-0 transition-all duration-300",
-        "bg-white dark:bg-gradient-to-bl dark:from-gray-900 dark:via-gray-950 dark:to-gray-900",
+        "dark:bg-[#0e0707] dark:text-[#f03d3d]",
         "hover:shadow-2xl"
       )}
     >
       <CardHeader>
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-[#f03d3d]">
           {t("TITLE")}
         </h1>
         <CardDescription className="text-gray-600 dark:text-gray-300">

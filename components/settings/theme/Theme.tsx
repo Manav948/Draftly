@@ -23,16 +23,14 @@ const Theme = () => {
     }
 
     return (
-        <div className="flex justify-center items-start h-full w-full 
-                        bg-gradient-to-br from-white 
-                        dark:from-gray-950 dark:via-gray-900 dark:to-black 
+        <div className="flex justify-center items-start h-full w-full  
+                        dark:bg-[#0e0707] dark:text-[#f03d3d]
                         text-gray-100 py-16 px-4 sm:px-8 transition-all">
-            
-            <Card className="w-full max-w-5xl bg-gradient-to-br from-white
-                             dark:from-gray-900/80 dark:via-gray-950/70 dark:to-black/40
+
+            <Card className="w-full max-w-5xl dark:bg-[#0e0707] dark:text-[#f03d3d]
                              backdrop-blur-xl border rounded-2xl shadow-2xl 
                              transition-all duration-500 hover:shadow-primary/30">
-                
+
                 <CardHeader className="space-y-2 text-center py-8">
                     <CardTitle className="text-3xl font-extrabold 
                                          bg-clip-text text-transparent 

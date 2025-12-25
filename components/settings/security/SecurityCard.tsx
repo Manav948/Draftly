@@ -8,8 +8,7 @@ import Warning from '@/components/ui/warning'
 const SecurityCard = () => {
     const t = useTranslations("SETTINGS.SECURITY")
     return (
-        <Card className=' bg-gradient-to-br from-white via-gray-50 to-gray-100
-      dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 shadow-xl
+        <Card className=' dark:bg-[#0e0707] dark:text-[#f03d3d]  shadow-xl
         backdrop-blur-md transition-all border-0 border-white'>
             <CardHeader>
                 <h1 className='font-bold text-3xl text-foreground'>

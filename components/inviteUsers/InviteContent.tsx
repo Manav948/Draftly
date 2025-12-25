@@ -96,8 +96,7 @@ const InviteContent = ({ workspace }: Props) => {
             className={`
       w-full max-w-md mx-auto mt-5 p-5 rounded-2xl
       transition-all duration-300 border shadow-lg
-      bg-gradient-to-br from-gray-50 via-white to-gray-100
-      dark:from-gray-950 dark:via-gray-900 dark:to-gray-950
+      dark:bg-[#0e0707]
       border-border/30
     `}
         >
@@ -111,8 +110,8 @@ const InviteContent = ({ workspace }: Props) => {
                         <HoverCardTrigger asChild>
                             <p
                                 className="
-                  bg-gray-100 border border-gray-200
-                  dark:bg-gray-800/50 dark:border-gray-700/40
+                   border border-gray-200
+                  dark:bg-[#0e0707]
                   truncate px-3 py-2 rounded-lg text-xs sm:text-sm
                   font-mono cursor-pointer hover:bg-gray-200
                   dark:hover:bg-gray-800/70 transition-all
@@ -125,7 +124,7 @@ const InviteContent = ({ workspace }: Props) => {
                         <HoverCardContent
                             className="
                 p-3 border rounded-lg shadow-md max-w-xs break-all
-                bg-white/95 dark:bg-gray-900/90
+                dark:bg-[#0e0707]
                 border-gray-200 dark:border-gray-800
               "
                         >
@@ -159,8 +158,8 @@ const InviteContent = ({ workspace }: Props) => {
                             size="sm"
                             className="
                 flex gap-1 items-center text-sm
-                bg-gray-50 border-gray-300 hover:bg-gray-100
-                dark:bg-gray-900/60 dark:border-gray-700/50
+                 border-gray-300 hover:bg-gray-100
+                dark:bg-[#0e0707] dark:border-gray-700/50
                 dark:hover:bg-gray-800 transition-all
               "
                         >
@@ -175,7 +174,7 @@ const InviteContent = ({ workspace }: Props) => {
                         sideOffset={5}
                         className="
               w-56 border
-              bg-white dark:bg-gray-900
+              dark:bg-[#0e0707] 
               border-gray-200 dark:border-gray-800
             "
                     >

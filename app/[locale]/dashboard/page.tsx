@@ -1,6 +1,5 @@
 import DashboardContainer from '@/components/dashboard/DashboardContainer'
 import DashboardHeader from '@/components/header/DashboardHeader'
-import Welcoming from '@/components/header/Welcoming'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import React from 'react'
 

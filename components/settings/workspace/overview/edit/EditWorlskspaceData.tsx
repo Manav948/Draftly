@@ -120,7 +120,7 @@ const EditWorkspaceData = ({ workspace: { id, color, name, image } }: Props) => 
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
             >
-                <div>
+                <div className="space-y-8">
 
                     <FormField
                         control={form.control}

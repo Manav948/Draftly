@@ -11,10 +11,10 @@ const AdditionalSetting = () => {
   const { currentStep } = useOnboardingForm();
 
   return (
-    <section className="">
+    <section className="flex flex-col">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-bold text-gray-900  dark:text-[#f03d3d]">
           Draftly
         </h1>
         <h2 className="mt-3 text-lg text-gray-600 dark:text-gray-300">

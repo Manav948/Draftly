@@ -108,9 +108,8 @@ const AccountInfo = ({
       <Card
         className="
         max-w-3xl mx-auto rounded-2xl 
-        bg-gradient-to-br from-white via-gray-50 to-gray-100
-      dark:from-gray-950 dark:via-gray-900 dark:to-black shadow-xl
-        backdrop-blur-md transition-all border-0 border-white"
+        dark:bg-black/70 shadow-xl 
+        backdrop-blur-md transition-all border-border dark:border-white"
       >
         <CardContent>
           {/* Profile Image */}
@@ -148,8 +147,8 @@ const AccountInfo = ({
                       <FormControl>
                         <Input
                           className="rounded-lg 
-                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-purple-500
-                          bg-gray-50 border focus:ring-indigo-500
+                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-red-500
+                          bg-gray-50 border focus:ring-orange-500
                           transition-all"
                           {...field}
                         />
@@ -169,8 +168,8 @@ const AccountInfo = ({
                       <FormControl>
                         <Input
                           className="rounded-lg 
-                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-purple-500
-                          bg-gray-50 border focus:ring-indigo-500
+                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-red-500
+                          bg-gray-50 border focus:ring-orange-500
                           transition-all"
                           {...field}
                         />
@@ -194,8 +193,8 @@ const AccountInfo = ({
                       <FormControl>
                         <Input
                           className="rounded-lg 
-                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-purple-500
-                          bg-gray-50 border focus:ring-indigo-500
+                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-red-500
+                          bg-gray-50 border focus:ring-orange-500
                           transition-all"
                           {...field}
                         />
@@ -220,7 +219,7 @@ const AccountInfo = ({
                               role="combobox"
                               className={cn(
                                 "justify-between rounded-lg w-full",
-                                "dark:bg-gray-800/60 dark:border-gray-700",
+                                "dark:bg-[#0e0707] dark:border-gray-700",
                                 "bg-gray-50 border"
                               )}
                             >

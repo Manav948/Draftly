@@ -51,7 +51,7 @@ const User = () => {
             <DropdownMenuContent
                 align="end"
                 sideOffset={10}
-                className="z-[9999] w-56 p-2 rounded-xl shadow-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+                className="z-[9999] w-56 p-2 rounded-xl shadow-lg bg-white dark:bg-[#0e0707] border border-gray-200 dark:border-gray-700"
             >
                 {/* User Info */}
                 <div className="flex">

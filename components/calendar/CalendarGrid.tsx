@@ -32,7 +32,7 @@ const CalendarGrid = ({ currMonth, monthIndex, calendarItem }: Props) => {
           "grid grid-cols-7 gap-px rounded-xl overflow-hidden",
           "border border-border",
           "bg-white",
-          "dark:bg-zinc-800"
+          "dark:bg-[#0e0707]"
         )}
       >
         {currMonth.map((row, i) => (

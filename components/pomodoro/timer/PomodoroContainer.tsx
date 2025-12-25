@@ -129,7 +129,7 @@ const PomodoroContainer = ({
             <Card
                 className={clsx(
                     "mt-8 w-full max-w-xl rounded-3xl border",
-                    "bg-background/60 backdrop-blur",
+                    "bg-bg-[#0e0707] backdrop-blur",
                     "shadow-lg transition-all"
                 )}
             >

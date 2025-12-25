@@ -57,9 +57,8 @@ const DeleteAccount = ({ userEmail }: Props) => {
     return (
         <Card className="
       max-w-3xl mx-auto
-      border-none shadow-md rounded-xl overflow-hidden
-      bg-gradient-to-b from-white via-gray-50 to-gray-100
-      dark:from-gray-950 dark:via-gray-900 dark:to-black
+      border-none shadow-md rounded-xl overflow-hidden border-border dark:border-white
+      dark:bg-[#321212]
     ">
             <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-bold text-red-600 dark:text-red-500">
@@ -87,7 +86,7 @@ const DeleteAccount = ({ userEmail }: Props) => {
                                             placeholder={t("DELETE_PLACEHOLDER")}
                                             className="
                         border-gray-300 dark:border-gray-700
-                        bg-white dark:bg-gray-950
+                        bg-white dark:bg-black
                         focus:ring-2 focus:ring-red-500
                       "
                                             {...field}

@@ -61,7 +61,7 @@ const Step3 = () => {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: "easeOut" }}
-      className="w-full max-w-lg mx-auto bg-card shadow-xl rounded-2xl p-8 sm:p-10 flex flex-col space-y-8 border mt-4"
+      className="w-full max-w-lg mx-auto dark:bg-[#0e0707] shadow-xl rounded-2xl p-8 sm:p-10 flex flex-col space-y-8 border mt-4"
     >
       <div className="text-center space-y-3">
         <h2 className="text-3xl font-extrabold tracking-tight text-foreground">
@@ -85,7 +85,7 @@ const Step3 = () => {
                 <FormControl>
                   <Input
                     placeholder="e.g. My Creative Studio"
-                    className="bg-muted/40 border border-border focus:ring-2 focus:ring-primary transition-all"
+                    className="dark:bg-[#0e0707] dark:text-[#f03d3d] border border-border focus:ring-2 focus:ring-primary transition-all"
                     {...field}
                   />
                 </FormControl>

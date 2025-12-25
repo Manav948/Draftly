@@ -131,7 +131,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
         )
 
     return (
-        <Card className="dark:bg-gradient-to-b from-gray-900 via-gray-950 to-gray-950 border border-border/40 shadow-xl overflow-hidden rounded-none">
+        <Card className="dark:dark:bg-[#0e0707] dark:text-white border border-border/40 shadow-xl overflow-hidden rounded-none">
             <form className="w-full">
                 <CardContent className="p-6">
                     <div className="flex flex-col gap-4">

@@ -33,7 +33,7 @@ const WorkspaceHeader = ({
   onWorkspaceChange,
 }: Props) => {
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-border dark:bg-[#0e0707] dark:text-white backdrop-blur">
       <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
 
         <Menubar className="border-none bg-transparent p-0">
@@ -96,7 +96,7 @@ const WorkspaceHeader = ({
           </MenubarMenu>
 
           <MenubarMenu>
-            <MenubarTrigger className="gap-2 px-3 py-2 hover:bg-muted text-red-500">
+            <MenubarTrigger className="gap-2 px-3 py-2 hover:bg-muted text-red-500 dark:text-white">
               <Trash2 size={16} /> Delete Worksapce
             </MenubarTrigger>
             <MenubarContent align="end">

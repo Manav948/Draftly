@@ -9,7 +9,7 @@ const Summary = () => {
     return (
         <section className="hidden lg:flex w-1/2 bg-primary justify-center items-center rounded-4xl">
             {currentStep < 3 && (
-                <div className="relative bg-card w-96 min-h-[14rem] shadow-md flex flex-col items-center p-6 gap-6 rounded-2xl">
+                <div className="relative dark:bg-[#0e0707] text-white w-96 min-h-[14rem] shadow-md flex flex-col items-center p-6 gap-6 rounded-2xl">
 
                     {/* Avatar */}
                     <div className="relative -mt-20">

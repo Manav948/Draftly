@@ -37,8 +37,7 @@ const Step2 = () => {
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.4 }}
       className="max-w-lg mx-auto space-y-8 p-6 rounded-2xl shadow-lg 
-                from-white via-gray-50 to-gray-100 
-                 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+                dark:bg-[#0e0707] dark:text-[#f03d3d]"
     >
       {/* Header */}
       <motion.div
