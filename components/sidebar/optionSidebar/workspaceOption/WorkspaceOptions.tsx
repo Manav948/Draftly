@@ -111,15 +111,6 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
         )}
 
       </div>
-
-      {/* Actions */}
-      <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
-        <p className="text-xs uppercase tracking-wide font-semibold text-gray-400 mb-2">
-          Actions
-        </p>
-        <NewTask workspaceId={workspaceId} />
-        <NewMindMap workspaceId={workspaceId} />
-      </div>
     </div>
   );
 };

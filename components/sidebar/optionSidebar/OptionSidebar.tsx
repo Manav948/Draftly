@@ -11,10 +11,10 @@ import AssignedToMeFilter from "./assignedToMeFilter/AssignedToMeFilter";
 interface Props {
   activeWorkspaces: number
   userAdminWorkspaces: Workspace[]
-  userWorkspaces : Workspace[]
+  userWorkspaces: Workspace[]
 }
 
-const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces ,userWorkspaces }: Props) => {
+const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces, userWorkspaces }: Props) => {
   const pathname = usePathname();
   const isSettings = pathname.includes("/dashboard/settings");
   const urlWorkspaceId: string | undefined = pathname.split("/")[4]
@@ -38,7 +38,7 @@ const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces ,userWorkspaces }
       className={`
         h-screen transition-all duration-300 ease-in-out
         bg-white dark:bg-gray-950 dark:text-white border-l border-gray-300 dark:border-gray-800
-        ${isSettings || url || isPomodoro || isAssignedToMe ? "w-52 p-4 opacity-100" : "w-0 opacity-0 p-0 overflow-hidden"} flex flex-col justify-between
+        ${isSettings || url||  isPomodoro || isAssignedToMe ? "w-52 p-4 opacity-100" : "w-0 opacity-0 p-0 overflow-hidden"} flex flex-col justify-between
       `}
     >
       {isAssignedToMe && <AssignedToMeFilter userWorkspaces={userWorkspaces} />}
