@@ -15,11 +15,6 @@ const Onboarding = async () => {
           <div className="dark:bg-[#0e0707] rounded-2xl shadow-md">
             <AdditionalSetting/>
           </div>
-
-          {/* Right: Summary */}
-          {/* <div className="bg-card p-6 rounded-2xl shadow-md sticky top-10 h-fit flex items-center justify-center">
-            <Summary />
-          </div> */}
         </div>
       </main>
     </OnboardingFormProvider>

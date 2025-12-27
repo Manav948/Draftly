@@ -91,54 +91,59 @@ export interface AssignedToMindMapUser {
 export interface UserAssigningToMindMapInfo extends Workspace {
     Subscribers: AssignedToMindMapUser[]
 }
-export type AssignedToMeTypes = "tasks"  | "mindMap"
+export type AssignedToMeTypes = "tasks" | "mindMap"
 
-export interface AssignedToMeDataItems  {
+export interface AssignedToMeDataItems {
     id: string,
     title: string,
     emoji: string,
     link: string,
     workspaceName: string,
-    type : AssignedToMeTypes,
-    createdAt : Date,
-    workspaceId : string,
-    updated : {
-        at : Date,
+    type: AssignedToMeTypes,
+    createdAt: Date,
+    workspaceId: string,
+    updated: {
+        at: Date,
         by?: UserInfo | null
     }
 }
 export interface AssignedToMeTasksAndMindMaps {
-    Task : AssignedToMeDataItems[],
-    mindMaps : AssignedToMeDataItems[]
+    Task: AssignedToMeDataItems[],
+    mindMaps: AssignedToMeDataItems[]
 }
 
 export interface CalendarItem {
-    title : string,
-    date :  {
-        id : string,
-        from : Date | undefined
-        to : Date | undefined   
+    title: string,
+    date: {
+        id: string,
+        from: Date | undefined
+        to: Date | undefined
     } | null
-    workspaceId : string,
-    workspaceName : string,
-    workspaceColor : WorkspaceIconColor,
-    taskId : string
+    workspaceId: string,
+    workspaceName: string,
+    workspaceColor: WorkspaceIconColor,
+    taskId: string
 }
 
 export interface DashboardSummary {
-  stats: {
-    totalTasks: number
-    workspaces: number
-    starred: number
-    assigned: number
-  }
-  recentActivity: {
-    id: string
-    title: string
-    emoji: string | null
-    updatedAt: Date
-    workspace: {
-      name: string
+    stats: {
+        totalTasks: number
+        workspaces: number
+        starred: number
+        assigned: number
     }
-  }[]
+    recentActivity: {
+        id: string
+        title: string
+        emoji: string | null
+        updatedAt: Date
+        workspace: {
+            name: string
+        }
+    }[]
+}
+
+export interface HomePageImage {
+    src: string;
+    alt: string;
 }

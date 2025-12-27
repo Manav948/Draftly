@@ -1,11 +1,11 @@
 version: "3.5"
-name: "super-productive-services"
+name: "Draftly-services"
 
 services: 
   db:
     image: postgres
     restart: always
-    container_name: super-productive-db
+    container_name: Draftly-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: super-productive
