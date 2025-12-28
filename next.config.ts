@@ -56,7 +56,7 @@ const withNextIntl = require("next-intl/plugin")("./i18n.ts");
 
 module.exports = withNextIntl({
   ...nextConfig,
-  webpack: (config, options) => {
+  webpack: (config: any, options: any) => {
     // Provide a lightweight stub in case @emoji-mart/react cannot be resolved
     // in certain build environments. This prevents build failures while
     // preserving runtime behavior when the real package is available.

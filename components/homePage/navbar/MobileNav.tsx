@@ -55,6 +55,7 @@ import { useState } from "react";
             <div className="h-full flex flex-col gap-2">
               {navLinks.map((link, i) => (
                 <Button
+                  key={link.href ?? i}
                   variant={"link"}
                   size={"sm"}
                   onClick={() => {
