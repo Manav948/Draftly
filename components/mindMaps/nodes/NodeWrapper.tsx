@@ -74,7 +74,7 @@ const NodeWrapper = ({ children, className, color, onIsEdit, isEditing, nodeId, 
     }, [setNodes, nodeId, onDelete])
 
     const [currentColor, setCurrentColor] = useState<NodeColors | undefined>(color)
-    const nodeColor = useCallback((color: NodeColors) => {
+    const nodeColor = useCallback((color?: NodeColors) => {
         switch (color) {
             case NodeColors.PURPLE:
                 return "!bg-purple-600 hover:bg-pruple-500 text-white"

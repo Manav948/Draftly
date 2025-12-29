@@ -40,6 +40,7 @@ import { Separator } from '../ui/separator'
 import MindMapTagSelector from './MindMapTagSelector'
 import EditInfo from './editInfo/EditInfo'
 import { ExtendedMindMap } from '@/types/extended'
+import { color } from '@/schema/workSpaceSchema'
 
 interface Props {
     initialInfo: ExtendedMindMap,
@@ -108,7 +109,7 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
             id: Math.random().toString(),
             type: "textNode",
             position: { x: 0, y: 0 },
-            data: { text: "test", colors: NodeColors.CYAN }
+            data: { text: "test", color : NodeColors.CYAN}
         }
         setNodes((nds) => nds.concat(newNode))
         onSetStatus("unsaved")

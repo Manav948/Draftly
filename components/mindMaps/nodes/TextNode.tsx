@@ -15,7 +15,7 @@ import { useDebouncedCallback } from 'use-debounce'
 
 type NodeData = {
     text: string
-    colors: NodeColors
+    color: NodeColors
     onDelete : () => void
 }
 
@@ -67,7 +67,7 @@ const TextNode = ({ data, id }: NodeProps<NodeData>) => {
 
     const { ref: nodeText, ...rest } = form.register("text")
 
-    return <NodeWrapper nodeId={id} color={data.colors} isEditing={true} onIsEdit={onIsEdit} onDelete={data.onDelete}>
+    return <NodeWrapper nodeId={id} color={data.color} isEditing={true} onIsEdit={onIsEdit} onDelete={data.onDelete}>
         <div className={cn(
             "relative w-[220px] rounded-lg border px-3 py-2 transition-all duration-200",
         )}>
