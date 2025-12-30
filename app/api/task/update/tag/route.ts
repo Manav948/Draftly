@@ -35,10 +35,10 @@ export async function POST(request: Request) {
             return new NextResponse("User not found", { status: 404 });
         }
 
-        const role = user.subscriptions[0]?.userRole;
-        if (role === "CAN_EDIT" || role === "READ_ONLY") {
-            return new NextResponse("No permission", { status: 403 });
-        }
+        // const role = user.subscriptions[0]?.userRole;
+        // if (role === "CAN_EDIT" || role === "READ_ONLY") {
+        //     return new NextResponse("No permission", { status: 403 });
+        // }
 
         // Fetch task with date relation
         const task = await db.task.findUnique({
@@ -55,9 +55,9 @@ export async function POST(request: Request) {
         const updatedTask = await db.task.update({
             where: { id: taskId },
             data: {
-                updatedUserId: session.user.id, Tag: {
-                    connect: tagsId.map((tagId) => ({ id: tagId })),
-                    disconnect: task.Tag.filter((existingTag) => !tagsId.includes(existingTag.id))
+                updatedUserId: session.user.id, 
+                Tag: {
+                    set : tagsId.map((id) => ({id}))
                 }
             },
         });

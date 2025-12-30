@@ -85,17 +85,17 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
     })
 
     const { mutate: updatTaskActiveTag } = useMutation({
-        mutationFn: async (tagsID: string[]) => {
+        mutationFn: async (tagsId: string[]) => {
             await axios.post(`/api/task/update/tag`, {
                 workspaceId,
                 taskId,
-                tagsID
+                tagsId
             })
         },
         onError: () => {
             onSetStatus("unsaved")
         },
-        onSuccess: () => {
+        onSuccess: () => {  
             toast.success("Task Saved")
             onSetStatus("saved")
         }

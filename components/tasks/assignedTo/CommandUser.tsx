@@ -18,7 +18,7 @@ interface Props {
 const CommandUser = ({ user, taskId, workspaceId }: Props) => {
     const router = useRouter()
     const [isActiveUser, setIsActiveUser] = useState(
-        user.user.assignedToTasks.length === 1 ? true : false
+        user.user.assignedToTasks?.length === 1 ? true : false
     )
     const queryClient = useQueryClient()
 

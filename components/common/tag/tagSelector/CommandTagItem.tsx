@@ -1,113 +1,92 @@
-import { Button } from '@/components/ui/button'
-import { CommandItem } from '@/components/ui/command'
-import { Check, Pencil, Tag } from 'lucide-react'
-import React, { useMemo } from 'react'
-import { WorkspaceIconColor, Tag as TagType } from '@prisma/client'
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { CommandItem } from "@/components/ui/command";
+import { Check, Pencil, Tag as TagIcon } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { WorkspaceIconColor, Tag as TagType } from "@prisma/client";
+import { cn } from "@/lib/utils";
 
 interface Props {
-    tag: TagType
-    currentActiveTags: TagType[]
-    onSelectActiveTag: (id: string) => void
-    onEditTagInfo: (tag: TagType) => void
-    isDarkMode?: boolean;
+  tag: TagType;
+  currentActiveTags: TagType[];
+  onSelectActiveTag: (tag: TagType) => void;
+  onEditTagInfo: (tag: TagType) => void;
+  isDarkMode?: boolean;
 }
-const CommandTagItem = ({ tag: { color, id, workspaceId, name },
-    currentActiveTags,
-    onSelectActiveTag,
-    isDarkMode,
-    onEditTagInfo
-}
-    : Props) => {
-    console.log("CurrentActiveTags : ", currentActiveTags)
-    const isActive = useMemo(() => {
-        return (currentActiveTags.length > 0 &&
-            currentActiveTags.find((activeTag) => activeTag.id === id))
-    }, [currentActiveTags, id])
 
-    const [isHovered, setIsHovered] = React.useState(false);
+const CommandTagItem = ({
+  tag,
+  currentActiveTags,
+  onSelectActiveTag,
+  onEditTagInfo,
+  isDarkMode,
+}: Props) => {
+  const [isHovered, setIsHovered] = useState(false);
 
-    const TagColor = useMemo(() => {
-        const colors: Record<WorkspaceIconColor, string> = {
-            BLUE: isDarkMode
-                ? "bg-blue-900 border-blue-700 hover:bg-blue-800 hover:border-blue-500"
-                : "bg-blue-600 border-blue-400 hover:bg-blue-500 hover:border-blue-600",
+  const isActive = useMemo(() => {
+    return currentActiveTags.some((t) => t.id === tag.id);
+  }, [currentActiveTags, tag.id]);
 
-            PINK: isDarkMode
-                ? "bg-pink-900 border-pink-700 hover:bg-pink-800 hover:border-pink-500"
-                : "bg-pink-600 border-pink-400 hover:bg-pink-500 hover:border-pink-600",
+  const TagColor = useMemo(() => {
+    const map: Record<WorkspaceIconColor, string> = {
+      BLUE: isDarkMode ? "bg-blue-900" : "bg-blue-600",
+      RED: isDarkMode ? "bg-red-900" : "bg-red-600",
+      GREEN: isDarkMode ? "bg-green-900" : "bg-green-600",
+      YELLOW: isDarkMode ? "bg-yellow-900" : "bg-yellow-500",
+      CYAN: isDarkMode ? "bg-cyan-900" : "bg-cyan-600",
+      ORANGE: isDarkMode ? "bg-orange-900" : "bg-orange-600",
+      PURPLE: isDarkMode ? "bg-purple-900" : "bg-purple-600",
+      PINK: isDarkMode ? "bg-pink-900" : "bg-pink-600",
+      INDIGO: isDarkMode ? "bg-indigo-900" : "bg-indigo-600",
+      LIME: isDarkMode ? "bg-lime-900" : "bg-lime-500",
+      FUCHSIA: isDarkMode ? "bg-fuchsia-900" : "bg-fuchsia-600",
+      EMERALD: isDarkMode ? "bg-emerald-900" : "bg-emerald-600",
+    };
+    return map[tag.color];
+  }, [tag.color, isDarkMode]);
 
-            YELLOW: isDarkMode
-                ? "bg-yellow-900 border-yellow-700 hover:bg-yellow-800 hover:border-yellow-500"
-                : "bg-yellow-500 border-yellow-300 hover:bg-yellow-400 hover:border-yellow-600",
+  return (
+    <CommandItem
+      className="relative px-2 py-1"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* TAG BUTTON */}
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => onSelectActiveTag(tag)}
+        className={cn(
+          "flex w-full items-center justify-between pr-10",
+          TagColor
+        )}
+      >
+        <div className="flex items-center gap-2">
+          <TagIcon size={14} />
+          <span>{tag.name}</span>
+        </div>
+        {isActive && <Check size={14} />}
+      </Button>
 
-            CYAN: isDarkMode
-                ? "bg-cyan-900 border-cyan-700 hover:bg-cyan-800 hover:border-cyan-500"
-                : "bg-cyan-600 border-cyan-400 hover:bg-cyan-500 hover:border-cyan-600",
-
-            EMERALD: isDarkMode
-                ? "bg-emerald-900 border-emerald-700 hover:bg-emerald-800 hover:border-emerald-500"
-                : "bg-emerald-600 border-emerald-400 hover:bg-emerald-500 hover:border-emerald-600",
-
-            FUCHSIA: isDarkMode
-                ? "bg-fuchsia-900 border-fuchsia-700 hover:bg-fuchsia-800 hover:border-fuchsia-500"
-                : "bg-fuchsia-600 border-fuchsia-400 hover:bg-fuchsia-500 hover:border-fuchsia-600",
-
-            GREEN: isDarkMode
-                ? "bg-green-900 border-green-700 hover:bg-green-800 hover:border-green-500"
-                : "bg-green-600 border-green-400 hover:bg-green-500 hover:border-green-600",
-
-            INDIGO: isDarkMode
-                ? "bg-indigo-900 border-indigo-700 hover:bg-indigo-800 hover:border-indigo-500"
-                : "bg-indigo-600 border-indigo-400 hover:bg-indigo-500 hover:border-indigo-600",
-
-            LIME: isDarkMode
-                ? "bg-lime-900 border-lime-700 hover:bg-lime-800 hover:border-lime-500"
-                : "bg-lime-500 border-lime-300 hover:bg-lime-400 hover:border-lime-600",
-
-            ORANGE: isDarkMode
-                ? "bg-orange-900 border-orange-700 hover:bg-orange-800 hover:border-orange-500"
-                : "bg-orange-600 border-orange-400 hover:bg-orange-500 hover:border-orange-600",
-
-            PURPLE: isDarkMode
-                ? "bg-purple-900 border-purple-700 hover:bg-purple-800 hover:border-purple-500"
-                : "bg-purple-600 border-purple-400 hover:bg-purple-500 hover:border-purple-600",
-
-            RED: isDarkMode
-                ? "bg-red-900 border-red-700 hover:bg-red-800 hover:border-red-500"
-                : "bg-red-600 border-red-400 hover:bg-red-500 hover:border-red-600",
-        };
-
-        return colors[color] ?? colors.BLUE;
-    }, [color, isDarkMode]);
-
-    return (
-        <CommandItem
-            onSelect={(e) => {}}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="flex items-center justify-between"
-        >    <Button
-            onClick={() => onSelectActiveTag(id)}
-            size="sm"
-            variant="ghost"
-            className={`flex w-full items-center justify-between ${TagColor}`}
+      {/* EDIT ICON */}
+      {isHovered && (
+        <Button
+          type="button"
+          size="icon"
+          variant="ghost"
+          className="absolute right-1 top-1/2 -translate-y-1/2"
+          onClick={(e) => {
+            e.stopPropagation();
+            onEditTagInfo(tag);
+          }}
         >
-                <div className="flex items-center gap-2">
-                    <Tag size={16} />
-                    <span>{name}</span>
-                </div>
+          <Pencil size={14} />
+        </Button>
+      )}
+    </CommandItem>
+  );
+};
 
-                {isActive && <Check size={16} />}
-            </Button>
-            {isHovered && (
-                <Button>
-                    <Pencil size={16} onClick={() => {
-                        if (onEditTagInfo) onEditTagInfo({ color, id, name, workspaceId })
-                    }} />
-                </Button>
-            )}
-        </CommandItem>
-    )
-}
-
-export default CommandTagItem
+export default CommandTagItem;

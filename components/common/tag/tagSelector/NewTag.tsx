@@ -25,7 +25,7 @@ interface Props {
   onUpdateActiveTags?: (tagId: string, color: WorkspaceIconColor, name: string) => void;
   currentActiveTags?: Tag[];
   onDeleteActiveTag?: (tagId: string) => void;
-  onSelectActiveTag?: (id: string) => void;
+  onSelectActiveTag?: (tag:Tag) => void;
   onCreateTag?: (tag: Tag) => void; 
 }
 

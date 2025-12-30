@@ -49,16 +49,16 @@ export const useTags = (
         []
     )
 
-    const onSelectActiveTagHandler = useCallback((tagId: string) => {
+    const onSelectActiveTagHandler = useCallback((tag:Tag) => {
         if (status !== "unsaved") onSetStatus("unsaved")
         setCurrentActiveTags((prevTags) => {
-            const tagIndex = prevTags.findIndex((tag) => tag.id === tagId)
+            const tagIndex = prevTags.findIndex((tag) => tag.id === tag.id)
             if (tagIndex !== -1) {
                 const updateActiveTags = [...prevTags]
                 updateActiveTags.splice(tagIndex, 1)
                 return updateActiveTags
             } else {
-                const selectedTag = tags!.find((tag) => tag.id === tagId)
+                const selectedTag = tags!.find((tag) => tag.id === tag.id)
                 if (selectedTag) {
                     return [...prevTags, selectedTag]
                 }

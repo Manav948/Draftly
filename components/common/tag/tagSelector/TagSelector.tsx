@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 interface Props {
   tags?: Tag[];
   currentActiveTags: Tag[];
-  onSelectActiveTag: (id: string) => void;
+  onSelectActiveTag: (tag:Tag) => void;
   workspaceId: string;
   onUpdateActiveTags?: (id: string, colors: WorkspaceIconColor, name: string) => void;
   isLoading?: boolean;
@@ -36,20 +36,6 @@ const TagSelector = ({
   plusIconSize = 16
 }: Props) => {
 
-  const [localTags, setLocalTags] = useState<Tag[]>(tags);
-  useEffect(() => {
-    if (tags.length !== localTags.length) {
-      setLocalTags(tags);
-    }
-  }, [tags]);
-
-  const handleCreateLocalTag = (tag: Tag) => {
-    setLocalTags(prev => {
-      const exists = prev.some(t => t.id === tag.id);
-      if (exists) return prev;
-      return [...prev, tag];
-    });
-  };
 
   return (
     <DropdownMenu>
@@ -76,13 +62,12 @@ const TagSelector = ({
           </div>
         ) : (
           <CommandContainer
-            tags={localTags}
+            tags={tags} 
             currentActiveTags={currentActiveTags}
             onSelectActiveTag={onSelectActiveTag}
             workspaceId={workspaceId}
             onUpdateActiveTags={onUpdateActiveTags}
             onDeleteActiveTag={onDeleteActiveTag}
-            onCreateLocalTag={handleCreateLocalTag}
           />
         )}
       </DropdownMenuContent>
