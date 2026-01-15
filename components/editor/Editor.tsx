@@ -59,12 +59,11 @@ const Editor = ({ workspaceId, initialActiveTags,taskId }: Props) => {
         form.setValue("date", date);
     };
 
-    const onSelectActiveTagHandler = (tagId: string) => {
+    const onSelectActiveTagHandler = (tag: Tag) => {
         setCurrentActiveTags((prev) => {
-            const found = prev.find((t) => t.id === tagId);
-            if (found) return prev.filter((t) => t.id !== tagId);
-            const sel = tags?.find((t) => t.id === tagId);
-            return sel ? [...prev, sel] : prev;
+            const found = prev.find((t) => t.id === tag.id);
+            if (found) return prev.filter((t) => t.id !== tag.id);
+            return [...prev, tag];
         });
     };
 
