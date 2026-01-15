@@ -1,5 +1,4 @@
 "use client";
-import { AppleLogo } from "@/components/svg/AppleLogo";
 import { LocaleSwitcher } from "@/components/switcher/LocaleSwitcher";
 import { ThemeSwitcher } from "@/components/switcher/ThemeSwitcher";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -43,7 +42,7 @@ import { useState } from "react";
                   });
                 }}
               >
-                <AppleLogo className="w-10 h-10" />
+                <img src="/logo3.png" className="h-9 w-9 rounded-full" />
                 <p className="text-2xl font-semibold">
                   <span className="text-primary uppercase">Draftly</span>
                 </p>
@@ -74,13 +73,13 @@ import { useState } from "react";
               onClick={() => {
                 setOpen(false);
               }}
-              href={"/"}
+              href={"/sign-up"}
               className={`${buttonVariants({ variant: "default" })}`}
             >
               Sign up
             </Link>
             <Link
-              href={"/"}
+              href={"/sign-in"}
               onClick={() => {
                 setOpen(false);
               }}
