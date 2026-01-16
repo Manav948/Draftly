@@ -16,7 +16,7 @@ import Link from "next/link";
 
 export const LargeNav = () => {
   return (
-    <div className="container md:flex py-4 max-w-screen-2xl items-center justify-between hidden">
+    <div className="container md:flex py-3 max-w-screen-2xl items-center justify-between hidden pr-20">
       <div className="flex items-center">
         <Button
           className="w-fit bg-transparent text-secondary-foreground hover:bg-transparent flex items-center gap-2 hover:scale-105 transition-transform duration-200"

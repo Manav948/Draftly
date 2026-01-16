@@ -64,11 +64,11 @@ const SignInCardContent = () => {
     };
 
     return (
-        <CardContent className="p-6">
+        <CardContent className="p-6 md:p-3">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="flex flex-col gap-6"
+                    className="flex flex-col gap-4"
                 >
 
                     <ProviderSignInBtns SignInCard onLoading={isLoading} />
