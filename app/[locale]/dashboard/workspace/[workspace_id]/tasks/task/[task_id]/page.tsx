@@ -1,10 +1,12 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers'
 import LeaveWorkspace from '@/components/leaveworkspace/LeaveWorkspace'
-import ReadOnlyContent from '@/components/tasks/readOnly/ReadOnlyContent'
+import dynamic from 'next/dynamic'
 import { getTask, getWorkspace, getWorkspaceRole } from '@/lib/api'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import React from 'react'
+
+import ReadOnlyContentClient from '@/components/tasks/readOnly/ReadOnlyContentClient'
 
 interface Params {
     params: Promise<{ workspace_id: string, task_id: string }>
@@ -39,7 +41,7 @@ const Tasks = async ({ params }: Params) => {
                 {(userRole !== "OWNER" && <LeaveWorkspace workspace={workspace} />)}
             </DashboardHeader>
             <main className="flex flex-col gap-2">
-                <ReadOnlyContent
+                <ReadOnlyContentClient
                     userRole={userRole}
                     task={task}
                     isSavedByUser={isSavedByUser}

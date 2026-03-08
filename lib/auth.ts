@@ -22,11 +22,14 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            allowDangerousEmailAccountLinking: true,
             async profile(profile) {
-                const username = generateFromEmail(profile.email, 5)
+                const baseUsername = generateFromEmail(profile.email, 5);
+                const uniqueUsername = `${baseUsername}_${Math.random().toString(36).slice(2, 6)}`;
+
                 return {
                     id: profile.sub,
-                    username,
+                    username: uniqueUsername,
                     name: profile.given_name ? profile.given_name : profile.name,
                     surname: profile.family_name ? profile.family_name : "",
                     email: profile.email,
@@ -37,12 +40,14 @@ export const authOptions: NextAuthOptions = {
         GithubProvider({
             clientId: process.env.GITHUB_ID!,
             clientSecret: process.env.GITHUB_SECRET!,
+            allowDangerousEmailAccountLinking: true,
             async profile(profile) {
-                const username = generateFromEmail(profile.email, 5)
+                const baseUsername = generateFromEmail(profile.email || "user@github", 5);
+                const uniqueUsername = `${profile.login || baseUsername}_${Math.random().toString(36).slice(2, 6)}`;
                 const fullName = profile.name?.split(" ")
                 return {
-                    id: profile.id,
-                    username: profile.login ? profile.login : username,
+                    id: profile.id.toString(),
+                    username: uniqueUsername,
                     name: fullName.at(0),
                     surname: fullName.at(1),
                     email: profile.email,

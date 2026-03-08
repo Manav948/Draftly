@@ -1,6 +1,6 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers'
-import MindMaps from '@/components/mindMaps/MindMaps'
+import MindMapsClient from '@/components/mindMaps/MindMapsClient'
 import { SaveTaskStateProvider } from '@/context/TaskSavingContext'
 import { AutoSaveMindMapProvider } from '@/context/AutoSaveMindMap'
 import { getMindMap, getWorkspace, getWorkspaceRole } from '@/lib/api'
@@ -64,7 +64,7 @@ const ViewMindMapPage = async ({ params }: Params) => {
             isSavedByUser={!!isSavedByUser}
           >
             <div className="w-full h-[70vh] min-h-[500px]">
-              <MindMaps
+              <MindMapsClient
                 initialInfo={mindMap}
                 workspaceId={workspace.id}
                 canEdit={false}

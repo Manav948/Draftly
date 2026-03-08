@@ -1,6 +1,6 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers'
-import MindMaps from '@/components/mindMaps/MindMaps'
+import MindMapsClient from '@/components/mindMaps/MindMapsClient'
 import { SaveTaskStateProvider } from '@/context/TaskSavingContext'
 import { AutoSaveMindMapProvider } from '@/context/AutoSaveMindMap'
 import { getMindMap, getWorkspace, getWorkspaceRole } from '@/lib/api'
@@ -43,7 +43,7 @@ const EditMindMapPage = async ({ params }: Params) => {
         </DashboardHeader>
 
         <main className="flex flex-col gap-2 h-full">
-          <MindMaps
+          <MindMapsClient
             initialInfo={mindMap}
             workspaceId={workspace.id}
             canEdit={canEdit}

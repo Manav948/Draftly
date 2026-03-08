@@ -1,12 +1,14 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import InviteUsers from '@/components/inviteUsers/InviteUsers'
 import LeaveWorkspace from '@/components/leaveworkspace/LeaveWorkspace'
-import TaskContainer from '@/components/tasks/container/TaskContainer'
+import dynamic from 'next/dynamic'
 import { SaveTaskStateProvider } from '@/context/TaskSavingContext'
 import { getTask, getWorkspace, getWorkspaceRole } from '@/lib/api'
 import { checkIfUserCompletedOnboarding } from '@/lib/checkIfUserCompletedOnboarding'
 import { redirect } from 'next/navigation'
 import React from 'react'
+
+import TaskContainerClient from '@/components/tasks/container/TaskContainerClient'
 
 interface Params {
   params: Promise<{ workspace_id: string, task_id: string }>
@@ -48,7 +50,7 @@ const EditTasks = async ({ params }: Params) => {
       </DashboardHeader>
 
       <main className="flex flex-col gap-2">
-        <TaskContainer
+        <TaskContainerClient
           workspaceId={workspace_id}
           taskId={task_id}
           initialActiveTags={task?.tags}

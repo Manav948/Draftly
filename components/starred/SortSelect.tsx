@@ -16,7 +16,6 @@ const SortSelect = ({sortType , refetch} : Props) => {
     const router = useRouter();
     const onSelectHanlder = (type : "asc" | "desc") => {
         router.push(`/dashboard/starred/?sort=${type}`)
-        refetch()
     }
     return (
         <div>

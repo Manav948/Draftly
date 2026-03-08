@@ -1,8 +1,13 @@
 "use client";
 import React, { useMemo, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import Picker from "@emoji-mart/react";
+import dynamic from "next/dynamic";
 import data from "@emoji-mart/data";
+
+const Picker = dynamic(() => import("@emoji-mart/react"), { 
+    ssr: false, 
+    loading: () => <div className="h-[300px] flex items-center justify-center">Loading emojis...</div> 
+});
 import { useLocale } from "next-intl";
 import { useTheme } from "next-themes";
 

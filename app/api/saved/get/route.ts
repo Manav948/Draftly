@@ -78,7 +78,9 @@ export const GET = async (request: Request) => {
       return NextResponse.json("ERRORS.NO_USER_API", { status: 404 });
     }
     //@ts-ignore
-    const mindMaps: StarredItem[] = user.savedMindMaps.map((e) => ({
+    const mindMaps: StarredItem[] = user.savedMindMaps
+      .filter((e) => e.mindMap)
+      .map((e) => ({
       id: `mindMap-${e.mindMap.id}`,
       itemId: e.mindMap.id,
       type: "mindMap",
@@ -92,7 +94,9 @@ export const GET = async (request: Request) => {
       },
     }));
     //@ts-ignore
-    const tasks: StarredItem[] = user.savedTask.map((e) => ({
+    const tasks: StarredItem[] = user.savedTask
+      .filter((e) => e.task)
+      .map((e) => ({
       id: `task-${e.task.id}`,
       itemId: e.task.id,
       type: "task",

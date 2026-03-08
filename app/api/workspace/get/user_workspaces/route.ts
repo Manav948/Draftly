@@ -23,7 +23,7 @@ export const GET = async (request: Request) => {
         if (!workspace || workspace.length === 0) {
             return NextResponse.json([], { status: 200 })
         }
-        return NextResponse.json(workspace, { status: 202 })
+        return NextResponse.json(workspace, { status: 202, headers: { "Cache-Control": "public, s-maxage=30, stale-while-revalidate=60" } })
     } catch (error) {
         console.error("Error fetching user workspaces:", error);
         return NextResponse.json(
