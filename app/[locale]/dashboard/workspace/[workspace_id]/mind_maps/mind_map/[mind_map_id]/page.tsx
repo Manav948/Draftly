@@ -24,7 +24,7 @@ const ViewMindMapPage = async ({ params }: Params) => {
   const [workspace, userRole, mindMap] = await Promise.all([
     getWorkspace(workspace_id, session.user.id),
     getWorkspaceRole(workspace_id, session.user.id),
-    getMindMap(mind_map_id, session.user.id)
+    getMindMap(mind_map_id)
   ])
 
   const canEdit = userRole === 'ADMIN' || userRole === 'OWNER'

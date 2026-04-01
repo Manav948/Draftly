@@ -1,5 +1,5 @@
 import { ExtendedMindMap, ExtendedTask, SettingsWorkspace } from "@/types/extended"
-import { MindMap, PomodoroSettings, UserPermission, Workspace } from "@prisma/client"
+import { PomodoroSettings, UserPermission, Workspace } from "@prisma/client"
 import { notFound } from "next/navigation"
 import { db } from "./db"
 
@@ -98,7 +98,7 @@ export const getTask = async (task_id: string, userId: string) => {
   return task as unknown as ExtendedTask
 }
 
-export const getMindMap = async (mind_map_id: string, userId: string) => {
+export const getMindMap = async (mind_map_id: string) => {
   const mindMap = await db.mindMap.findUnique({
     where: { id: mind_map_id },
     include: {
