@@ -1,109 +1,101 @@
 import { ExtendedMindMap, ExtendedTask, SettingsWorkspace } from "@/types/extended"
 import { MindMap, PomodoroSettings, UserPermission, Workspace } from "@prisma/client"
 import { notFound } from "next/navigation"
+import { db } from "./db"
+
+// ─── NOTE ─────────────────────────────────────────────────────────────────────
+// These helpers are only called from Server Components / Route Handlers.
+// Instead of HTTP round-trips to our own API routes we query the DB directly.
+// This removes 1–3 s of latency per call that was caused by the extra HTTP hop.
+// ─────────────────────────────────────────────────────────────────────────────
 
 export const domain =
-  process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "http://localhost:3000"
+  process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "https://draftly.manavvalani.in"
 
 export const getWorkspace = async (workspace_id: string, userId: string) => {
-  const res = await fetch(`${domain}/api/workspace/get/workspace_detail/${workspace_id}?userId=${userId}`, {
-    method: "GET",
-    cache: "no-store"
+  const workspace = await db.workspace.findUnique({
+    where: {
+      id: workspace_id,
+      Subscribers: { some: { userId } },
+    },
   })
-  if (!res.ok) {
-    return notFound()
-  }
-  return res.json() as Promise<Workspace>
+  if (!workspace) return notFound()
+  return workspace as Workspace
 }
 
 export const getWorkspaces = async (userId: string) => {
-  const res = await fetch(`${domain}/api/workspace/get/user_workspaces?userId=${userId}`, {
-    method: "GET",
-    cache: "no-store"
+  const subscriptions = await db.subscription.findMany({
+    where: { userId },
+    include: { workspace: true },
   })
-  if (!res.ok) {
-    return []
-  }
-  return res.json() as Promise<Workspace[]>
+  return subscriptions.map((s) => s.workspace) as Workspace[]
 }
 
 export const getUserAdminWorkspaces = async (userId: string) => {
-  const res = await fetch(`${domain}/api/workspace/get/user_admin_workspaces?userId=${userId}`, {
-    method: "GET",
-    cache: "no-store"
+  const subscriptions = await db.subscription.findMany({
+    where: {
+      userId,
+      OR: [{ userRole: "ADMIN" }, { userRole: "OWNER" }],
+    },
+    include: { workspace: true },
   })
-  if (!res.ok) {
-    return []
-  }
-  return res.json() as Promise<Workspace[]>
+  return subscriptions.map((s) => s.workspace) as Workspace[]
 }
 
 export const getWorkspaceSettings = async (workspace_id: string, userId: string) => {
-  const res = await fetch(`${domain}/api/workspace/get/settings/${workspace_id}?userId=${userId}`, {
-    method: "GET",
-    cache: "no-store"
+  const workspace = await db.workspace.findUnique({
+    where: {
+      id: workspace_id,
+      Subscribers: { some: { userId } },
+    },
+    include: {
+      Subscribers: {
+        include: { user: true },
+      },
+    },
   })
-  if (!res.ok) {
-    return notFound()
-  }
-  return res.json() as Promise<SettingsWorkspace>
+  if (!workspace) return notFound()
+  return workspace as unknown as SettingsWorkspace
 }
 
 export const getWorkspaceRole = async (workspace_id: string, userId: string) => {
-  const res = await fetch(`${domain}/api/workspace/get/user_role?workspaceId=${workspace_id}&userId=${userId}`, {
-    method: "GET",
-    cache: "no-store"
+  const subscription = await db.subscription.findFirst({
+    where: { workspaceId: workspace_id, userId },
+    select: { userRole: true },
   })
-  if (!res.ok) {
-    return null
-  }
-  return res.json() as Promise<UserPermission>
+  return subscription?.userRole as UserPermission | null
 }
 
 export const getTask = async (task_id: string, userId: string) => {
-  const res = await fetch(
-    `${domain}/api/task/get/details/${task_id}?userId=${userId}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    console.log("getTask error:", res);
-    return notFound();
-  }
-  return res.json() as Promise<ExtendedTask>;
-};
+  const task = await db.task.findUnique({
+    where: { id: task_id, creatorId: userId },
+    include: {
+      workspace: true,
+      Tag: true,
+      date: true,
+      assignedToTasks: { include: { user: true } },
+    },
+  })
+  if (!task) return notFound()
+  return task as unknown as ExtendedTask
+}
 
 export const getMindMap = async (mind_map_id: string, userId: string) => {
-  const res = await fetch(
-    `${domain}/api/mind_maps/get/details/${mind_map_id}?userId=${userId}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    }
-  );
+  const mindMap = await db.mindMap.findUnique({
+    where: { id: mind_map_id },
+    include: {
+      workspace: true,
+      tags: true,
+      assignedToMindMaps: { include: { user: true } },
+    },
+  })
+  if (!mindMap) return notFound()
+  return mindMap as unknown as ExtendedMindMap
+}
 
-  if (!res.ok) {
-    return notFound();
-  }
-  console.log(res)
-  return res.json() as Promise<ExtendedMindMap>;
-};
 export const getPomodoro = async (userId: string) => {
-  const res = await fetch(
-    `${domain}/api/pomodoro/get_settings?userId=${userId}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    console.log("getPomodoro error:", res);
-  }
-  const data = await res.json();
-  // Handle wrapped response: { pomodoro: PomodoroSettings }
-  return data.pomodoro ? (data.pomodoro as PomodoroSettings) : (data as PomodoroSettings);
+  const pomodoro = await db.pomodoroSettings.findFirst({
+    where: { userId },
+  })
+  return pomodoro as PomodoroSettings | null
 }

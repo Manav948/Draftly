@@ -89,6 +89,9 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async session({ session, token }) {
+            // Read all fields directly from the JWT token.
+            // The jwt callback already fetches fresh data from DB,
+            // so we do NOT need another DB query here.
             if (token) {
                 session.user.id = token.id as string
                 session.user.name = token.name
@@ -97,19 +100,15 @@ export const authOptions: NextAuthOptions = {
                 session.user.username = token.username as string | null
                 session.user.completeOnboarding = !!token.completeOnboarding
             }
-            const user = await db.user.findUnique({
-                where: {
-                    id: token.id as string
-                }
-            })
-            if (user) {
-                session.user.image = user.image ?? session.user.image;
-                session.user.completeOnboarding = user.completeOnboarding
-                session.user.username = user.username;
-            }
             return session
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session: triggerSession }) {
+            // On explicit update() calls (e.g. after onboarding), re-read from DB
+            if (trigger === "update" && triggerSession?.completeOnboarding !== undefined) {
+                token.completeOnboarding = triggerSession.completeOnboarding;
+                return token;
+            }
+
             const dbUser = await db.user.findFirst({
                 where: {
                     email: token.email as string
@@ -121,9 +120,11 @@ export const authOptions: NextAuthOptions = {
             }
             return {
                 id: dbUser.id,
+                name: dbUser.name,
                 username: dbUser.username,
                 email: dbUser.email,
-                picture: dbUser.image
+                picture: dbUser.image,
+                completeOnboarding: dbUser.completeOnboarding,
             };
         },
     },

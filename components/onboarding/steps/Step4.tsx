@@ -30,9 +30,9 @@ function Step4() {
         },
         onSuccess: async () => {
             toast.success("Successfully completed onboarding 🚀");
-            await update();
-            router.push("/dashboard");
+            await update({ completeOnboarding: true });
             router.refresh();
+            router.push("/dashboard");
         },
         mutationKey: ["completeOnboarding"],
     });

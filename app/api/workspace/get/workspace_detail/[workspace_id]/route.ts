@@ -1,6 +1,8 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
+
 interface Params {
     params: Promise<{
         workspace_id: string;
@@ -29,7 +31,7 @@ export const GET = async (request: Request, { params }: Params) => {
         if (!workspace) {
             return NextResponse.json("Workspace not found", { status: 200 })
         }
-        return NextResponse.json(workspace, { status: 202 })
+        return NextResponse.json(workspace, { status: 200 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

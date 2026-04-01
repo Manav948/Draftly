@@ -1,6 +1,7 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
 
 export const GET = async (request: Request,) => {
     const url = new URL(request.url)
@@ -34,7 +35,7 @@ export const GET = async (request: Request,) => {
         if (!workspaceShortCuts) {
             return NextResponse.json("WorkspaceShortcuts not found", { status: 200 })
         }
-        return NextResponse.json({ tasks: workspaceShortCuts.Task,mindMaps : workspaceShortCuts.mindMaps }, { status: 202 })
+        return NextResponse.json({ tasks: workspaceShortCuts.Task, mindMaps: workspaceShortCuts.mindMaps }, { status: 200 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }
