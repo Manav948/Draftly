@@ -16,7 +16,7 @@ export async function GET(req: Request) {
     workspaces,
     starred,
     assigned,
-    recentActivity,
+    recentActivityRaw,
   ] = await Promise.all([
     db.task.count({ where: { creatorId: userId } }),
     db.workspace.count({ where: { Subscribers: { some: { userId } } } }),
@@ -29,6 +29,12 @@ export async function GET(req: Request) {
       include: { workspace: true },
     }),
   ])
+
+  // Transform null emoji to undefined for type compatibility
+  const recentActivity = recentActivityRaw.map(item => ({
+    ...item,
+    emoji: item.emoji ?? undefined,
+  }))
 
   return NextResponse.json({
     stats: {
