@@ -74,6 +74,24 @@ export const getTask = async (task_id: string, userId: string) => {
       Tag: true,
       date: true,
       assignedToTasks: { include: { user: true } },
+      creator: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          surname: true,
+          image: true
+        }
+      },
+      updatedBy: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          surname: true,
+          image: true
+        }
+      }
     },
   })
   if (!task) return notFound()
@@ -87,6 +105,24 @@ export const getMindMap = async (mind_map_id: string, userId: string) => {
       workspace: true,
       tags: true,
       assignedToMindMaps: { include: { user: true } },
+      creator: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          surname: true,
+          image: true
+        }
+      },
+      updatedBy: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          surname: true,
+          image: true
+        }
+      }
     },
   })
   if (!mindMap) return notFound()

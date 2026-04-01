@@ -87,10 +87,14 @@ const EditInfo = ({ workspaceId, mapId, title, icon }: Props) => {
   }
 
   const onSaveEdit = useCallback(() => {
+    const values = form.getValues()
+    if (!values.icon) {
+      toast.error('Please select an emoji')
+      return
+    }
     onSetStatus('pending')
-    const { icon, title } = form.getValues()
     setOpen(false)
-    updateMindMap({ icon, title })
+    updateMindMap({ icon: values.icon, title: values.title })
   }, [form, updateMindMap, onSetStatus])
 
   return (
@@ -126,55 +130,63 @@ const EditInfo = ({ workspaceId, mapId, title, icon }: Props) => {
 
             <form
               id="mind-map-info"
-              className="mt-6 flex flex-col gap-6"
+              className="mt-6 space-y-6"
             >
               {/* Emoji + Title Card */}
-              <div className="flex flex-col gap-4 rounded-lg border bg-muted/40 p-4">
-                <ChangeEmoji
-                  emoji={localIcon}
-                  onFormSelect={onFormSelectHandler}
-                />
-
-                <TextareaAutoSize
-                  ref={titleRef}
-                  value={localTitle}
-                  onChange={(e) => {
-                    const value = e.target.value
-                    setLocalTitle(value)
-                    form.setValue('title', value, { shouldDirty: true })
-                  }}
-                  maxLength={100}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') e.preventDefault()
-                  }}
-                  placeholder="Title of your mind map"
-                  className="
-                  w-full resize-none bg-transparent
-                  text-2xl font-semibold leading-snug
-                  placeholder:text-muted-foreground
-                  border-b border-border
-                  focus:border-primary
-                  focus:outline-none
-                  transition-colors
-                "
-                />
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <ChangeEmoji
+                    emoji={localIcon}
+                    onFormSelect={onFormSelectHandler}
+                  />
+                  <div className="flex-1">
+                    <TextareaAutoSize
+                      ref={titleRef}
+                      value={localTitle}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        setLocalTitle(value)
+                        form.setValue('title', value, { shouldDirty: true })
+                      }}
+                      maxLength={100}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') e.preventDefault()
+                      }}
+                      placeholder="Enter mind map title..."
+                      className="
+                        w-full resize-none bg-transparent
+                        text-2xl font-semibold leading-snug
+                        placeholder:text-muted-foreground/60
+                        border-b border-border/50
+                        focus:border-primary/70
+                        focus:outline-none
+                        transition-colors
+                        min-h-[40px]
+                      "
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {localTitle.length}/100 characters
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end pt-4 border-t">
                 <Button
                   type="button"
                   variant="secondary"
                   className="w-full sm:w-auto px-6"
                   onClick={() => setOpen(false)}
                 >
-                  Close
+                  Cancel
                 </Button>
 
                 <Button
                   type="button"
-                  className="w-full sm:w-auto px-6 bg-primary text-white hover:bg-primary/90"
+                  className="w-full sm:w-auto px-6 bg-primary text-white hover:bg-primary/90 disabled:opacity-50"
                   onClick={onSaveEdit}
+                  disabled={!localIcon}
                 >
                   Save Changes
                 </Button>

@@ -35,7 +35,7 @@ const PreviewCardWrapper = ({
   const [isSaved, setIsSaved] = useState(isSavedByUser)
   const format = useFormatter()
   // @ts-ignore
-  const dateTime = new Date(mindMap.createdAt)
+  const dateTime = new Date(mindMap.updatedAt)
   const now = new Date()
 
   const onSetIsSaved = () => setIsSaved((p) => !p)

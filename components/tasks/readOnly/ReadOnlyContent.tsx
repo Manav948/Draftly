@@ -23,8 +23,9 @@ interface Props {
 const ReadOnlyContent = ({ task, isSavedByUser, userRole, workspaceId }: Props) => {
   const [isSaved, setIsSaved] = useState(isSavedByUser)
   const t = useTranslations("READ_ONLY")
-  const [] = useState(task.updatedBy)
   const format = useFormatter()
+  // @ts-ignore
+  const dateTime = new Date(task.updatedAt)
   const now = new Date()
 
   const onSetIsSaved = () => {
@@ -100,6 +101,7 @@ const ReadOnlyContent = ({ task, isSavedByUser, userRole, workspaceId }: Props) 
           <div className="flex items-center gap-2">
             <span>Updated by</span>
             <UserHoverInfo user={task.updatedBy ?? task.creator} />
+            <p>{format.relativeTime(dateTime, now)}</p>
           </div>
         </CardFooter>
       </Card>
