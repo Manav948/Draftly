@@ -1,6 +1,8 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
+
 interface Params {
     params: Promise<{
         task_id: string;
@@ -48,11 +50,10 @@ export const GET = async (request: Request, { params }: Params) => {
                 }
             },
         })
-        console.log("Tasks", task)
         if (!task) {
-            return NextResponse.json("Task not found", { status: 200 })
+            return NextResponse.json("Task not found", { status: 404 })
         }
-        return NextResponse.json({ ...task, tags: task.Tag }, { status: 202 })
+        return NextResponse.json({ ...task, tags: task.Tag }, { status: 200 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

@@ -3,6 +3,8 @@ import { sortAssignedToMeDataByCreated } from "@/lib/sortAssignedToMe";
 import { AssignedToMeTasksAndMindMaps, AssignedToMeTypes } from "@/types/extended";
 import { NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
+
 export const GET = async (request: Request) => {
     const url = new URL(request.url)
 
@@ -164,14 +166,21 @@ export const GET = async (request: Request) => {
             }
         }
         else {
+            // ⚠️ Previously this called db.workspace.findMany() with NO filter —
+            // it loaded every workspace in the DB. Now filtered via subscription.
+            const userSubscriptions = await db.subscription.findMany({
+                where: { userId },
+                select: { workspaceId: true },
+            })
+            const workspaceIds = userSubscriptions.map((s) => s.workspaceId)
+
             const taskAndMindMaps = await db.workspace.findMany({
+                where: { id: { in: workspaceIds } },
                 include: {
                     Task: {
                         where: {
                             assignedToTasks: {
-                                some: {
-                                    userId
-                                }
+                                some: { userId }
                             }
                         },
                         include: {
@@ -189,9 +198,7 @@ export const GET = async (request: Request) => {
                     mindMaps: {
                         where: {
                             assignedToMindMaps: {
-                                some: {
-                                    userId
-                                }
+                                some: { userId }
                             }
                         },
                         include: {
@@ -208,6 +215,7 @@ export const GET = async (request: Request) => {
                     }
                 }
             })
+
             if (taskAndMindMaps.length === 0) {
                 return NextResponse.json([], { status: 200 })
             }

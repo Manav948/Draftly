@@ -59,6 +59,14 @@ const useUnStar = ({ itemId, type, userId, sortType }: Props) => {
     },
 
     onSuccess: () => {
+      // Also invalidate the detail page query so the star icon reflects the change
+      if (type === "task") {
+        queryClient.invalidateQueries({ queryKey: ["getTask", itemId] })
+      } else {
+        queryClient.invalidateQueries({ queryKey: ["getMindMap", itemId] })
+      }
+      // Refresh the starred list from server to stay in sync
+      queryClient.invalidateQueries({ queryKey: ["getStarredItems", userId] })
       toast.success("Removed from starred")
     },
   })

@@ -138,7 +138,7 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
                         <div className="flex items-start gap-4">
                             <Logo
                                 onFormSelect={onFormSelectHandler}
-                                emoji={form.getValues("icon")}
+                                emoji={form.watch("icon")}
                                 taskId={taskId}
                                 workspaceId={workspaceId}
                             />

@@ -1,6 +1,8 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
+
 interface Params {
     params: Promise<{
         mind_map_id: string;
@@ -45,7 +47,7 @@ export const GET = async (request: Request, { params }: Params) => {
         if (!mindMap) {
             return NextResponse.json(null, { status: 404 })
         }
-        return NextResponse.json({ ...mindMap, tags: mindMap.tags }, { status: 202 })
+        return NextResponse.json({ ...mindMap, tags: mindMap.tags }, { status: 200 })
     } catch (error) {
         return NextResponse.json("Error during db connection", { status: 405 })
     }

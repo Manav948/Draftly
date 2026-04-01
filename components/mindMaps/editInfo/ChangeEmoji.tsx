@@ -18,11 +18,10 @@ const ChangeEmoji = ({ emoji, onFormSelect }: Props) => {
         setSelectedEmoji(newEmoji);
         onFormSelect(newEmoji)
     }
-    console.log("Emoji from slecter : " , emoji)
     return (
         <div>
             <EmojiSelector onSelectedEmoji={emojiSelectHandler}>
-                <span className='w-16 h-16 rounded-lg bg-secondary flex justify-center items-center text-3xl'>
+                <span className='w-16 h-16 rounded-lg bg-secondary flex justify-center items-center text-3xl cursor-pointer hover:opacity-80 transition-opacity'>
                     {renderEmoji}
                 </span>
             </EmojiSelector>

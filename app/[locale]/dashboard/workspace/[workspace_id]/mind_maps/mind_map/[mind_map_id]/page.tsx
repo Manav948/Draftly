@@ -46,9 +46,9 @@ const ViewMindMapPage = async ({ params }: Params) => {
               href: `/dashboard/workspace/${workspace.id}`,
             },
             {
-              name: `${mindMap.title ? mindMap.title : "Untitled Mind Map"}`,
+              name: mindMap.title || "Untitled Mind Map",
               href: "/",
-              useTranslate: mindMap.title ? false : true
+              useTranslate: false
             }
           ]}
         >
