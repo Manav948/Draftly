@@ -2,7 +2,6 @@ import { HomePageImage } from "@/types/extended";
 import {
   CalendarDays,
   Clock,
-  MessageSquare,
   PencilRuler,
   Workflow,
 } from "lucide-react";

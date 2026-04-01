@@ -6,6 +6,18 @@ import React from 'react'
 const PomodoroPage = async () => {
   const session = await checkIfUserCompletedOnboarding(`/dashboard/pomodoro`)
   const pomodoroSettings = await getPomodoro(session.user.id)
+  
+  if (!pomodoroSettings) {
+    return (
+      <>
+        <DashboardHeader />
+        <main className='w-full h-full gap-2'>
+          <p>No pomodoro settings found. Please configure your settings.</p>
+        </main>
+      </>
+    )
+  }
+  
   return (
     <>
       <DashboardHeader />
