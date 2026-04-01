@@ -24,7 +24,7 @@ const ReadOnlyContent = ({ task, isSavedByUser, userRole, workspaceId }: Props) 
   const [isSaved, setIsSaved] = useState(isSavedByUser)
   const t = useTranslations("READ_ONLY")
   const format = useFormatter()
-  // @ts-ignore
+  // @ts-expect-error - updatedAt may not be typed as Date but is valid at runtime
   const dateTime = new Date(task.updatedAt)
   const now = new Date()
 

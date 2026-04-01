@@ -1,7 +1,16 @@
 import { useFormatter } from "next-intl"
 import { Card, CardContent } from "./card"
 
-const ActivityItem = ({ item }: any) => {
+interface ActivityItemProps {
+  item: {
+    emoji?: string
+    title: string
+    updatedAt: string | Date
+    workspace: { name: string }
+  }
+}
+
+const ActivityItem = ({ item }: ActivityItemProps) => {
   const format = useFormatter()
 
   return (

@@ -1,5 +1,4 @@
 import { Loader2 } from "lucide-react";
-import { SvgProps } from "@/types/props";
 import { cn } from "@/lib/utils";
 interface Props {
     loadingText?: string;

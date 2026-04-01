@@ -57,12 +57,12 @@ const TaskOptions = ({
         taskId,
       });
     },
-    onError: (err: AxiosError) => {
+    onError: (_err: AxiosError) => {
       toast.error("Task could not be deleted.");
     },
     onSuccess: () => {
       toast.success("Task deleted successfully.");
-      queryClient.invalidateQueries(["getWorkspaceShortCuts"] as any);
+      queryClient.invalidateQueries({ queryKey: ["getWorkspaceShortCuts"] });
       router.push(`/dashboard/workspace/${workspaceId}`);
       router.refresh();
     },
