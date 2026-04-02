@@ -3,7 +3,7 @@ import { Card, CardContent } from "./card"
 
 interface ActivityItemProps {
   item: {
-    emoji?: string
+    emoji: string | null
     title: string
     updatedAt: string | Date
     workspace: { name: string }
