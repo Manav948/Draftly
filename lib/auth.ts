@@ -14,8 +14,8 @@ export const authOptions: NextAuthOptions = {
         "strategy": "jwt"
     },
     pages: {
-        error: "sign-in",
-        signIn: "sign-in"
+        error: "/sign-in",
+        signIn: "/sign-in"
     },
     adapter: PrismaAdapter(db) as Adapter,
     providers: [
@@ -24,13 +24,13 @@ export const authOptions: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
             allowDangerousEmailAccountLinking: true,
             async profile(profile) {
-                const baseUsername = generateFromEmail(profile.email, 5);
+                const baseUsername = generateFromEmail(profile.email || "user@google", 5);
                 const uniqueUsername = `${baseUsername}_${Math.random().toString(36).slice(2, 6)}`;
 
                 return {
                     id: profile.sub,
                     username: uniqueUsername,
-                    name: profile.given_name ? profile.given_name : profile.name,
+                    name: profile.given_name ? profile.given_name : (profile.name || "User"),
                     surname: profile.family_name ? profile.family_name : "",
                     email: profile.email,
                     image: profile.picture
@@ -44,12 +44,12 @@ export const authOptions: NextAuthOptions = {
             async profile(profile) {
                 const baseUsername = generateFromEmail(profile.email || "user@github", 5);
                 const uniqueUsername = `${profile.login || baseUsername}_${Math.random().toString(36).slice(2, 6)}`;
-                const fullName = profile.name?.split(" ")
+                const fullName = profile.name?.split(" ") || [];
                 return {
                     id: profile.id.toString(),
                     username: uniqueUsername,
-                    name: fullName.at(0),
-                    surname: fullName.at(1),
+                    name: fullName.at(0) || profile.login || "User",
+                    surname: fullName.at(1) || "",
                     email: profile.email,
                     image: profile.avatar_url,
                 }

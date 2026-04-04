@@ -39,34 +39,30 @@ export const useTags = (
         onDebounced && onDebounced()
     }, [onSetStatus, status, onDebounced])
 
-    const onUpdateActiveTagHandler = useCallback((tagId: string, colors: WorkspaceIconColor, name: string) => {
+    const onUpdateActiveTagHandler = useCallback((tagId: string, updatedColor: WorkspaceIconColor, name: string) => {
         setCurrentActiveTags((prevTags) => {
             if (prevTags.length === 0) return prevTags
-            const updateTags = prevTags.map((tag) => tag.id === tagId ? { ...tag, name, colors } : tag)
+            const updateTags = prevTags.map((tag) => tag.id === tagId ? { ...tag, name, color: updatedColor } : tag)
             return updateTags
         })
     },
         []
     )
 
-    const onSelectActiveTagHandler = useCallback((tag:Tag) => {
+    const onSelectActiveTagHandler = useCallback((tagToSelect:Tag) => {
         if (status !== "unsaved") onSetStatus("unsaved")
         setCurrentActiveTags((prevTags) => {
-            const tagIndex = prevTags.findIndex((tag) => tag.id === tag.id)
+            const tagIndex = prevTags.findIndex((pt) => pt.id === tagToSelect.id)
             if (tagIndex !== -1) {
                 const updateActiveTags = [...prevTags]
                 updateActiveTags.splice(tagIndex, 1)
                 return updateActiveTags
             } else {
-                const selectedTag = tags!.find((tag) => tag.id === tag.id)
-                if (selectedTag) {
-                    return [...prevTags, selectedTag]
-                }
+                return [...prevTags, tagToSelect]
             }
-            return prevTags
         })
         onDebounced && onDebounced()
-    }, [onSetStatus, status, tags , onDebounced])
+    }, [onSetStatus, status, onDebounced])
 
 
     return {
