@@ -1,7 +1,5 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { newTaskSchema } from "@/schema/newTaskSchema";
-import { updateTaskSchema } from "@/schema/updateTaskSchema";
 import { NextResponse } from "next/server";
 import z from "zod";
 
@@ -38,12 +36,13 @@ export async function POST(request: Request) {
             return new NextResponse("User Not Found", { status: 404, statusText: "User not Found" })
         }
 
-        const existSavedTask = user.savedTask.find((task) => task.id === taskId)
+        const existSavedTask = user.savedTask.find((task) => task.taskId === taskId)
 
         if (existSavedTask) {
-            await db.savedTask.delete({
+            await db.savedTask.deleteMany({
                 where: {
-                    id: existSavedTask.id
+                    userId: session.user.id,
+                    taskId: taskId
                 }
             })
         } else {

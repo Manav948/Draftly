@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader } from "../ui/card"
 import { useSearchParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { StarredItem as StarredItemType } from "@/types/saved"
+import axios from "axios"
 import { LoadingScreen } from "../common/LoadingScreen"
 import StarredItem from "./StarredItem"
 import SortSelect from "./SortSelect"
@@ -25,11 +26,10 @@ const StarredContainer = ({ userId }: Props) => {
   } = useQuery<StarredItemType[]>({
     queryKey: ["getStarredItems", userId, sortType],
     queryFn: async () => {
-      const res = await fetch(
+      const res = await axios.get(
         `/api/saved/get?userId=${userId}&sort=${sortType}`
       )
-      if (!res.ok) throw new Error("Failed to fetch starred items")
-      return res.json()
+      return res.data as StarredItemType[]
     },
   })
 

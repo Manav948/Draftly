@@ -36,12 +36,13 @@ export async function POST(request: Request) {
             return new NextResponse("User Not Found", { status: 404, statusText: "User not Found" })
         }
 
-        const existSavedMindMap = user.savedMindMaps.find((task) => task.id === mindMapId)
+        const existSavedMindMap = user.savedMindMaps.find((task) => task.taskId === mindMapId)
 
         if (existSavedMindMap) {
-            await db.savedTask.delete({
+            await db.savedMindMaps.deleteMany({
                 where: {
-                    id: existSavedMindMap.id
+                    userId: session.user.id,
+                    taskId: mindMapId
                 }
             })
         } else {
