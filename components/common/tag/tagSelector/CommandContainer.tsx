@@ -101,6 +101,7 @@ const CommandContainer = ({
         <NewTag
           workspaceId={workspaceId}
           onSetTab={setTab}
+          onCreateTag={onSelectActiveTag}
         />
       )}
     </Command>

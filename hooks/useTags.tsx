@@ -18,7 +18,7 @@ export const useTags = (
 
     const { data: tags, isLoading: isLoadingTags } = useQuery({
         queryFn: async () => {
-            const res = await fetch(`/api/tags/get/get_workspace_tags?workspceId=${workspaceId}`)
+            const res = await fetch(`/api/tags/get/get_workspace_tags?workspaceId=${workspaceId}`)
             if (!res.ok) {
                 return []
             }

@@ -95,7 +95,10 @@ export const getTask = async (task_id: string, userId: string) => {
     },
   })
   if (!task) return notFound()
-  return task as unknown as ExtendedTask
+  return {
+    ...task,
+    tags: task.Tag,
+  } as unknown as ExtendedTask
 }
 
 export const getMindMap = async (mind_map_id: string) => {

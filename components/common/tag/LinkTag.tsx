@@ -65,14 +65,29 @@ const LinkTag = ({ tag: { color, id, name, workspaceId }, isDarkMode, disabled }
 
         return colors[color] ?? colors.BLUE;
     }, [color, isDarkMode]);
+    if (disabled) {
+        return (
+            <div
+                className={cn(`${buttonVariants({
+                    variant: "outline",
+                    size: "sm"
+                })} px-2.5 py-0.5 h-fit text-xs pointer-events-none opacity-80 cursor-default`
+                )}
+            >
+                <Tag size={16} className={`${TagColor}`} />
+                <span>{name}</span>
+            </div>
+        )
+    }
+
     return (
         <Link
-            aria-disabled={disabled}
             href={"/"}
+            onClick={(e) => disabled && e.preventDefault()}
             className={cn(`${buttonVariants({
                 variant: "outline",
                 size: "sm"
-            })} px-2.5 py-0.5 h-fit text-xs ${disabled ? "pointer-events-none" : ""}`
+            })} px-2.5 py-0.5 h-fit text-xs`
             )}
         >
             <Tag size={16} className={`${TagColor}`} />
