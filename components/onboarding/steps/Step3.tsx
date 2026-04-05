@@ -58,18 +58,18 @@ const Step3 = () => {
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, ease: "easeOut" }}
-      className="w-full max-w-lg mx-auto dark:bg-[#0e0707] shadow-xl rounded-2xl p-8 sm:p-10 flex flex-col space-y-8 border mt-4"
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="w-full xl:w-[500px] max-w-[95%] sm:max-w-lg mx-auto p-6 sm:p-8 space-y-6 sm:space-y-8 rounded-2xl shadow-lg bg-white dark:bg-[#0a0505] border border-gray-200 dark:border-red-900/30 my-4 sm:mt-8"
     >
-      <div className="text-center space-y-3">
-        <h2 className="text-3xl font-extrabold tracking-tight text-foreground">
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl sm:text-3xl font-bold dark:text-white">
           Create Your Workspace
         </h2>
-        <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-          Give your workspace a unique name and upload a logo.  
-          Supported formats: <span className="font-medium text-foreground">PNG, JPG, or GIF</span>.
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
+          Give your workspace a unique name and upload a logo.
+          Supported formats: <span className="font-medium dark:text-gray-200">PNG, JPG, or GIF</span>.
         </p>
       </div>
 
@@ -81,11 +81,11 @@ const Step3 = () => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold">Workspace Name</FormLabel>
+                <FormLabel className="dark:text-gray-200">Workspace Name</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="e.g. My Creative Studio"
-                    className="dark:bg-[#0e0707] dark:text-[#f03d3d] border border-border focus:ring-2 focus:ring-primary transition-all"
+                    className="dark:bg-[#110505] dark:border-red-900/40 focus:ring-2 focus:ring-red-500 transition-all dark:text-white"
                     {...field}
                   />
                 </FormControl>
@@ -103,22 +103,20 @@ const Step3 = () => {
           />
 
           {/* Continue Button */}
-          <div className="flex items-center justify-between w-full">
-            <Button
-              disabled={isUploading}
-              type="submit"
-              className="rounded-lg px-6 font-semibold flex items-center gap-2 w-full"
-            >
-              {isUploading ? (
-                <LoadingState loadingText="Uploading..." />
-              ) : (
-                <>
-                  Continue
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
-            </Button>
-          </div>
+          <Button
+            disabled={isUploading}
+            type="submit"
+            className="w-full py-6 text-base font-semibold mt-2"
+          >
+            {isUploading ? (
+              <LoadingState loadingText="Uploading..." />
+            ) : (
+              <>
+                Continue
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </>
+            )}
+          </Button>
         </form>
       </Form>
     </motion.section>

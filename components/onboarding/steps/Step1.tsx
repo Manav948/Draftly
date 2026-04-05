@@ -33,16 +33,16 @@ const Step1 = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full max-w-md space-y-6"
+      className="w-full xl:w-[500px] max-w-[95%] sm:max-w-lg mx-auto p-6 sm:p-8 space-y-6 rounded-2xl shadow-lg bg-white dark:bg-[#0a0505] border border-gray-200 dark:border-red-900/30 my-4 sm:mt-8"
     >
-      <div className="text-center space-y-1">
-        <h2 className="text-2xl font-semibold">Your Profile</h2>
-        <p className="text-sm text-muted-foreground">
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl sm:text-3xl font-bold dark:text-white">Your Profile</h2>
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
           This helps personalize Draftly
         </p>
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center py-2">
         <Profileimage profileImage={profileImage} />
       </div>
 
@@ -53,9 +53,9 @@ const Step1 = () => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First name</FormLabel>
+                <FormLabel className="dark:text-gray-200">First name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Manav" />
+                  <Input {...field} placeholder="Manav" className="dark:bg-[#110505] dark:border-red-900/40" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,16 +67,16 @@ const Step1 = () => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Last name</FormLabel>
+                <FormLabel className="dark:text-gray-200">Last name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Valani" />
+                  <Input {...field} placeholder="Valani" className="dark:bg-[#110505] dark:border-red-900/40" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button className="w-full gap-2">
+          <Button className="w-full gap-2 py-6 text-base font-semibold mt-4">
             Continue <ArrowRight size={18} />
           </Button>
         </form>

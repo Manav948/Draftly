@@ -38,18 +38,18 @@ function Step4() {
     });
 
     return (
-        <section className="flex flex-col items-center justify-center text-center py-10 px-6">
+        <section className="flex flex-col items-center justify-center text-center py-6 px-4 sm:py-10 sm:px-6 min-h-[60vh]">
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="mb-6"
+                className="mb-8"
             >
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
                     🎉 You're all set!
                 </h2>
-                <p className="mt-3 text-lg text-gray-600 dark:text-gray-300">
-                    Your workspace <span className="font-semibold">{workspaceName}</span>{" "}
+                <p className="mt-3 text-base sm:text-lg text-gray-600 dark:text-gray-300">
+                    Your workspace <span className="font-semibold text-gray-900 dark:text-white">{workspaceName}</span>{" "}
                     is ready to go.
                 </p>
             </motion.div>
@@ -58,10 +58,10 @@ function Step4() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md"
+                className="w-full xl:w-[500px] max-w-[95%] sm:max-w-lg mx-auto p-6 sm:p-8 rounded-2xl shadow-lg bg-white dark:bg-[#0a0505] border border-gray-200 dark:border-red-900/30"
             >
-                <p className="mb-6 text-gray-700 dark:text-gray-300">
-                    Click below to start using <span className="font-semibold">Draftly</span>.
+                <p className="mb-6 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                    Click below to start using <span className="font-semibold dark:text-white">Draftly</span>.
                 </p>
                 <Button
                     disabled={isPending}

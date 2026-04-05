@@ -32,24 +32,23 @@ const Step2 = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
-      className="max-w-lg mx-auto space-y-8 p-6 rounded-2xl shadow-lg 
-                dark:bg-[#0e0707] dark:text-[#f03d3d]"
+      className="w-full xl:w-[500px] max-w-[95%] sm:max-w-lg mx-auto p-6 sm:p-8 space-y-6 sm:space-y-8 rounded-2xl shadow-lg bg-white dark:bg-[#0a0505] border border-gray-200 dark:border-red-900/30 my-4 sm:mt-8"
     >
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.1 }}
         className="text-center"
       >
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
           How Will You Use Draftly?
         </h2>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2">
           We’ll personalize your experience based on your choice.
         </p>
       </motion.div>
@@ -71,21 +70,21 @@ const Step2 = () => {
                     {useCase.map((item, idx) => (
                       <motion.div
                         key={item.case}
-                        initial={{ opacity: 0, x: -20 }}
+                        initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 * (idx + 1) }}
+                        transition={{ delay: 0.1 * (idx + 1) }}
                       >
                         <FormItem
-                          className={`flex items-center space-x-3 p-3 rounded-lg border cursor-pointer transition-all duration-300
+                          className={`flex items-center space-x-3 p-4 rounded-xl border cursor-pointer transition-all duration-300
                           ${field.value === item.case
-                              ? "border-blue-500 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 shadow-md"
-                              : "border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-gray-800"
+                              ? "border-red-500 bg-red-50 dark:bg-red-900/20 shadow-md"
+                              : "border-gray-300 dark:border-gray-700 hover:border-red-400 dark:bg-[#110505] dark:hover:bg-red-900/10"
                             }`}
                         >
                           <FormControl>
                             <RadioGroupItem value={item.case} />
                           </FormControl>
-                          <FormLabel className="cursor-pointer text-gray-800 dark:text-gray-200">
+                          <FormLabel className="cursor-pointer text-gray-800 dark:text-gray-200 text-sm sm:text-base w-full">
                             {item.Title}
                           </FormLabel>
                         </FormItem>
@@ -101,14 +100,14 @@ const Step2 = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.9 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
           >
             <Button
               type="submit"
-              className="w-full rounded-lg py-3 text-base font-semibold bg-gradient-to-r from-primary to-primary/80 hover:opacity-90 transition-all"
+              className="w-full rounded-lg py-6 text-base font-semibold transition-all mt-2"
             >
               Continue
-              <ArrowRight />
+              <ArrowRight size={18} className="ml-2" />
             </Button>
           </motion.div>
         </form>
