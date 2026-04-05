@@ -6,23 +6,37 @@ import { useOnboardingForm } from "@/context/OnboardingForm"
 import { AdditionalScheam2 } from "@/schema/AdditionalUserSchema2"
 import { ActionType } from "@/types/onBoardingContext"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Briefcase, GraduationCap, UserCircle } from "lucide-react"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { motion } from "framer-motion"
 
-const useCase = [
-  { case: "WORK", Title: "For Work" },
-  { case: "STUDY", Title: "For Study" },
-  { case: "PERSONAL_USE", Title: "For Personal Use" },
+const useCaseOptions = [
+  { case: "WORK", Title: "For Work", Icon: Briefcase, color: "text-blue-500", bg: "bg-blue-500/10" },
+  { case: "STUDY", Title: "For Study", Icon: GraduationCap, color: "text-green-500", bg: "bg-green-500/10" },
+  { case: "PERSONAL_USE", Title: "For Personal Use", Icon: UserCircle, color: "text-purple-500", bg: "bg-purple-500/10" },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+};
+
 const Step2 = () => {
-  const { currentStep, dispatch } = useOnboardingForm()
+  const { currentStep, dispatch, useCase } = useOnboardingForm()
 
   const form = useForm<AdditionalScheam2>({
     resolver: zodResolver(AdditionalScheam2),
     mode: "onChange",
+    defaultValues: { useCase: useCase as any }
   })
 
   const onSubmit = (data: AdditionalScheam2) => {
@@ -32,30 +46,22 @@ const Step2 = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.4 }}
-      className="w-full xl:w-[500px] max-w-[95%] sm:max-w-lg mx-auto p-6 sm:p-8 space-y-6 sm:space-y-8 rounded-2xl shadow-lg bg-white dark:bg-[#0a0505] border border-gray-200 dark:border-red-900/30 my-4 sm:mt-8"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="w-full"
     >
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="text-center"
-      >
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
-          How Will You Use Draftly?
-        </h2>
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2">
+      <div className="text-center mb-8">
+        <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          How will you use Draftly?
+        </motion.h2>
+        <motion.p variants={itemVariants} className="text-gray-500 dark:text-gray-400">
           We’ll personalize your experience based on your choice.
-        </p>
-      </motion.div>
+        </motion.p>
+      </div>
 
-      {/* Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 sm:px-4">
           <FormField
             control={form.control}
             name="useCase"
@@ -65,49 +71,57 @@ const Step2 = () => {
                   <RadioGroup
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    className="space-y-3"
+                    className="grid grid-cols-1 gap-4"
                   >
-                    {useCase.map((item, idx) => (
-                      <motion.div
-                        key={item.case}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 * (idx + 1) }}
-                      >
-                        <FormItem
-                          className={`flex items-center space-x-3 p-4 rounded-xl border cursor-pointer transition-all duration-300
-                          ${field.value === item.case
-                              ? "border-red-500 bg-red-50 dark:bg-red-900/20 shadow-md"
-                              : "border-gray-300 dark:border-gray-700 hover:border-red-400 dark:bg-[#110505] dark:hover:bg-red-900/10"
-                            }`}
-                        >
-                          <FormControl>
-                            <RadioGroupItem value={item.case} />
-                          </FormControl>
-                          <FormLabel className="cursor-pointer text-gray-800 dark:text-gray-200 text-sm sm:text-base w-full">
-                            {item.Title}
-                          </FormLabel>
-                        </FormItem>
-                      </motion.div>
-                    ))}
+                    {useCaseOptions.map((item, idx) => {
+                      const Icon = item.Icon;
+                      const isSelected = field.value === item.case;
+                      return (
+                        <motion.div key={item.case} variants={itemVariants}>
+                          <FormItem className="relative">
+                            <FormControl>
+                              <RadioGroupItem id={item.case} value={item.case} className="sr-only" />
+                            </FormControl>
+                            <label 
+                              htmlFor={item.case}
+                              onClick={() => field.onChange(item.case)}
+                              className={`
+                              flex items-center p-4 cursor-pointer rounded-2xl border-2 transition-all duration-300
+                              ${isSelected 
+                                ? 'border-red-500 bg-red-50/50 dark:bg-red-900/10 shadow-[0_4px_20px_rgba(220,38,38,0.1)]' 
+                                : 'border-gray-200 dark:border-gray-800 hover:border-red-300 dark:hover:border-red-900/50 bg-white/50 dark:bg-black/30 hover:bg-gray-50 dark:hover:bg-gray-900/50'}
+                            `}>
+                              <div className={`p-3 rounded-xl mr-4 ${isSelected ? "bg-red-100 dark:bg-red-500/20" : item.bg}`}>
+                                <Icon className={`w-6 h-6 ${isSelected ? "text-red-500" : item.color}`} />
+                              </div>
+                              <div className="flex-1">
+                                <h3 className={`font-semibold text-lg ${isSelected ? 'text-red-700 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
+                                  {item.Title}
+                                </h3>
+                              </div>
+                              <div className={`
+                                w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300
+                                ${isSelected ? 'border-red-500 bg-red-500' : 'border-gray-300 dark:border-gray-600'}
+                              `}>
+                                {isSelected && <div className="w-2.5 h-2.5 bg-white rounded-full" />}
+                              </div>
+                            </label>
+                          </FormItem>
+                        </motion.div>
+                      );
+                    })}
                   </RadioGroup>
                 </FormControl>
               </FormItem>
             )}
           />
 
-          {/* Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
+          <motion.div variants={itemVariants} className="pt-4">
             <Button
               type="submit"
-              className="w-full rounded-lg py-6 text-base font-semibold transition-all mt-2"
+              className="w-full h-14 bg-red-600 hover:bg-red-700 text-white shadow-[0_0_20px_rgba(220,38,38,0.2)] hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300 rounded-xl text-lg font-semibold flex items-center justify-center gap-2"
             >
-              Continue
-              <ArrowRight size={18} className="ml-2" />
+              Continue <ArrowRight size={20} />
             </Button>
           </motion.div>
         </form>

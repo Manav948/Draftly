@@ -135,7 +135,7 @@ const Profileimage = ({ profileImage }: Props) => {
           <Button
             variant="ghost"
             size="icon"
-            className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 bg-muted/30"
+            className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 bg-muted/30 border-2 border-red-500"
           >
             {profileImage ? (
               <Image
@@ -146,7 +146,7 @@ const Profileimage = ({ profileImage }: Props) => {
                 priority
               />
             ) : (
-              <User className="w-12 h-12 text-gray-400" />
+              <User className="w-12 h-12 text-gray-400 border-2" />
             )}
           </Button>
         </DialogTrigger>

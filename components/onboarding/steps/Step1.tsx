@@ -11,16 +11,29 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Profileimage from "../Profileimage";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, User } from "lucide-react";
 
 type FormType = z.infer<typeof AdditionalScheam>;
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+};
 
 const Step1 = () => {
   const { dispatch, currentStep, name, surname, profileImage } = useOnboardingForm();
 
   const form = useForm<FormType>({
     resolver: zodResolver(AdditionalScheam),
-    defaultValues: { name : "", surname : "" },
+    defaultValues: { name: name || "", surname: surname || "" },
   });
 
   const onSubmit = (data: FormType) => {
@@ -31,54 +44,76 @@ const Step1 = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="w-full xl:w-[500px] max-w-[95%] sm:max-w-lg mx-auto p-6 sm:p-8 space-y-6 rounded-2xl shadow-lg bg-white dark:bg-[#0a0505] border border-gray-200 dark:border-red-900/30 my-4 sm:mt-8"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="w-full"
     >
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl sm:text-3xl font-bold dark:text-white">Your Profile</h2>
-        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
-          This helps personalize Draftly
-        </p>
-      </div>
-
-      <div className="flex justify-center py-2">
-        <Profileimage profileImage={profileImage} />
+      <div className="flex justify-center mb-6 ">
+        <motion.div variants={itemVariants} className="relative group cursor-pointer inline-block">
+           <Profileimage profileImage={profileImage} />
+           <div className="absolute inset-0 rounded-full transition-all duration-300 pointer-events-none" />
+        </motion.div>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-          <FormField
-            name="name"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="dark:text-gray-200">First name</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Manav" className="dark:bg-[#110505] dark:border-red-900/40" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 px-1 sm:px-4">
+          <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="dark:text-gray-300 font-medium">First name</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <User className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <Input 
+                        {...field} 
+                        placeholder="Manav" 
+                        className="pl-10 h-12 bg-white/50 dark:bg-black/40 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-red-500 dark:focus:ring-red-500 transition-all shadow-sm rounded-xl" 
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            name="surname"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="dark:text-gray-200">Last name</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Valani" className="dark:bg-[#110505] dark:border-red-900/40" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              name="surname"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="dark:text-gray-300 font-medium">Last name</FormLabel>
+                  <FormControl>
+                     <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <User className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <Input 
+                        {...field} 
+                        placeholder="Valani" 
+                        className="pl-10 h-12 bg-white/50 dark:bg-black/40 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-red-500 dark:focus:ring-red-500 transition-all shadow-sm rounded-xl" 
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </motion.div>
 
-          <Button className="w-full gap-2 py-6 text-base font-semibold mt-4">
-            Continue <ArrowRight size={18} />
-          </Button>
+          <motion.div variants={itemVariants} className="pt-4">
+            <Button 
+              type="submit"
+              className="w-full h-14 bg-red-600 hover:bg-red-700 text-white shadow-[0_0_20px_rgba(220,38,38,0.2)] hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] transition-all duration-300 rounded-xl text-lg font-semibold flex items-center justify-center gap-2"
+            >
+              Continue <ArrowRight size={20} />
+            </Button>
+          </motion.div>
         </form>
       </Form>
     </motion.div>
