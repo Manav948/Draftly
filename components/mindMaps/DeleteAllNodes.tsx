@@ -43,8 +43,8 @@ const DeleteAllNodes = ({ workspaceId, mindMapId }: Props) => {
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
                 <HoverCard openDelay={250} closeDelay={250}>
-                    <DialogTrigger>
-                        <Button disabled={!getNodes().length || status !== "saved"} onClick={() => setOpen(true)} variant={"ghost"} size={"icon"}>
+                    <DialogTrigger asChild>
+                        <Button disabled={!getNodes().length || status !== "saved"} variant={"ghost"} size={"icon"}>
                             <Trash2 size={16} />
                         </Button>
                     </DialogTrigger>
