@@ -4,6 +4,7 @@ import Shortcut from "./sidebarShortcut/Shortcut";
 import OptionSidebar from "./optionSidebar/OptionSidebar";
 import { useToggleSidebar } from "@/context/ToggleSidebar";
 import CloseSidebar from "./CloseSidebar";
+import MobileBottomNav from "./MobileBottomNav";
 import { usePathname } from "next/navigation";
 import { Workspace } from "@prisma/client";
 
@@ -51,6 +52,8 @@ const SidebarContainer = ({ userWorkspace, userId, userAdminWorkspaces }: Props)
                 className={`fixed inset-0 bg-black/60 z-40 transition-opacity duration-300 lg:hidden ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
                     }`}
             />
+
+            <MobileBottomNav userWorkspaces={userWorkspace} />
         </>
     );
 };
