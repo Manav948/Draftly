@@ -13,8 +13,13 @@ import {
 import { navLinks } from "@/lib/constants";
 import { scrollToHash } from "@/lib/utils";
 import Link from "next/link";
+import { useLocale } from "next-intl";
 
 export const LargeNav = () => {
+  const locale = useLocale();
+  const signUpPath = locale ? `/${locale}/sign-up` : "/sign-up";
+  const signInPath = locale ? `/${locale}/sign-in` : "/sign-in";
+
   return (
     <div className="container md:flex py-3 max-w-screen-2xl items-center justify-between hidden pr-20">
       <div className="flex items-center">
@@ -64,13 +69,13 @@ export const LargeNav = () => {
         <div className="flex items-center gap-4">
           <Link
             className="border-b inline-block border-transparent hover:border-primary duration-200 transition-colors"
-            href={"/sign-in"}
+            href={signInPath}
           >
             Log in
           </Link>
           <Link
             className={`${buttonVariants({ variant: "default" })}`}
-            href={"/sign-up"}
+            href={signUpPath}
           >
             Sign up
           </Link>

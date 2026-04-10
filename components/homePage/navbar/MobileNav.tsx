@@ -15,9 +15,14 @@ import { scrollToHash } from "@/lib/utils";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useLocale } from "next-intl";
 
  const MobileNav = () => {
   const [open, setOpen] = useState(false);
+  const locale = useLocale();
+  const signUpPath = locale ? `/${locale}/sign-up` : "/sign-up";
+  const signInPath = locale ? `/${locale}/sign-in` : "/sign-in";
+
   return (
     <div className="md:hidden py-2 px-2 w-full flex items-center justify-between">
       <Sheet onOpenChange={setOpen} open={open}>
@@ -73,13 +78,13 @@ import { useState } from "react";
               onClick={() => {
                 setOpen(false);
               }}
-              href={"/sign-up"}
+              href={signUpPath}
               className={`${buttonVariants({ variant: "default" })}`}
             >
               Sign up
             </Link>
             <Link
-              href={"/sign-in"}
+              href={signInPath}
               onClick={() => {
                 setOpen(false);
               }}
@@ -92,6 +97,12 @@ import { useState } from "react";
       </Sheet>
 
       <div className="flex items-center gap-2">
+        <Link
+          href={signUpPath}
+          className={`${buttonVariants({ variant: "default" })} whitespace-nowrap px-3 py-2 text-sm`}
+        >
+          Sign up
+        </Link>
         <LocaleSwitcher
           alignHover="end"
           alignDropdown="end"
