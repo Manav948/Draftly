@@ -3,68 +3,82 @@ import Image from "next/image";
 export default function OrbitLogos() {
   return (
     <div className="orbit-wrapper">
-      {/* Orbit 1 */}
-      <div className="orbit orbit-xl spin-slow">
+      {/* Center */}
+      <div className="center-glow" />
+
+      {/* Orbits */}
+      <Orbit size="xl" speed={25} reverse>
         <OrbitItem src="/globe.svg" />
-      </div>
+      </Orbit>
 
-      <div className="orbit orbit-lg spin-reverse">
+      <Orbit size="lg" speed={18}>
         <OrbitItem src="/google.svg" />
-      </div>
+      </Orbit>
 
-      <div className="orbit orbit-md spin-medium">
-        <OrbitItem src="/react.svg"  />
-      </div>
+      <Orbit size="md" speed={14}>
+        <OrbitItem src="/react.svg" />
+      </Orbit>
 
-      <div className="orbit orbit-sm spin-fast">
-        <OrbitItem src="/vscode.png"  />
-      </div>
+      <Orbit size="sm" speed={10}>
+        <OrbitItem src="/vscode.png" />
+      </Orbit>
 
       <style jsx global>{`
         .orbit-wrapper {
           position: relative;
-          width: 420px;
-          height: 420px;
+          width: min(90vw, 420px);
+          height: min(90vw, 420px);
           margin: auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
+        /* Center Glow */
+        .center-glow {
+          position: absolute;
+          width: 120px;
+          height: 120px;
+          background: radial-gradient(circle, #3b82f6, transparent 70%);
+          filter: blur(40px);
+          z-index: 0;
+        }
+
+        /* Orbit Base */
         .orbit {
           position: absolute;
           inset: 50%;
           transform: translate(-50%, -50%);
           border-radius: 50%;
           border: 1px solid rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(2px);
         }
 
+        /* Sizes */
+        .orbit-sm { width: 160px; height: 160px; }
+        .orbit-md { width: 230px; height: 230px; }
+        .orbit-lg { width: 310px; height: 310px; }
+        .orbit-xl { width: 390px; height: 390px; }
+
+        /* Orbit Item */
         .orbit-item {
           position: absolute;
           top: -18px;
           left: 50%;
           transform: translateX(-50%);
+          animation: counter-rotate linear infinite;
         }
 
-        /* Orbit Sizes */
-        .orbit-sm {
-          width: 160px;
-          height: 160px;
+        .orbit-item img {
+          filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+          transition: transform 0.3s ease;
         }
 
-        .orbit-md {
-          width: 230px;
-          height: 230px;
+        .orbit-item:hover img {
+          transform: scale(1.2);
         }
 
-        .orbit-lg {
-          width: 310px;
-          height: 310px;
-        }
-
-        .orbit-xl {
-          width: 390px;
-          height: 390px;
-        }
-
-        /* Animations */
+        /* Spin */
         @keyframes spin {
           from {
             transform: translate(-50%, -50%) rotate(0deg);
@@ -83,30 +97,58 @@ export default function OrbitLogos() {
           }
         }
 
-        .spin-slow {
-          animation: spin 20s linear infinite;
+        /* Counter rotation (fix upside-down logos) */
+        @keyframes counter-rotate {
+          from {
+            transform: translateX(-50%) rotate(0deg);
+          }
+          to {
+            transform: translateX(-50%) rotate(-360deg);
+          }
         }
 
-        .spin-medium {
-          animation: spin 14s linear infinite;
+        /* Hover Pause */
+        .orbit-wrapper:hover .orbit {
+          animation-play-state: paused;
         }
 
-        .spin-fast {
-          animation: spin 10s linear infinite;
-        }
-
-        .spin-reverse {
-          animation: spin-reverse 18s linear infinite;
-        }
       `}</style>
+    </div>
+  );
+}
+
+function Orbit({
+  children,
+  size,
+  speed,
+  reverse = false,
+}: {
+  children: React.ReactNode;
+  size: string;
+  speed: number;
+  reverse?: boolean;
+}) {
+  return (
+    <div
+      className={`orbit orbit-${size}`}
+      style={{
+        animation: `${reverse ? "spin-reverse" : "spin"} ${speed}s linear infinite`,
+      }}
+    >
+      {children}
     </div>
   );
 }
 
 function OrbitItem({ src }: { src: string }) {
   return (
-    <div className="orbit-item">
-      <Image src={src} alt="logo" width={36} height={36} />
+    <div
+      className="orbit-item"
+      style={{
+        animationDuration: "inherit",
+      }}
+    >
+      <Image src={src} alt="logo" width={40} height={40} />
     </div>
   );
 }
