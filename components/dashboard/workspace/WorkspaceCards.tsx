@@ -74,16 +74,16 @@ export default function WorkspaceCards({ workspaces }: Props) {
   const colorText = (color: string) => colorTextMap[color] ?? "text-red-400"
 
   return (
-    <div className="flex flex-col bg-[#131313] border border-[#1f1f1f] rounded-xl overflow-hidden">
+    <div className="flex flex-col bg-white dark:bg-[#131313] border border-gray-100 dark:border-[#1f1f1f] rounded-xl overflow-hidden shadow-sm dark:shadow-none">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-[#1a1a1a]">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-[#1a1a1a]">
         <div>
-          <h3 className="text-sm font-medium text-[#f0f0f0]">Workspaces</h3>
-          <p className="text-[11px] text-[#444] mt-0.5">{workspaces.length} active</p>
+          <h3 className="text-sm font-medium text-gray-900 dark:text-[#f0f0f0]">Workspaces</h3>
+          <p className="text-[11px] text-gray-500 dark:text-[#444] mt-0.5">{workspaces.length} active</p>
         </div>
         <Link
           href="/dashboard/settings"
-          className="flex items-center gap-1.5 text-[11px] text-[#444] hover:text-red-500 transition-colors"
+          className="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-[#444] hover:text-red-500 transition-colors"
         >
           <Plus size={12} />
           <span>New</span>
@@ -92,9 +92,9 @@ export default function WorkspaceCards({ workspaces }: Props) {
 
       {/* Cards grid */}
       {workspaces.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-14 gap-2 text-[#333]">
+        <div className="flex flex-col items-center justify-center py-14 gap-2 text-gray-400 dark:text-[#333]">
           <Layers size={18} />
-          <p className="text-[11px] text-[#444]">No workspaces yet</p>
+          <p className="text-[11px] text-gray-500 dark:text-[#444]">No workspaces yet</p>
         </div>
       ) : (
         <div className="p-3 grid grid-cols-2 gap-2">
@@ -102,13 +102,13 @@ export default function WorkspaceCards({ workspaces }: Props) {
             <Link
               key={ws.id}
               href={`/dashboard/workspace/${ws.id}`}
-              className="group flex flex-col gap-3 p-4 bg-[#0e0e0e] border border-[#1a1a1a] rounded-xl hover:border-[#2a2a2a] hover:bg-[#111] transition-all duration-200 cursor-pointer"
+              className="group flex flex-col gap-3 p-4 bg-gray-50 dark:bg-[#0e0e0e] border border-gray-100 dark:border-[#1a1a1a] rounded-xl hover:border-gray-200 dark:hover:border-[#2a2a2a] hover:bg-gray-100 dark:hover:bg-[#111] transition-all duration-200 cursor-pointer"
             >
               {/* Avatar + name row */}
               <div className="flex items-center gap-2.5">
                 <WorkspaceAvatar ws={ws} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-[12px] font-medium text-[#bbb] group-hover:text-[#f0f0f0] transition-colors truncate">
+                  <p className="text-[12px] font-medium text-gray-700 dark:text-[#bbb] group-hover:text-gray-900 dark:group-hover:text-[#f0f0f0] transition-colors truncate">
                     {ws.name}
                   </p>
                   <p className={`text-[10px] mt-0.5 font-medium ${colorText(ws.color)}`}>
@@ -118,18 +118,18 @@ export default function WorkspaceCards({ workspaces }: Props) {
               </div>
 
               {/* Stats + arrow */}
-              <div className="flex items-center justify-between text-[11px] text-[#444]">
+              <div className="flex items-center justify-between text-[11px] text-gray-500 dark:text-[#444]">
                 <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1 hover:text-[#888] transition-colors">
+                  <span className="flex items-center gap-1 hover:text-gray-700 dark:hover:text-[#888] transition-colors">
                     <Layers size={10} />
                     {ws._count.Task}
                   </span>
-                  <span className="flex items-center gap-1 hover:text-[#888] transition-colors">
+                  <span className="flex items-center gap-1 hover:text-gray-700 dark:hover:text-[#888] transition-colors">
                     <Users size={10} />
                     {ws._count.Subscribers}
                   </span>
                 </div>
-                <ArrowUpRight size={11} className="text-[#2a2a2a] group-hover:text-red-600 transition-colors" />
+                <ArrowUpRight size={11} className="text-gray-400 dark:text-[#2a2a2a] group-hover:text-red-600 transition-colors" />
               </div>
             </Link>
           ))}

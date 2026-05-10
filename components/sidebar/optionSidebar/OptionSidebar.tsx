@@ -37,7 +37,7 @@ const OptionSidebar = ({ activeWorkspaces, userAdminWorkspaces, userWorkspaces }
     <div
       className={`
         h-screen transition-all duration-300 ease-in-out
-        dark:bg-[#0e0707] dark:text-white border-l border-gray-300 dark:border-gray-800
+        bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-white border-l border-gray-100 dark:border-gray-800
         ${isSettings || url||  isPomodoro || isAssignedToMe ? "w-52 p-4 opacity-100" : "w-0 opacity-0 p-0 overflow-hidden"} flex flex-col justify-between
       `}
     >

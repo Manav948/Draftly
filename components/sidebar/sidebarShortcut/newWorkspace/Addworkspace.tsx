@@ -51,7 +51,7 @@ const Addworkspace = ({activeWorkspace} : Props) => {
           <DialogContent
             className="max-w-lg p-0 overflow-hidden rounded-2xl shadow-2xl 
                        border border-gray-200 dark:border-gray-800
-                       dark:bg-[#0e0707] dark:text-[#f03d3d]"
+                       dark:bg-[#0c0c0c] dark:text-red-500"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.97, y: 10 }}

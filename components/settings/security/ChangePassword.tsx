@@ -61,13 +61,11 @@ const ChangePassword = () => {
 
     return (
         <div className="w-full max-w-lg mx-auto 
-                        bg-white
-                        dark:bg-[#0e0707]
-                        border rounded-2xl shadow-xl p-6 md:p-8
-                        text-gray-100 mt-20">
+                        bg-white dark:bg-[#0c0c0c]
+                        border border-gray-100 dark:border-[#1f1f1f] rounded-2xl shadow-xl p-6 md:p-8
+                        text-gray-900 dark:text-gray-100 mt-20">
             <h2 className="text-2xl font-bold text-center 
-                           bg-clip-text text-transparent 
-                           bg-gradient-to-b from-primary to-destructive mb-6">
+                           text-gray-900 dark:text-[#f0f0f0] mb-6">
                 {t("TITLE")}
             </h2>
 
@@ -79,16 +77,16 @@ const ChangePassword = () => {
                         name='current_password'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium dark:text-gray-300 text-black">
+                                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     {t("CURRENT.LABLE")}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         type='password'
-                                        className='dark:bg-gray-800/70 border dark:border-gray-700 
+                                        className='bg-white dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 
                                                   rounded-xl focus:ring-2 
                                                   focus:ring-primary focus:border-primary 
-                                                  text-gray-100 placeholder:text-gray-400 
+                                                  text-gray-900 dark:text-gray-100 placeholder:text-gray-400 
                                                   transition-all'
                                         placeholder={t("CURRENT.PLACEHOLDER")}
                                         {...field}
@@ -105,16 +103,16 @@ const ChangePassword = () => {
                         name='new_password'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium dark:text-gray-300 text-black">
+                                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     {t("NEW.LABLE")}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         type='password'
-                                        className='dark:bg-gray-800/70 border dark:border-gray-700 
+                                        className='bg-white dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 
                                                   rounded-xl focus:ring-2 
                                                   focus:ring-primary focus:border-primary 
-                                                  text-gray-100 placeholder:text-gray-400 
+                                                  text-gray-900 dark:text-gray-100 placeholder:text-gray-400 
                                                   transition-all'
                                         placeholder={t("NEW.PLACEHOLDER")}
                                         {...field}
@@ -131,16 +129,16 @@ const ChangePassword = () => {
                         name='repeat_password'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-medium dark:text-gray-300 text-black">
+                                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     {t("REPEAT.LABLE")}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         type='password'
-                                        className='dark:bg-gray-800/70 border dark:border-gray-700 
+                                        className='bg-white dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 
                                                   rounded-xl focus:ring-2 
                                                   focus:ring-primary focus:border-primary 
-                                                  text-gray-100 placeholder:text-gray-400 
+                                                  text-gray-900 dark:text-gray-100 placeholder:text-gray-400 
                                                   transition-all'
                                         placeholder={t("REPEAT.PLACEHOLDER")}
                                         {...field}

@@ -139,7 +139,7 @@ const EdgeOptions = ({
         p-0 
         flex 
         flex-col
-        dark:bg-[#0e0707]
+        dark:bg-[#0c0c0c]
       "
         >
             <ScrollArea className='h-full p-6'>

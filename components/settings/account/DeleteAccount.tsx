@@ -56,15 +56,15 @@ const DeleteAccount = ({ userEmail }: Props) => {
 
     return (
         <Card className="
-      max-w-3xl mx-auto
-      border-none shadow-md rounded-xl overflow-hidden border-border dark:border-white
-      dark:bg-[#321212]
-    ">
+          max-w-3xl mx-auto
+          border border-red-100 dark:border-red-900/20 shadow-md rounded-xl overflow-hidden
+          bg-red-50 dark:bg-[#321212] text-red-900 dark:text-red-500
+        ">
             <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-bold text-red-600 dark:text-red-500">
                     {t("DELETE_TITLE")}
                 </CardTitle>
-                <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
+                <CardDescription className="text-sm text-red-700 dark:text-red-400">
                     {t("DELETE_DESC")}
                 </CardDescription>
             </CardHeader>

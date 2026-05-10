@@ -20,19 +20,19 @@ export default function StatRow({ data }: Props) {
       {stats(data).map((s) => (
         <div
           key={s.label}
-          className="group flex flex-col gap-4 p-5 bg-[#131313] border border-[#1f1f1f] rounded-xl hover:border-[#2a2a2a] transition-all duration-200"
+          className="group flex flex-col gap-4 p-5 bg-white dark:bg-[#131313] border border-gray-100 dark:border-[#1f1f1f] rounded-xl hover:border-gray-200 dark:hover:border-[#2a2a2a] transition-all duration-200 shadow-sm dark:shadow-none"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-medium text-[#555] uppercase tracking-widest">
+            <span className="text-[11px] font-medium text-gray-500 dark:text-[#555] uppercase tracking-widest">
               {s.label}
             </span>
-            <s.icon size={14} className="text-[#333] group-hover:text-red-600 transition-colors duration-200" />
+            <s.icon size={14} className="text-gray-400 dark:text-[#333] group-hover:text-red-600 transition-colors duration-200" />
           </div>
           <div>
-            <p className="text-[32px] font-semibold text-[#f0f0f0] tracking-tight leading-none">
+            <p className="text-[32px] font-semibold text-gray-900 dark:text-[#f0f0f0] tracking-tight leading-none">
               {s.value}
             </p>
-            <p className="text-[11px] text-[#444] mt-2">{s.sub}</p>
+            <p className="text-[11px] text-gray-500 dark:text-[#444] mt-2">{s.sub}</p>
           </div>
         </div>
       ))}

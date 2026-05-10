@@ -21,8 +21,8 @@ const WorkspaceItem = ({ WorkspaceInfo }: Props) => {
                  relative overflow-hidden
                  transition-all duration-200
                  hover:-translate-y-0.5 hover:shadow-lg
-                 dark:bg-gradient-to-b
-                 dark:bg-[#0e0707] dark:text-[#f03d3d]
+                 bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-[#f0f0f0]
+                 border border-gray-100 dark:border-[#1f1f1f]
                "
             >
                 <CardContent className="flex items-center justify-between gap-4 py-3">

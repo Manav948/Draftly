@@ -53,7 +53,7 @@ const WorkspaceContainer = ({
   })
 
   return (
-    <section className="flex flex-col gap-6 dark:bg-[#0e0707]">
+    <section className="flex flex-col gap-6 bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-[#f0f0f0]">
       <WorkspaceHeader
         workspaceId={workspaceId}
         userWorkspace={userWorkspace}
@@ -63,10 +63,10 @@ const WorkspaceContainer = ({
         onWorkspaceChange={setActiveWorkspaceId}
       />
 
-      <Card className="border-none shadow-none dark:bg-[#0e0707] dark:text-[#f03d3d]">
+      <Card className="border-none shadow-none bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-[#f0f0f0]">
         <CardHeader>
-          <CardTitle className="text-xl">Workspace Details</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl text-gray-900 dark:text-[#f0f0f0]">Workspace Details</CardTitle>
+          <CardDescription className="text-gray-500 dark:text-[#444]">
             Tasks and mind maps assigned to you in this workspace.
           </CardDescription>
         </CardHeader>

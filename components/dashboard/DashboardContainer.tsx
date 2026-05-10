@@ -30,17 +30,17 @@ export default function DashboardContainer({ userId, username }: Props) {
   if (isError)   return <ErrorPage onRetry={refetch} />
 
   return (
-    <div className="min-h-screen bg-[#0c0c0c] text-white">
+    <div className="min-h-screen bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-white">
 
       {/* Page header */}
-      <div className="px-6 md:px-8 pt-8 pb-6 border-b border-[#181818]">
-        <p className="text-[10px] text-[#3a3a3a] uppercase tracking-widest font-medium mb-1.5">
+      <div className="px-6 md:px-8 pt-8 pb-6 border-b border-gray-100 dark:border-[#181818]">
+        <p className="text-[10px] text-gray-500 dark:text-[#3a3a3a] uppercase tracking-widest font-medium mb-1.5">
           Overview
         </p>
-        <h1 className="text-xl font-semibold text-[#f0f0f0] tracking-tight">
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-[#f0f0f0] tracking-tight">
           Good to see you, <span className="text-red-500">{username || "there"}</span> 👋
         </h1>
-        <p className="text-[12px] text-[#444] mt-1">
+        <p className="text-[12px] text-gray-600 dark:text-[#444] mt-1">
           Here's a summary of your workspaces and activity.
         </p>
       </div>

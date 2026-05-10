@@ -212,7 +212,7 @@ const MindMaps = ({ initialInfo, workspaceId, canEdit, initialActiveTag }: Props
             )}
             <div className='w-full h-full relative'>
                 <ReactFlow
-                    className='w-full h-full'
+                    className='w-full h-full bg-white dark:bg-[#0c0c0c]'
                     fitView
                     nodes={nodes}
                     nodeTypes={nodeTypes}

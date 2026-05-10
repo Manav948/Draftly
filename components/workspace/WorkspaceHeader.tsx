@@ -33,7 +33,7 @@ const WorkspaceHeader = ({
   onWorkspaceChange,
 }: Props) => {
   return (
-    <header className="sticky top-0 z-30 border-b border-border dark:bg-[#0e0707] dark:text-white backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-border dark:bg-[#0c0c0c] dark:text-white backdrop-blur">
       <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
 
         <Menubar className="border-none bg-transparent p-0">

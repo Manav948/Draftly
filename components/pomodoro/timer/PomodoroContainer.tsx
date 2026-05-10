@@ -128,8 +128,8 @@ const PomodoroContainer = ({
         <div className="flex justify-center">
             <Card
                 className={clsx(
-                    "mt-8 w-full max-w-xl rounded-3xl border",
-                    "bg-bg-[#0e0707] backdrop-blur",
+                    "mt-8 w-full max-w-xl rounded-3xl border border-gray-100 dark:border-[#1f1f1f]",
+                    "bg-white dark:bg-[#0c0c0c]",
                     "shadow-lg transition-all"
                 )}
             >

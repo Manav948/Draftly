@@ -70,15 +70,15 @@ const DeleteWorkspace = ({ workspace: { id, name } }: Props) => {
     <Card
       className="
         max-w-3xl mx-auto
-        border-none shadow-md rounded-xl overflow-hidden
-        dark:bg-[#1e0f0f] dark:text-[#f03d3d]
+        border border-red-100 dark:border-red-900/20 shadow-md rounded-xl overflow-hidden
+        bg-red-50 dark:bg-[#1e0f0f] text-red-900 dark:text-red-500
       "
     >
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-bold text-red-600 dark:text-red-500">
           {t("TITLE")}
         </CardTitle>
-        <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
+        <CardDescription className="text-sm text-red-700 dark:text-red-400">
           {t("DESC")}
         </CardDescription>
       </CardHeader>

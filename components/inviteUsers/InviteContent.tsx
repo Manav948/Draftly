@@ -96,7 +96,7 @@ const InviteContent = ({ workspace }: Props) => {
             className={`
       w-full max-w-md mx-auto mt-5 p-5 rounded-2xl
       transition-all duration-300 border shadow-lg
-      dark:bg-[#0e0707]
+      dark:bg-[#0c0c0c]
       border-border/30
     `}
         >
@@ -111,7 +111,7 @@ const InviteContent = ({ workspace }: Props) => {
                             <p
                                 className="
                    border border-gray-200
-                  dark:bg-[#0e0707]
+                  dark:bg-[#0c0c0c]
                   truncate px-3 py-2 rounded-lg text-xs sm:text-sm
                   font-mono cursor-pointer hover:bg-gray-200
                   dark:hover:bg-gray-800/70 transition-all
@@ -124,7 +124,7 @@ const InviteContent = ({ workspace }: Props) => {
                         <HoverCardContent
                             className="
                 p-3 border rounded-lg shadow-md max-w-xs break-all
-                dark:bg-[#0e0707]
+                dark:bg-[#0c0c0c]
                 border-gray-200 dark:border-gray-800
               "
                         >
@@ -159,7 +159,7 @@ const InviteContent = ({ workspace }: Props) => {
                             className="
                 flex gap-1 items-center text-sm
                  border-gray-300 hover:bg-gray-100
-                dark:bg-[#0e0707] dark:border-gray-700/50
+                dark:bg-[#0c0c0c] dark:border-gray-700/50
                 dark:hover:bg-gray-800 transition-all
               "
                         >
@@ -174,7 +174,7 @@ const InviteContent = ({ workspace }: Props) => {
                         sideOffset={5}
                         className="
               w-56 border
-              dark:bg-[#0e0707] 
+              dark:bg-[#0c0c0c] 
               border-gray-200 dark:border-gray-800
             "
                     >

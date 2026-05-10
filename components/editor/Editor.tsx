@@ -84,7 +84,7 @@ const Editor = ({ workspaceId, initialActiveTags,taskId }: Props) => {
     const { ref: titleRef, ...rest } = form.register("title");
 
     return (
-        <Card className="dark:bg-[#0e0707] border border-border/40 shadow-xl overflow-hidden">
+        <Card className="dark:bg-[#0c0c0c] border border-border/40 shadow-xl overflow-hidden">
             <form className="w-full">
                 <CardContent className="p-6">
                     <div className="flex flex-col gap-4">

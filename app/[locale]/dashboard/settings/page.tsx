@@ -15,7 +15,7 @@ const Settings = async () => {
       <div
         className="
           min-h-screen py-6 
-         dark:bg-[#0e0707] dark:text-[#f03d3d]
+         bg-[#0c0c0c] dark:text-red-500
         "
       >
         {/* Page Heading */}

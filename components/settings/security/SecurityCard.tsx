@@ -8,13 +8,12 @@ import Warning from '@/components/ui/warning'
 const SecurityCard = () => {
     const t = useTranslations("SETTINGS.SECURITY")
     return (
-        <Card className=' dark:bg-[#0e0707] dark:text-[#f03d3d]  shadow-xl
-        backdrop-blur-md transition-all border-0 border-white'>
+        <Card className='bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-white shadow-xl transition-all border border-gray-100 dark:border-[#1f1f1f] rounded-xl'>
             <CardHeader>
-                <h1 className='font-bold text-3xl text-foreground'>
+                <h1 className='font-bold text-3xl text-gray-900 dark:text-[#f0f0f0]'>
                     {t("TITLE")}
                 </h1>
-                <CardDescription className='text-white mt-2 text-md'>
+                <CardDescription className='text-gray-500 dark:text-[#444] mt-2 text-md'>
                     {t("DESC")}
                 </CardDescription>
             </CardHeader>

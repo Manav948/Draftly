@@ -20,7 +20,7 @@ const Day = ({ day, monthIndex, calendarItems }: Props) => {
       className={cn(
         "relative min-h-[140px] p-2",
         "border border-border",
-        "dark:bg-[#0e0707]",
+        "dark:bg-[#0c0c0c]",
         "cursor-pointer hover:bg-muted",
         isWeekend && "bg-muted/30"
       )}

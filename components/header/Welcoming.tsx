@@ -45,22 +45,22 @@ const Welcoming = React.forwardRef<HTMLDivElement, Props>(
         )}>
         
         {/* Terminal path */}
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#131313] border border-[#1f1f1f] text-[#888]">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-[#131313] border border-gray-100 dark:border-[#1f1f1f] text-gray-500 dark:text-[#888]">
           <span className="text-red-600">~</span>
-          <span className="text-[#333]">/</span>
-          <span className="text-[#bbb] font-medium">{user?.username || "guest"}</span>
+          <span className="text-gray-400 dark:text-[#333]">/</span>
+          <span className="text-gray-700 dark:text-[#bbb] font-medium">{user?.username || "guest"}</span>
         </div>
 
         {/* Live indicator */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#131313] border border-[#1f1f1f] text-[#666]">
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-[#131313] border border-gray-100 dark:border-[#1f1f1f] text-gray-500 dark:text-[#666]">
           <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
           <span>Online</span>
         </div>
 
         {/* Date/Time */}
-        <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[#3a3a3a]">
+        <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-gray-500 dark:text-[#3a3a3a]">
           <span>{day}</span>
-          <span className="text-[#2a2a2a]">·</span>
+          <span className="text-gray-300 dark:text-[#2a2a2a]">·</span>
           <span>{time}</span>
         </div>
       </div>

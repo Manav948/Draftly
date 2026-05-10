@@ -20,7 +20,7 @@ const MobileBottomNav = ({ userWorkspaces }: Props) => {
   const workspaceId = urlWorkspaceId || (userWorkspaces.length > 0 ? userWorkspaces[0].id : undefined);
 
   return (
-    <div className="fixed bottom-0 left-0 lg:hidden w-full bg-white dark:bg-[#0e0707] border-t border-gray-300 dark:border-gray-800 z-[60] flex justify-between items-center h-16 px-4">
+    <div className="fixed bottom-0 left-0 lg:hidden w-full bg-white dark:bg-[#0c0c0c] border-t border-gray-300 dark:border-gray-800 z-[60] flex justify-between items-center h-16 px-4">
       <ActiveLink variant="ghost" size="icon" href="/dashboard" className="flex flex-col items-center justify-center w-12 h-12">
         <Home size={22} className={pathname === "/dashboard" ? "text-primary fill-primary/20" : "text-gray-500"} />
       </ActiveLink>

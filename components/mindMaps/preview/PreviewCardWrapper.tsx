@@ -44,7 +44,7 @@ const PreviewCardWrapper = ({
 
   return (
     <div className="flex justify-center mt-8">
-      <Card className="w-[96%] max-w-[1600px] rounded-2xl border border-border/60 shadow-sm dark:bg-[#0e0707]">
+      <Card className="w-[96%] max-w-[1600px] rounded-2xl border border-border/60 shadow-sm dark:bg-[#0c0c0c]">
         <CardContent className="p-5 border-b border-border/40">
           <div className="flex items-start justify-between gap-4">
             <div className="flex gap-4 min-w-0">

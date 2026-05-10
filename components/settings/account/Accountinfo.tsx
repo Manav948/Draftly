@@ -108,8 +108,8 @@ const AccountInfo = ({
       <Card
         className="
         max-w-3xl mx-auto rounded-2xl 
-        dark:bg-black/70 shadow-xl 
-        backdrop-blur-md transition-all border-border dark:border-white"
+        bg-white dark:bg-[#0c0c0c] shadow-xl 
+        transition-all border border-gray-100 dark:border-[#1f1f1f]"
       >
         <CardContent>
           {/* Profile Image */}
@@ -219,7 +219,7 @@ const AccountInfo = ({
                               role="combobox"
                               className={cn(
                                 "justify-between rounded-lg w-full",
-                                "dark:bg-[#0e0707] dark:border-gray-700",
+                                "dark:bg-[#0c0c0c] dark:border-gray-700",
                                 "bg-gray-50 border"
                               )}
                             >

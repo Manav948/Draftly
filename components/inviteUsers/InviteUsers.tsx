@@ -31,7 +31,7 @@ const InviteUsers = ({ workspace }: Props) => {
 
       <DialogContent className="
         max-w-lg w-full
-        dark:bg-[#0e0707]
+        dark:bg-[#0c0c0c]
         border border-border/40 rounded-2xl shadow-xl
         backdrop-blur-md p-6
       ">

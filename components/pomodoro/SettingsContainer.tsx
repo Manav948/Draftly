@@ -18,9 +18,9 @@ interface Props {
 const SettingsContainer = ({ pomodoroSettings }: Props) => {
   return (
     <div className="">
-      <Card className=" border-none shadow-none rounded-none dark:bg-[#0e0707]">
+      <Card className="border-none shadow-none rounded-none bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-[#f0f0f0]">
         <CardHeader className="space-y-2">
-          <CardTitle className="text-2xl font-semibold leading-none tracking-tight">
+          <CardTitle className="text-2xl font-semibold leading-none tracking-tight text-gray-900 dark:text-[#f0f0f0]">
             Pomodoro Settings
           </CardTitle>
 

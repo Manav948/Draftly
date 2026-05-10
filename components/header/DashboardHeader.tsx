@@ -22,9 +22,9 @@ const DashboardHeader = ({ addManualRoutes, children, workspaceHref, showingSavi
       sticky top-0 z-40
       flex items-center justify-between
       w-full px-6 py-3
-      bg-[#0e0e0e]/95 text-white
+      bg-white/95 dark:bg-[#0c0c0c]/95 text-gray-900 dark:text-white
       backdrop-blur-xl
-      border-b border-[#1a1a1a]
+      border-b border-gray-100 dark:border-[#1a1a1a]
     ">
       <div className="flex items-center gap-4 w-1/3">
         <OpenSidebar />

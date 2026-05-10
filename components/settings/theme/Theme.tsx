@@ -24,12 +24,12 @@ const Theme = () => {
 
     return (
         <div className="flex justify-center items-start h-full w-full  
-                        dark:bg-[#0e0707] dark:text-[#f03d3d]
-                        text-gray-100 py-16 px-4 sm:px-8 transition-all">
+                        bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-red-500
+                        py-16 px-4 sm:px-8 transition-all">
 
-            <Card className="w-full max-w-5xl dark:bg-[#0e0707] dark:text-[#f03d3d]
-                             backdrop-blur-xl border rounded-2xl shadow-2xl 
-                             transition-all duration-500 hover:shadow-primary/30">
+            <Card className="w-full max-w-5xl bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-[#f0f0f0]
+                             border border-gray-100 dark:border-[#1f1f1f] rounded-2xl shadow-2xl 
+                             transition-all duration-500 hover:shadow-primary/10">
 
                 <CardHeader className="space-y-2 text-center py-8">
                     <CardTitle className="text-3xl font-extrabold 
@@ -37,7 +37,7 @@ const Theme = () => {
                                          bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
                         Theme Preferences
                     </CardTitle>
-                    <CardDescription className="text-gray-400 text-sm max-w-md mx-auto">
+                    <CardDescription className="text-gray-500 dark:text-[#444] text-sm max-w-md mx-auto">
                         Customize your interface look and feel. You can switch between{" "}
                         <span className="text-primary font-semibold">Light</span>,{" "}
                         <span className="text-pink-500 font-semibold">Dark</span>, or{" "}
