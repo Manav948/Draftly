@@ -8,9 +8,7 @@ const Dashboard = async () => {
   return (
     <>
       <DashboardHeader />
-      <div className="px-3">
-        <DashboardContainer userId={session.user.id} username={session.user.name || ""} />
-      </div>
+      <DashboardContainer userId={session.user.id} username={session.user.name || ""} />
     </>
   )
 }

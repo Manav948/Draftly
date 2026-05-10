@@ -141,6 +141,16 @@ export interface DashboardSummary {
             name: string
         }
     }[]
+    workspaces: {
+        id: string
+        name: string
+        image: string | null
+        color: WorkspaceIconColor
+        _count: {
+            Task: number
+            Subscribers: number
+        }
+    }[]
 }
 
 export interface HomePageImage {

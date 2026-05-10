@@ -21,30 +21,25 @@ const DashboardHeader = ({ addManualRoutes, children, workspaceHref, showingSavi
     <header className="
       sticky top-0 z-40
       flex items-center justify-between
-      w-full px-5 py-3
-      dark:bg-[#0e0707] dark:text-[#f03d3d]
+      w-full px-6 py-3
+      bg-[#0e0e0e]/95 text-white
       backdrop-blur-xl
-      border-b border-border/30 dark:border-white/20 shadow-sm
-      transition-all duration-300
+      border-b border-[#1a1a1a]
     ">
-      {showingSavingStatus && <SavingStatus />}
-      {/* Sidebar open button */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4 w-1/3">
         <OpenSidebar />
+        <div className="hidden sm:flex">
+          <BredCrumNav addManualRoutes={addManualRoutes} workspaceHref={workspaceHref} />
+        </div>
       </div>
 
-      {/* Breadcrumb Navigation */}
-      <div className="flex items-center gap-3 text-foreground">
-        <BredCrumNav addManualRoutes={addManualRoutes} workspaceHref={workspaceHref} />
-      </div>
-
-      {/* User + Action Buttons */}
-      <div className="flex items-center gap-3 ml-auto">
+      <div className="flex items-center justify-end gap-3 w-1/3">
+        {showingSavingStatus && <SavingStatus />}
         {children}
         <User />
       </div>
     </header>
-  );
+  )
 };
 
 export default DashboardHeader;

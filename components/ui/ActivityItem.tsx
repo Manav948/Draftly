@@ -1,5 +1,6 @@
+"use client"
+
 import { useFormatter } from "next-intl"
-import { Card, CardContent } from "./card"
 
 interface ActivityItemProps {
   item: {
@@ -14,28 +15,34 @@ const ActivityItem = ({ item }: ActivityItemProps) => {
   const format = useFormatter()
 
   return (
-    <Card
-      className="
-        bg-[#0a0505] border border-red-900/20 text-white
-        hover:shadow-[0_0_15px_rgba(239,68,68,0.15)] hover:border-red-500/40 hover:-translate-x-1 transition-all
-        cursor-pointer
-      "
-    >
-      <CardContent className="flex gap-3 py-3 px-4">
-        <div className="text-xl pt-1 drop-shadow-md">{item.emoji ?? "📝"}</div>
+    <div className="
+      group flex items-center gap-3 p-3 rounded-xl
+      bg-[#131313] border border-[#1f1f1f]
+      hover:border-[#2a2a2a] hover:bg-[#181818]
+      transition-all duration-150 cursor-pointer
+    ">
+      {/* Emoji */}
+      <div className="w-8 h-8 rounded-lg bg-[#1a1a1a] border border-[#232323] flex items-center justify-center text-sm shrink-0 group-hover:border-[#2a2a2a] transition-colors">
+        {item.emoji ?? "📝"}
+      </div>
 
-        <div className="min-w-0 flex-1">
-          <p className="font-semibold truncate text-[14px]">{item.title}</p>
-          <div className="flex flex-wrap items-center text-[11px] text-gray-400 mt-1 gap-1.5 line-clamp-1">
-            <span>{format.relativeTime(new Date(item.updatedAt), new Date())}</span>
-            <span className="w-1 h-1 rounded-full bg-red-600/50"></span>
-            <span className="text-red-400 font-medium px-2 py-0.5 rounded-md bg-red-500/10 border border-red-900/30 truncate max-w-[100px] sm:max-w-max">
-              {item.workspace.name}
-            </span>
-          </div>
+      {/* Content */}
+      <div className="min-w-0 flex-1">
+        <p className="text-[12.5px] font-medium text-[#bbb] truncate group-hover:text-[#f0f0f0] transition-colors">
+          {item.title}
+        </p>
+        <div className="flex items-center gap-1.5 mt-0.5">
+          <span className="text-[10px] text-[#444]">
+            {format.relativeTime(new Date(item.updatedAt), new Date())}
+          </span>
+          <span className="text-[#2a2a2a]">·</span>
+          <span className="text-[10px] text-red-700 truncate max-w-[100px]">
+            {item.workspace.name}
+          </span>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
+
 export default ActivityItem
