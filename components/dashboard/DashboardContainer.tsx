@@ -31,10 +31,11 @@ const DashboardPage = ({ userId, username }: Props) => {
     const { data, isLoading, isError, refetch } = useQuery<DashboardSummary>({
         queryKey: ["dashboard-summary", userId],
         queryFn: async () => {
-            const res = await fetch(`/api/dashboard/summary?userId=${userId}`)
+            const res = await fetch(`/api/dashboard/summary`)
             if (!res.ok) throw new Error()
             return res.json()
         },
+        staleTime: 5 * 60 * 1000, // 5 minutes cache
     })
 
     if (isLoading) return <LoadingPage title="Preparing your focus…" />

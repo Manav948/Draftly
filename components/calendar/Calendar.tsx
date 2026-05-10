@@ -31,12 +31,13 @@ const Calendar = ({ userId }: Props) => {
 
     const { data: calendarItem, isError, isLoading } = useQuery({
         queryFn: async () => {
-            const res = await fetch(`/api/calendar/get?userId=${userId}`)
+            const res = await fetch(`/api/calendar/get`)
             if (!res.ok) throw new Error()
             const data = (await res.json()) as CalendarItem[]
             return data
         },
-        queryKey: ["getCalendarItem", userId]
+        queryKey: ["getCalendarItem", userId],
+        staleTime: 5 * 60 * 1000,
     })
     if (isLoading) {
         <LoadingScreen />

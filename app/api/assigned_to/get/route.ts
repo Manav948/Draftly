@@ -2,314 +2,102 @@ import { db } from "@/lib/db"
 import { sortAssignedToMeDataByCreated } from "@/lib/sortAssignedToMe";
 import { AssignedToMeTasksAndMindMaps, AssignedToMeTypes } from "@/types/extended";
 import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 export const GET = async (request: Request) => {
     const url = new URL(request.url)
 
     const workspaceFilterParam = url.searchParams.get("workspace")
-    const userId = url.searchParams.get("userId")
     const currentType = url.searchParams.get("type")
+    
+    // Pagination params
+    const page = parseInt(url.searchParams.get("page") || "1", 10)
+    const limit = parseInt(url.searchParams.get("limit") || "50", 10)
+    const skip = (page - 1) * limit
 
-    if (!userId) {
-        return NextResponse.json("Error in user api function", { status: 404 })
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+        return NextResponse.json("Unauthorized", { status: 401 })
     }
+    const userId = session.user.id
+
     try {
-        // for type safety check prisma for understand
-        const normalizeDate = (date?: { from?: string | null; to?: string | null } | Date) => {
-            if (!date) return new Date()
-            if (date instanceof Date) return date
-            return new Date(date.from ?? date.to ?? Date.now())
+        const assignData: AssignedToMeTasksAndMindMaps = {
+            Task: [],
+            mindMaps: []
         }
 
-        if (workspaceFilterParam && workspaceFilterParam !== "all") {
-            const taskAndMindMaps = await db.workspace.findUnique({
+        const workspaceCondition = workspaceFilterParam && workspaceFilterParam !== "all" 
+            ? { workspaceId: workspaceFilterParam } 
+            : {}
+
+        if (currentType === "tasks" || currentType === "all" || !currentType) {
+            const tasks = await db.task.findMany({
                 where: {
-                    id: workspaceFilterParam,
+                    ...workspaceCondition,
+                    assignedToTasks: { some: { userId } }
                 },
                 include: {
-                    Task: {
-                        where: {
-                            assignedToTasks: {
-                                some: {
-                                    userId
-                                }
-                            }
-                        },
-                        include: {
-                            updatedBy: {
-                                select: {
-                                    username: true,
-                                    name: true,
-                                    id: true,
-                                    image: true,
-                                    surname: true
-                                }
-                            }
-                        }
-                    },
-                    mindMaps: {
-                        where: {
-                            assignedToMindMaps: {
-                                some: {
-                                    userId
-                                }
-                            }
-                        },
-                        include: {
-                            updatedBy: {
-                                select: {
-                                    username: true,
-                                    name: true,
-                                    surname: true,
-                                    id: true,
-                                    image: true,
-
-                                }
-                            }
-                        }
-                    }
-                }
+                    workspace: { select: { name: true } },
+                    updatedBy: { select: { username: true, name: true, surname: true, id: true, image: true } }
+                },
+                orderBy: { updatedAt: 'desc' },
+                take: limit,
+                skip: skip
             })
-            if (!taskAndMindMaps) {
-                return NextResponse.json("Task not found", { status: 404 })
-            }
-            switch (currentType) {
-                case "tasks":
-                    const assignedTaskData: AssignedToMeTasksAndMindMaps = {
-                        mindMaps: [],
-                        Task: taskAndMindMaps.Task.map((task) => ({
-                            id: task.id,
-                            title: task.title || "",
-                            emoji: task.emoji || "",
-                            link: `/dashboard/workspace/${task.workspaceId}/tasks/task/${task.id}`,
-                            workspaceName: taskAndMindMaps.name,
-                            createdAt: new Date(
-                                task.createdAt.from ??
-                                task.createdAt.to ??
-                                Date.now()
-                            ),
-                            type: "mindMap",
-                            workspaceId: task.workspaceId,
-                            updated: {
-                                at: normalizeDate(task.updatedAt),
-                                by: task.updatedBy
-                            }
 
-                        })),
-                    }
-                    return NextResponse.json(sortAssignedToMeDataByCreated(assignedTaskData), { status: 200 })
-                case "mindMaps":
-                    const assignedMindMapData: AssignedToMeTasksAndMindMaps = {
-                        Task: [],
-                        mindMaps: taskAndMindMaps.mindMaps.map((mindMap) => ({
-                            id: mindMap.id,
-                            title: mindMap.title || "",
-                            emoji: mindMap.emoji || "",
-                            link: `/dashboard/workspace/${mindMap.workspaceId}/mind_maps/mind_map/${mindMap.id}`,
-                            workspaceName: taskAndMindMaps.name,
-                            createdAt: new Date(
-                                mindMap.createdAt.from ??
-                                mindMap.createdAt.to ??
-                                Date.now()
-                            ),
-                            type: "mindMap",
-                            workspaceId: mindMap.workspaceId,
-                            updated: {
-                                at: normalizeDate(mindMap.updatedAt),
-                                by: mindMap.updatedBy
-                            }
-                        })),
-                    }
-                    return NextResponse.json(sortAssignedToMeDataByCreated(assignedMindMapData), { status: 200 })
-                default:
-                    const assignedAllData: AssignedToMeTasksAndMindMaps = {
-                        Task: taskAndMindMaps.Task.map((task) => ({
-                            id: task.id,
-                            title: task.title || "",
-                            emoji: task.emoji || "",
-                            link: `/dashboard/workspace/${task.workspaceId}/tasks/task/${task.id}`,
-                            workspaceName: taskAndMindMaps.name,
-                            createdAt: new Date(
-                                task.createdAt.from ??
-                                task.createdAt.to ??
-                                Date.now()
-                            ),
-                            type: "tasks",
-                            workspaceId: task.workspaceId,
-                            updated: {
-                                at: normalizeDate(task.updatedAt),
-                                by: task.updatedBy
-                            }
-                        })),
-                        mindMaps: taskAndMindMaps.mindMaps.map((mindMap) => ({
-                            id: mindMap.id,
-                            title: mindMap.title || "",
-                            emoji: mindMap.emoji || "",
-                            link: `/dashboard/workspace/${mindMap.workspaceId}/mind_maps/mind_map/${mindMap.id}`,
-                            workspaceName: taskAndMindMaps.name,
-                            createdAt: new Date(
-                                mindMap.createdAt.from ??
-                                mindMap.createdAt.to ??
-                                Date.now()
-                            ),
-                            type: "mindMap",
-                            workspaceId: mindMap.workspaceId,
-                            updated: {
-                                at: normalizeDate(mindMap.updatedAt),
-                                by: mindMap.updatedBy
-                            }
-                        })),
-                    }
-                    return NextResponse.json(sortAssignedToMeDataByCreated(assignedAllData), { status: 200 })
-            }
+            assignData.Task = tasks.map(task => ({
+                id: task.id,
+                title: task.title || "",
+                emoji: task.emoji || "",
+                link: `/dashboard/workspace/${task.workspaceId}/tasks/task/${task.id}`,
+                workspaceName: task.workspace?.name || "",
+                createdAt: new Date(task.createdAt as any),
+                type: "tasks" as AssignedToMeTypes,
+                workspaceId: task.workspaceId,
+                updated: {
+                    at: new Date(task.updatedAt as any),
+                    by: task.updatedBy
+                }
+            }))
         }
-        else {
-            const taskAndMindMaps = await db.workspace.findMany({
+
+        if (currentType === "mindMaps" || currentType === "all" || !currentType) {
+            const mindMaps = await db.mindMap.findMany({
+                where: {
+                    ...workspaceCondition,
+                    assignedToMindMaps: { some: { userId } }
+                },
                 include: {
-                    Task: {
-                        where: {
-                            assignedToTasks: {
-                                some: {
-                                    userId
-                                }
-                            }
-                        },
-                        include: {
-                            updatedBy: {
-                                select: {
-                                    username: true,
-                                    surname: true,
-                                    id: true,
-                                    name: true,
-                                    image: true
-                                }
-                            }
-                        }
-                    },
-                    mindMaps: {
-                        where: {
-                            assignedToMindMaps: {
-                                some: {
-                                    userId
-                                }
-                            }
-                        },
-                        include: {
-                            updatedBy: {
-                                select: {
-                                    username: true,
-                                    surname: true,
-                                    id: true,
-                                    name: true,
-                                    image: true
-                                }
-                            }
-                        }
-                    }
-                }
+                    workspace: { select: { name: true } },
+                    updatedBy: { select: { username: true, name: true, surname: true, id: true, image: true } }
+                },
+                orderBy: { updatedAt: 'desc' },
+                take: limit,
+                skip: skip
             })
-            if (taskAndMindMaps.length === 0) {
-                return NextResponse.json([], { status: 200 })
-            }
-            const assignData: AssignedToMeTasksAndMindMaps = {
-                Task: [],
-                mindMaps: []
-            }
-            switch (currentType) {
-                case "tasks":
-                    taskAndMindMaps.forEach((item) => {
-                        assignData.Task.push(
-                            ...item.Task.map((task) => ({
-                                id: task.id,
-                                title: task.title || "",
-                                emoji: task.emoji || "",
-                                link: `/dashboard/workspace/${task.workspaceId}/tasks/task/${task.id}`,
-                                workspaceName: item.name,
-                                createdAt: new Date(
-                                    task.createdAt.from ??
-                                    task.createdAt.to ??
-                                    Date.now()
-                                ),
-                                type: "tasks" as AssignedToMeTypes,
-                                workspaceId: task.workspaceId,
-                                updated: {
-                                    at: normalizeDate(task.updatedAt),
-                                    by: task.updatedBy
-                                }
-                            }))
-                        )
-                    })
-                    break;
-                case "mindMaps":
-                    taskAndMindMaps.forEach((item) => {
-                        assignData.mindMaps.push(
-                            ...item.mindMaps.map((mindMap) => ({
-                                id: mindMap.id,
-                                title: mindMap.title || "",
-                                emoji: mindMap.emoji || "",
-                                link: `/dashboard/workspace/${mindMap.workspaceId}/mind_maps/mind_map/${mindMap.id}`,
-                                workspaceName: item.name, createdAt: new Date(
-                                    mindMap.createdAt.from ??
-                                    mindMap.createdAt.to ??
-                                    Date.now()
-                                ),
-                                type: "mindMap" as AssignedToMeTypes,
-                                workspaceId: mindMap.workspaceId,
-                                updated: {
-                                    at: normalizeDate(mindMap.updatedAt),
-                                    by: mindMap.updatedBy
-                                }
-                            }))
-                        )
-                    })
-                    break
-                default:
-                    taskAndMindMaps.forEach((item) => {
-                        assignData.mindMaps.push(
-                            ...item.mindMaps.map((mindMap) => ({
-                                id: mindMap.id,
-                                title: mindMap.title || "",
-                                emoji: mindMap.emoji || "",
-                                link: `/dashboard/workspace/${mindMap.workspaceId}/mind_maps/mind_map/${mindMap.id}`,
-                                workspaceName: item.name,
-                                createdAt: new Date(
-                                    mindMap.createdAt.from ??
-                                    mindMap.createdAt.to ??
-                                    Date.now()
-                                ),
-                                type: "mindMap" as AssignedToMeTypes,
-                                workspaceId: mindMap.workspaceId,
-                                updated: {
-                                    at: normalizeDate(mindMap.updatedAt),
-                                    by: mindMap.updatedBy
-                                }
-                            }))
-                        )
-                        assignData.Task.push(
-                            ...item.Task.map((task) => ({
-                                id: task.id,
-                                title: task.title || "",
-                                emoji: task.emoji || "",
-                                link: `/dashboard/workspace/${task.workspaceId}/tasks/task/${task.id}`,
-                                workspaceName: item.name,
-                                createdAt: new Date(
-                                    task.createdAt.from ??
-                                    task.createdAt.to ??
-                                    Date.now()
-                                ),
-                                type: "tasks" as AssignedToMeTypes,
-                                workspaceId: task.workspaceId,
-                                updated: {
-                                    at: normalizeDate(task.updatedAt),
-                                    by: task.updatedBy
-                                }
-                            }))
-                        )
-                    })
-            }
-            return NextResponse.json(sortAssignedToMeDataByCreated(assignData), { status: 200 })
+
+            assignData.mindMaps = mindMaps.map(mindMap => ({
+                id: mindMap.id,
+                title: mindMap.title || "",
+                emoji: mindMap.emoji || "",
+                link: `/dashboard/workspace/${mindMap.workspaceId}/mind_maps/mind_map/${mindMap.id}`,
+                workspaceName: mindMap.workspace?.name || "",
+                createdAt: new Date(mindMap.createdAt as any),
+                type: "mindMap" as AssignedToMeTypes,
+                workspaceId: mindMap.workspaceId,
+                updated: {
+                    at: new Date(mindMap.updatedAt as any),
+                    by: mindMap.updatedBy
+                }
+            }))
         }
+
+        return NextResponse.json(sortAssignedToMeDataByCreated(assignData), { status: 200 })
+
     } catch (error) {
-        return NextResponse.json("Error during db connection", { status: 405 })
+        console.error("Error fetching assigned items:", error)
+        return NextResponse.json("Error during db connection", { status: 500 })
     }
 }

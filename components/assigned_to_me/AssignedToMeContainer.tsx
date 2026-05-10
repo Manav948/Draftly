@@ -14,19 +14,20 @@ interface Props {
 const AssignedToMeContainer = ({ userId }: Props) => {
   const { currentType, workspaceParam } = useAssignToMeParams()
 
-  const {
+    const {
     data: assignedInfo,
     isLoading,
     isError,
   } = useQuery<AssignedToMeDataItems[]>({
-    queryKey: ["getAssignedToMeInfo", userId, workspaceParam, currentType],
+    queryKey: ["getAssignedToMeInfo", workspaceParam, currentType],
     queryFn: async () => {
       const res = await fetch(
-        `/api/assigned_to/get?workspace=${workspaceParam}&type=${currentType}&userId=${userId}`
+        `/api/assigned_to/get?workspace=${workspaceParam}&type=${currentType}&limit=50`
       )
       if (!res.ok) throw new Error("Failed to fetch assigned items")
       return res.json()
     },
+    staleTime: 5 * 60 * 1000,
   })
 
   return (

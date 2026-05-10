@@ -1,15 +1,31 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
+import { ratelimit } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url)
-  const userId = searchParams.get("userId")
-
-  if (!userId) {
-    return NextResponse.json({ error: "Missing userId" }, { status: 400 })
+  // Rate limiting (IP-based, fallback to generic if IP is missing)
+  const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1"
+  try {
+    const { success } = await ratelimit.limit(ip)
+    if (!success) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 })
+    }
+  } catch (err) {
+    // Redis might fail if not configured, fallback gracefully or let it pass
+    console.warn("Rate limit check failed, likely missing Redis env vars", err)
   }
+
+  const session = await getServerSession(authOptions)
+  
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const userId = session.user.id
 
   const [
     totalTasks,
@@ -44,9 +60,5 @@ export async function GET(req: Request) {
       assigned,
     },
     recentActivity,
-  }, {
-    headers: {
-      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120"
-    }
   })
 }

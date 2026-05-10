@@ -2,14 +2,17 @@ import { db } from "@/lib/db"
 import { CalendarItem } from "@/types/extended"
 import { NextResponse } from "next/server"
 
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 export const GET = async (request: Request) => {
-    const url = new URL(request.url)
-    const userId = url.searchParams.get("userId")
-
-    if (!userId) {
-        return NextResponse.json("User ID is missing. Please try again.", { status: 400 })
+    const session = await getServerSession(authOptions)
+    
+    if (!session?.user?.id) {
+        return NextResponse.json("Unauthorized", { status: 401 })
     }
+    
+    const userId = session.user.id
     try {
         const userSubscription = await db.subscription.findMany({
             where: {
