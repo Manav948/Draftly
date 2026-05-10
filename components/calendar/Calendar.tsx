@@ -8,6 +8,7 @@ import CalendarGrid from "./CalendarGrid"
 import { useQuery } from "@tanstack/react-query"
 import { CalendarItem } from "@/types/extended"
 import { LoadingScreen } from "../common/LoadingScreen"
+import ErrorPage from "@/components/ui/IsError"
 
 interface Props {
     userId: string
@@ -29,7 +30,7 @@ const Calendar = ({ userId }: Props) => {
         setMonthIndex(dayjs().month())
     }, [monthIndex])
 
-    const { data: calendarItem, isError, isLoading } = useQuery({
+    const { data: calendarItem, isError, isLoading, refetch } = useQuery({
         queryFn: async () => {
             const res = await fetch(`/api/calendar/get`)
             if (!res.ok) throw new Error()
@@ -39,12 +40,8 @@ const Calendar = ({ userId }: Props) => {
         queryKey: ["getCalendarItem", userId],
         staleTime: 5 * 60 * 1000,
     })
-    if (isLoading) {
-        <LoadingScreen />
-    }
-    if (isError) {
-        <h1>OOPS... Something Went Wrong</h1>
-    }
+    if (isLoading) return <LoadingScreen />
+    if (isError)   return <ErrorPage onRetry={refetch} />
     console.log("Calendar item : ", calendarItem)
     return (
         <section className="w-full h-full px-2 sm:px-4 flex flex-col gap-8 mt-7 mb-2">

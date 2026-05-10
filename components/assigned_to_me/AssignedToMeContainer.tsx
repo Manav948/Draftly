@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Card, CardContent, CardDescription, CardHeader } from "../ui/card"
 import AssignedToMeItem from "./AssignedToMeItem"
 import { AssignedToMeDataItems } from "@/types/extended"
-import { Loader2 } from "lucide-react"
+import LoadingPage from "@/components/ui/IsLoadingPage"
 
 interface Props {
   userId: string
@@ -43,10 +43,7 @@ const AssignedToMeContainer = ({ userId }: Props) => {
 
       <CardContent className="space-y-4">
         {isLoading && (
-          <div className="flex items-center justify-center py-10 text-muted-foreground">
-            <Loader2 className="h-5 w-5 animate-spin mr-2" />
-            Loading assignments…
-          </div>
+          <LoadingPage title="Loading assignments…" className="py-10" />
         )}
 
         {isError && (
