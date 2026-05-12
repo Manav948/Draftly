@@ -10,29 +10,24 @@ const Settings = async () => {
   const session = await checkIfUserCompletedOnboarding("/dashboard/settings")
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full bg-[#fafafa] dark:bg-[#0a0a0a]">
       <DashboardHeader />
-      <div
-        className="
-          min-h-screen py-6 
-         bg-[#0c0c0c] dark:text-red-500
-        "
-      >
+      <div className="min-h-screen py-10 px-6 max-w-4xl mx-auto">
         {/* Page Heading */}
         <Heading />
 
         {/* Account Info Card */}
-        <div className="mt-6">
+        <div className="mt-8">
           <Accountinfo session={session} />
         </div>
 
         {/* Separator */}
-        <div className="my-6">
-          <Separator className="bg-gray-200 dark:bg-gray-500 w-full" />
+        <div className="my-10">
+          <Separator className="bg-gray-200 dark:bg-[#222] w-full" />
         </div>
 
         {/* Delete Account Card */}
-        <div className="mt-6">
+        <div className="mt-8">
           <DeleteAccount userEmail={session.user.email!} />
         </div>
       </div>

@@ -73,7 +73,7 @@ const StarredContainer = ({ userId }: Props) => {
           <SortSelect sortType={sortType} refetch={refetch} />
         </CardHeader>
 
-        <CardContent className="space-y-3">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {starredItems.map((item) => (
             <StarredItem
               key={item.id}

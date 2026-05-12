@@ -107,23 +107,22 @@ const AccountInfo = ({
     >
       <Card
         className="
-        max-w-3xl mx-auto rounded-2xl 
-        bg-white dark:bg-[#0c0c0c] shadow-xl 
-        transition-all border border-gray-100 dark:border-[#1f1f1f]"
+        w-full mx-auto rounded-xl 
+        bg-white dark:bg-[#111111] shadow-sm 
+        transition-colors duration-300 border border-gray-200 dark:border-[#222222]"
       >
         <CardContent>
           {/* Profile Image */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="flex flex-col items-center"
+            transition={{ delay: 0.1, duration: 0.4 }}
+            className="flex flex-col items-center mb-6 mt-2"
           >
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 blur-lg opacity-40 animate-pulse cursor-pointer" />
+            <div className="relative mb-4">
               <Profileimage profileImage={image} />
             </div>
-            <h2 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">
+            <h2 className="text-xl font-medium text-gray-900 dark:text-gray-100">
               {t("ACCOUNT.TITLE")}
             </h2>
           </motion.div>
@@ -147,9 +146,9 @@ const AccountInfo = ({
                       <FormControl>
                         <Input
                           className="rounded-lg 
-                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-red-500
-                          bg-gray-50 border focus:ring-orange-500
-                          transition-all"
+                          dark:bg-[#1a1a1a] dark:border-[#333] dark:text-gray-200 dark:focus:ring-gray-700
+                          bg-gray-50 border-gray-200 focus:ring-gray-200
+                          transition-all shadow-none"
                           {...field}
                         />
                       </FormControl>
@@ -168,9 +167,9 @@ const AccountInfo = ({
                       <FormControl>
                         <Input
                           className="rounded-lg 
-                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-red-500
-                          bg-gray-50 border focus:ring-orange-500
-                          transition-all"
+                          dark:bg-[#1a1a1a] dark:border-[#333] dark:text-gray-200 dark:focus:ring-gray-700
+                          bg-gray-50 border-gray-200 focus:ring-gray-200
+                          transition-all shadow-none"
                           {...field}
                         />
                       </FormControl>
@@ -193,9 +192,9 @@ const AccountInfo = ({
                       <FormControl>
                         <Input
                           className="rounded-lg 
-                          dark:bg-gray-800/60 dark:border-gray-700 dark:focus:ring-red-500
-                          bg-gray-50 border focus:ring-orange-500
-                          transition-all"
+                          dark:bg-[#1a1a1a] dark:border-[#333] dark:text-gray-200 dark:focus:ring-gray-700
+                          bg-gray-50 border-gray-200 focus:ring-gray-200
+                          transition-all shadow-none"
                           {...field}
                         />
                       </FormControl>
@@ -218,9 +217,9 @@ const AccountInfo = ({
                               variant="outline"
                               role="combobox"
                               className={cn(
-                                "justify-between rounded-lg w-full",
-                                "dark:bg-[#0c0c0c] dark:border-gray-700",
-                                "bg-gray-50 border"
+                                "justify-between rounded-lg w-full shadow-none",
+                                "dark:bg-[#1a1a1a] dark:border-[#333] dark:text-gray-200 dark:hover:bg-[#222]",
+                                "bg-gray-50 border-gray-200 hover:bg-gray-100"
                               )}
                             >
                               {field.value
@@ -273,14 +272,13 @@ const AccountInfo = ({
               </div>
 
               {/* Submit Button */}
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <div className="pt-2">
                 <Button
                   disabled={isPending}
-                  className="rounded-lg w-full sm:w-auto 
-                  text-white font-semibold
-                  bg-gradient-to-r from-purple-500 to-indigo-500 
-                  hover:from-indigo-500 hover:to-purple-500
-                  transition-all shadow-md cursor-pointer"
+                  className="rounded-lg w-full sm:w-auto px-8
+                  text-white font-medium
+                  bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200
+                  transition-colors shadow-none cursor-pointer"
                   type="submit"
                 >
                   {isPending ? (
@@ -289,7 +287,7 @@ const AccountInfo = ({
                     t("ACCOUNT.UPDATE_BTN")
                   )}
                 </Button>
-              </motion.div>
+              </div>
             </form>
           </Form>
         </CardContent>

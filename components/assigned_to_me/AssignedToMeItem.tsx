@@ -20,51 +20,47 @@ const AssignedToMeItem = ({ info }: Props) => {
     <Link href={link} className="group">
       <Card
         className="
-          relative overflow-hidden
-          transition-all duration-200
-          hover:-translate-y-0.5 hover:shadow-lg
+          relative h-full overflow-hidden
+          transition-all duration-300
+          hover:bg-gray-50 dark:hover:bg-[#141414]
           bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-[#f0f0f0]
-          border border-gray-100 dark:border-[#1f1f1f]
+          border border-gray-200 dark:border-[#1f1f1f] shadow-sm hover:shadow-md
+          rounded-xl flex flex-col group
         "
       >
-        <CardContent className="flex items-center justify-between gap-4 py-3">
-          <div className="flex items-center gap-4 min-w-0">
+        <CardContent className="flex flex-col p-5 h-full">
+          <div className="flex justify-between items-start mb-4">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider truncate max-w-[120px]">
+              {workspaceName}
+            </span>
+            <span className="text-[10px] font-bold px-2 py-1 rounded bg-gray-100 dark:bg-[#1a1a1a] text-gray-600 dark:text-gray-400 uppercase tracking-widest border border-gray-200 dark:border-[#333]">
+              {type}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-3 flex-grow">
             <ReadOnlyEmoji
               selectedEmoji={emoji ?? undefined}
-              className="h-10 w-10 shrink-0"
+              className="h-12 w-12 shrink-0 mb-1"
             />
+            <h3 className="font-semibold text-lg leading-tight line-clamp-2">
+              {title}
+            </h3>
+          </div>
 
-            <div className="min-w-0">
-              <h3 className="font-semibold text-xl truncate">{title}</h3>
+          <div className="mt-6 pt-4 border-t border-gray-100 dark:border-[#1f1f1f] flex items-center justify-between text-xs text-muted-foreground font-medium">
+            <span>
+              {format.relativeTime(new Date(updated.at), new Date())}
+            </span>
 
-              <div className="mt-0.5 flex flex-wrap items-center gap-1 text-sm text-muted-foreground font-medium">
-                <span className="capitalize">{type}</span>
-                <span>•</span>
-                <span>
-                  {format.relativeTime(new Date(updated.at), new Date())}
-                </span>
-
-                {updated.by && (
-                  <>
-                    <span>•</span>
-                    <UserHoverInfo user={updated.by} />
-                  </>
-                )}
-
-                <span className="truncate">• {workspaceName}</span>
+            {updated.by && (
+              <div className="flex items-center gap-1.5">
+                <span className="text-gray-400">Assigned By</span>
+                <UserHoverInfo user={updated.by} />
               </div>
-            </div>
+            )}
           </div>
         </CardContent>
-
-        <div
-          className="
-            pointer-events-none absolute inset-0 opacity-0
-            group-hover:opacity-100
-            transition
-            dark:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_60%)]
-          "
-        />
       </Card>
     </Link>
   )

@@ -56,15 +56,15 @@ const DeleteAccount = ({ userEmail }: Props) => {
 
     return (
         <Card className="
-          max-w-3xl mx-auto
-          border border-red-100 dark:border-red-900/20 shadow-md rounded-xl overflow-hidden
-          bg-red-50 dark:bg-[#321212] text-red-900 dark:text-red-500
+          w-full mx-auto
+          border border-gray-200 dark:border-[#222222] shadow-sm rounded-xl overflow-hidden
+          bg-white dark:bg-[#111111] text-gray-900 dark:text-gray-100
         ">
             <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-bold text-red-600 dark:text-red-500">
+                <CardTitle className="text-xl font-medium text-red-600 dark:text-red-500">
                     {t("DELETE_TITLE")}
                 </CardTitle>
-                <CardDescription className="text-sm text-red-700 dark:text-red-400">
+                <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
                     {t("DELETE_DESC")}
                 </CardDescription>
             </CardHeader>
@@ -85,9 +85,9 @@ const DeleteAccount = ({ userEmail }: Props) => {
                                         <Input
                                             placeholder={t("DELETE_PLACEHOLDER")}
                                             className="
-                        border-gray-300 dark:border-gray-700
-                        bg-white dark:bg-black
-                        focus:ring-2 focus:ring-red-500
+                        border-gray-200 dark:border-[#333]
+                        bg-gray-50 dark:bg-[#1a1a1a]
+                        focus:ring-2 focus:ring-red-500/50 shadow-none
                       "
                                             {...field}
                                         />
@@ -101,8 +101,7 @@ const DeleteAccount = ({ userEmail }: Props) => {
                             <DialogTrigger asChild>
                                 <Button
                                     variant="destructive"
-                                    size="lg"
-                                    className="w-full font-semibold shadow-sm cursor-pointer"
+                                    className="w-full font-medium shadow-none cursor-pointer hover:bg-red-600"
                                 >
                                     {t("DELETE_BTN")}
                                 </Button>
