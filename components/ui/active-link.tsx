@@ -41,13 +41,14 @@ const ActiveLink = ({
     <span
       className={cn(
         buttonVariants({ variant, size }),
+        "hover:bg-gray-50 dark:hover:bg-[#141414] transition-colors", // Soft hover
         isActive
           ? workspaceIcon
-            ? "font-semibold border-secondary-foreground border-2"
+            ? "font-semibold border-gray-400 dark:border-[#555] border-2"
             : disableActiveStateColor
             ? ""
-            : "bg-secondary font-semibold"
-          : "",
+            : "bg-gray-100 text-gray-900 dark:bg-[#1a1a1a] dark:text-[#f0f0f0] font-medium shadow-sm"
+          : "text-gray-500 dark:text-gray-400", // Muted text for inactive
         className
       )}
     >

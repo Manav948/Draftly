@@ -14,7 +14,7 @@ interface Props {
 const AssignedToMeContainer = ({ userId }: Props) => {
   const { currentType, workspaceParam } = useAssignToMeParams()
 
-    const {
+  const {
     data: assignedInfo,
     isLoading,
     isError,

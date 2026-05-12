@@ -28,11 +28,11 @@ const SidebarContainer = ({ userWorkspace, userId, userAdminWorkspaces }: Props)
         <>
             <aside
                 className={`
-           top-0 lg:sticky fixed left-0 h-screen z-50 flex
-          bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-red-500 border-r border-gray-100 dark:border-gray-700
-          transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-x-0 shadow-lg" : "-translate-x-full lg:translate-x-0"}
-        `}
+                  top-0 lg:sticky fixed left-0 h-screen z-50 flex
+                  bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-[#f0f0f0] border-r border-gray-200 dark:border-[#1f1f1f]
+                  transition-transform duration-300 ease-in-out
+                  ${isOpen ? "translate-x-0 shadow-lg" : "-translate-x-full lg:translate-x-0"}
+                `}
             >
                 {/* Main Shortcut Sidebar */}
                 <div className="w-16 md:w-20 flex flex-col justify-between">
