@@ -24,9 +24,10 @@ import ActiveWorkspaceInfo from "@/components/common/ActiveWorkspaceInfo";
 
 interface Props {
   activeWorkspace: number;
+  customTrigger?: React.ReactNode;
 }
 
-const Addworkspace = ({activeWorkspace} : Props) => {
+const Addworkspace = ({activeWorkspace, customTrigger} : Props) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations("SIDEBAR");
 
@@ -35,15 +36,18 @@ const Addworkspace = ({activeWorkspace} : Props) => {
       <Dialog open={open} onOpenChange={setOpen}>
         <HoverCard openDelay={250} closeDelay={250}>
           {/* Trigger Button */}
+          {/* Trigger Button */}
           <DialogTrigger asChild>
-            <HoverCardTrigger>
-              <Button
-                onClick={() => setOpen(true)}
-                variant="ghost"
-                size="icon"
-              >
-                <Plus />
-              </Button>
+            <HoverCardTrigger asChild>
+              <div onClick={() => setOpen(true)}>
+                {customTrigger ? (
+                  customTrigger
+                ) : (
+                  <Button variant="ghost" size="icon">
+                    <Plus />
+                  </Button>
+                )}
+              </div>
             </HoverCardTrigger>
           </DialogTrigger>
 

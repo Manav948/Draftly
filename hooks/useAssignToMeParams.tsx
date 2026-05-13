@@ -10,7 +10,7 @@ const useAssignToMeParams = () => {
         return typeParam &&
             (typeParam === "all" ||
                 typeParam === "tasks" ||
-                typeParam === "mind-maps")
+                typeParam === "mindMaps")
             ? typeParam
             : "all"
     }, [typeParam])

@@ -4,6 +4,7 @@ import { DashboardSummary } from "@/types/extended"
 import { Layers, Users, ArrowUpRight, Plus } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import Addworkspace from "@/components/sidebar/sidebarShortcut/newWorkspace/Addworkspace"
 
 // Map Prisma WorkspaceIconColor enum to tailwind bg colors
 const colorMap: Record<string, string> = {
@@ -81,13 +82,15 @@ export default function WorkspaceCards({ workspaces }: Props) {
           <h3 className="text-sm font-medium text-gray-900 dark:text-[#f0f0f0]">Workspaces</h3>
           <p className="text-[11px] text-gray-500 dark:text-[#444] mt-0.5">{workspaces.length} active</p>
         </div>
-        <Link
-          href="/dashboard/settings"
-          className="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-[#444] hover:text-red-500 transition-colors"
-        >
-          <Plus size={12} />
-          <span>New</span>
-        </Link>
+        <Addworkspace
+          activeWorkspace={workspaces.length}
+          customTrigger={
+            <button className="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-[#444] hover:text-red-500 transition-colors">
+              <Plus size={12} />
+              <span>New</span>
+            </button>
+          }
+        />
       </div>
 
       {/* Cards grid */}

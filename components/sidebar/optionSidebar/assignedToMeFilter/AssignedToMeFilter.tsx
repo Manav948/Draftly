@@ -16,13 +16,13 @@ interface Props {
 const RADIO_OPTIONS = [
     { id: "all", label: "All" },
     { id: "tasks", label: "Tasks" },
-    { id: "mind-maps", label: "Mind Maps" },
+    { id: "mindMaps", label: "Mind Maps" },
 ] as const
 
 const AssignedToMeFilter = ({ userWorkspaces }: Props) => {
     const router = useRouter()
     const { currentType, workspaceParam } = useAssignToMeParams()
-    const handleChangeRadio = (value: "all" | "tasks" | "mind-maps") => {
+    const handleChangeRadio = (value: "all" | "tasks" | "mindMaps") => {
         const workspace = workspaceParam ?? "all"
         router.replace(
             `/dashboard/assigned_to_me?workspace=${workspace}&type=${value}`
@@ -40,24 +40,25 @@ const AssignedToMeFilter = ({ userWorkspaces }: Props) => {
                 <RadioGroup
                     value={currentType}
                     onValueChange={handleChangeRadio}
-                    className=""
+                    className="gap-2"
                 >
                     {RADIO_OPTIONS.map((radio) => (
                         <label
                             key={radio.id}
                             htmlFor={radio.id}
-                            className="
-                flex items-center rounded-md space-x-2 px-2 py-1
-                cursor-pointer transition
-                hover:bg-muted
-              "
+                            className={`
+                                flex items-center rounded-lg space-x-3 px-3 py-2.5
+                                cursor-pointer transition-all duration-200
+                                hover:bg-gray-100 dark:hover:bg-[#1a1a1a]
+                                ${currentType === radio.id ? "bg-gray-100 dark:bg-[#1a1a1a] text-red-600 font-medium" : "text-gray-600 dark:text-gray-400"}
+                            `}
                             onClick={(e) => {
                                 const button = e.currentTarget?.firstChild as HTMLButtonElement
-                                const id = button.id as "all" | "mind-maps" | "tasks" | null
+                                const id = button.id as "all" | "mindMaps" | "tasks" | null
                                 id && handleChangeRadio(id)
                             }}
                         >
-                            <RadioGroupItem value={radio.id} id={radio.id} />
+                            <RadioGroupItem value={radio.id} id={radio.id} className={currentType === radio.id ? "border-red-600 text-red-600" : ""} />
                             <span className="text-sm">{radio.label}</span>
                         </label>
                     ))}
