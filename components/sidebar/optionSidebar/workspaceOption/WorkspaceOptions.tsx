@@ -70,14 +70,14 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
   });
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {/* Section Title */}
-      <p className="text-[11px] font-semibold tracking-wider uppercase text-gray-500 dark:text-gray-400 px-1">
+      <p className="text-[11px] font-semibold tracking-wider uppercase text-gray-500 dark:text-gray-400 px-2">
         {t("SHORTCUTS")}
       </p>
 
-      {/* Tasks Dropdown */}
-      <div className="rounded-xl border bg-white dark:bg-[#0c0c0c] dark:text-white dark:border-gray-800 shadow-sm overflow-hidden">
+      {/* Tasks & Mindmaps Native List */}
+      <div className="flex flex-col">
         {isLoading ? (
           <p className="px-4 py-3 text-sm text-gray-500">Loading tasks...</p>
         ) : (
@@ -87,10 +87,7 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
             fields={workspaceShortcuts?.tasks || []}
             defaultName="Untitled Task"
           >
-            <div className="flex items-center gap-2">
-              <PencilRuler size={18} className="text-primary" />
-              <span className="font-medium">Tasks</span>
-            </div>
+            Tasks
           </WorkspaceOption>
         )}
 
@@ -103,13 +100,9 @@ const WorkspaceOptions = ({ workspaceId }: Props) => {
             fields={workspaceShortcuts?.mindMaps || []}
             defaultName="Untitled MindMap"
           >
-            <div className="flex items-center gap-2">
-              <Workflow size={18} className="text-primary" />
-              <span className="font-medium">MindMap</span>
-            </div>
+            Mind Maps
           </WorkspaceOption>
         )}
-
       </div>
     </div>
   );
