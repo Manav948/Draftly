@@ -16,21 +16,21 @@ const MembersCard = ({ workspace, workspaceId }: Props) => {
   return (
     <Card
       className={cn(
-        "rounded-2xl shadow-xl transition-all duration-300 border border-gray-100 dark:border-[#1f1f1f]",
-        "bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-[#f0f0f0]",
-        "hover:shadow-2xl"
+        "bg-white dark:bg-[#0c0c0c] border border-gray-200/60 dark:border-[#1f1f1f] shadow-sm rounded-2xl overflow-hidden transition-all duration-300"
       )}
     >
-      <CardHeader>
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-[#f0f0f0]">
-          {t("TITLE")}
-        </h1>
-        <CardDescription className="text-gray-500 dark:text-[#444]">
-          {t("DESC")}
-        </CardDescription>
+      <CardHeader className="pb-6 border-b border-gray-100 dark:border-[#1a1a1a] flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50/50 dark:bg-[#111]/50">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-[#f0f0f0]">
+            {t("TITLE")}
+          </h2>
+          <CardDescription className="text-sm text-gray-500 dark:text-[#888] mt-1">
+            {t("DESC")}
+          </CardDescription>
+        </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="p-0">
         <MembersTable workspace={workspace} workspaceId={workspaceId} />
       </CardContent>
     </Card>

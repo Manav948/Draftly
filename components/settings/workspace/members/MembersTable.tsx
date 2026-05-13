@@ -36,37 +36,39 @@ const MembersTable = ({ workspace, workspaceId }: Props) => {
   };
 
   return (
-    <div className="w-full space-y-3">
+    <div className="w-full">
       <div
         className={cn(
-          "grid gap-2 border-b pb-2 text-sm font-medium",
-          "grid-cols-1 sm:grid-cols-3"
+          "grid gap-4 border-b border-gray-100 dark:border-[#1f1f1f] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-[#666] bg-gray-50/30 dark:bg-[#0f0f0f]/50",
+          "grid-cols-1 sm:grid-cols-12 items-center"
         )}
       >
-        <Button
-          size="sm"
-          variant="ghost"
-          className="flex items-center gap-1 justify-start px-0"
-          onClick={() => onSort(currentSort === "desc" ? "asc" : "desc")}
-        >
-          {t("USERNAME")}
-          {currentSort === "desc" ? (
-            <ChevronDown size={16} />
-          ) : (
-            <ChevronUp size={16} />
-          )}
-        </Button>
+        <div className="sm:col-span-5 flex items-center">
+          <Button
+            size="sm"
+            variant="ghost"
+            className="flex items-center gap-1.5 justify-start px-0 hover:bg-transparent hover:text-gray-900 dark:hover:text-gray-200 text-xs font-semibold uppercase tracking-wider h-auto"
+            onClick={() => onSort(currentSort === "desc" ? "asc" : "desc")}
+          >
+            {t("USERNAME")}
+            {currentSort === "desc" ? (
+              <ChevronDown size={14} />
+            ) : (
+              <ChevronUp size={14} />
+            )}
+          </Button>
+        </div>
 
-        <p className="hidden sm:block text-muted-foreground">
+        <div className="hidden sm:block sm:col-span-4 text-left">
           {t("PERMISSION_SMAll")}
-        </p>
+        </div>
 
-        <p className="hidden sm:block text-muted-foreground text-right">
+        <div className="hidden sm:block sm:col-span-3 text-right pr-2">
           {t("PERMISSION_BIG")}
-        </p>
+        </div>
       </div>
 
-      <ul className="space-y-2 sm:space-y-1">
+      <ul className="flex flex-col divide-y divide-gray-100 dark:divide-[#1a1a1a]">
         {workspaceSubscriber.map((subscriber) => (
           <MembersRow
             key={subscriber.user.id}

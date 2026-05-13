@@ -69,21 +69,20 @@ const DeleteWorkspace = ({ workspace: { id, name } }: Props) => {
   return (
     <Card
       className="
-        max-w-3xl mx-auto
-        border border-red-100 dark:border-red-900/20 shadow-md rounded-xl overflow-hidden
-        bg-red-50 dark:bg-[#1e0f0f] text-red-900 dark:text-red-500
+        border border-red-100 dark:border-red-500/20 shadow-sm rounded-2xl overflow-hidden
+        bg-white dark:bg-[#0c0c0c]
       "
     >
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-bold text-red-600 dark:text-red-500">
-          {t("TITLE")}
+      <CardHeader className="pb-6 border-b border-red-50 dark:border-red-500/10 bg-red-50/30 dark:bg-red-500/5">
+        <CardTitle className="text-xl font-semibold text-red-600 dark:text-red-500">
+          Danger Zone
         </CardTitle>
-        <CardDescription className="text-sm text-red-700 dark:text-red-400">
+        <CardDescription className="text-sm text-red-600/80 dark:text-red-400/80 mt-1">
           {t("DESC")}
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="pt-4">
+      <CardContent className="p-6 sm:p-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Workspace name confirmation field */}
@@ -112,28 +111,34 @@ const DeleteWorkspace = ({ workspace: { id, name } }: Props) => {
             />
 
             <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  variant="destructive"
-                  size="lg"
-                  className="w-full font-semibold shadow-sm cursor-pointer"
-                >
-                  {t("BTN")}
-                </Button>
-              </DialogTrigger>
+              <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between border border-red-100 dark:border-red-500/10 p-5 rounded-xl bg-red-50/20 dark:bg-red-500/5">
+                 <div className="space-y-1">
+                   <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Delete this workspace</h4>
+                   <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm">Once you delete a workspace, there is no going back. Please be certain.</p>
+                 </div>
+                 
+                 <DialogTrigger asChild>
+                   <Button
+                     variant="destructive"
+                     className="shadow-sm font-medium shrink-0"
+                   >
+                     {t("BTN")}
+                   </Button>
+                 </DialogTrigger>
+              </div>
 
-              <DialogContent className="max-w-md">
-                <DialogHeader>
-                  <DialogTitle className="text-red-600 dark:text-red-500">
+              <DialogContent className="max-w-md p-6 rounded-2xl bg-white dark:bg-[#111] border border-red-100 dark:border-red-500/20">
+                <DialogHeader className="mb-2">
+                  <DialogTitle className="text-xl text-red-600 dark:text-red-500">
                     {t("DIALOG.TITLE")}
                   </DialogTitle>
-                  <DialogDescription className="text-gray-600 dark:text-gray-400">
+                  <DialogDescription className="text-gray-600 dark:text-gray-400 text-sm mt-2">
                     {t("DIALOG.DESC")}
                   </DialogDescription>
                 </DialogHeader>
 
-                <Warning>
-                  <p>{t("DIALOG.WARNING")}</p>
+                <Warning className="my-2">
+                  <p className="text-sm">{t("DIALOG.WARNING")}</p>
                 </Warning>
 
                 <Button

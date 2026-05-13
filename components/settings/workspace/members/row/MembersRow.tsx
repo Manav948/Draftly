@@ -32,34 +32,27 @@ const MembersRow = ({
       className={cn(
         `
         flex flex-col
-        p-4 rounded-xl border
-        bg-muted/40
-        shadow-2xl
-        dark:bg-gradient-to-br
-        dark:from-gray-800
-        dark:via-white/120
-        dark:to-gray-800
-        transition
-        sm:grid sm:grid-cols-3 sm:items-center
-        sm:gap-3 sm:p-2 sm:rounded-xl sm:border-none sm:bg-transparent
-        hover:bg-primary/5
+        transition-colors duration-200
+        hover:bg-gray-50/80 dark:hover:bg-[#141414]
+        sm:grid sm:grid-cols-12 sm:items-center
+        sm:gap-4 px-6 py-4
         `
       )}
     >
-      <div className="flex items-center gap-3">
-        <UserAvatar profileImage={user.image} size={36} />
+      <div className="sm:col-span-5 flex items-center gap-4">
+        <UserAvatar profileImage={user.image} size={40} className="shadow-sm border border-gray-100 dark:border-[#222]" />
 
-        <div>
-          <p className="font-semibold text-gray-900 dark:text-gray-100">
+        <div className="flex flex-col">
+          <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">
             {user.username}
           </p>
-          <span className="sm:hidden text-xs text-muted-foreground">
-            {userRole}
+          <span className="sm:hidden text-xs text-muted-foreground mt-0.5">
+            {userRole.replace("_", " ")}
           </span>
         </div>
       </div>
 
-      <div className="flex items-center justify-start sm:justify-start">
+      <div className="sm:col-span-4 flex items-center justify-start mt-3 sm:mt-0">
         <UserPermission
           workspaceId={workspaceId}
           user={user}
@@ -68,7 +61,7 @@ const MembersRow = ({
         />
       </div>
 
-      <div className="flex justify-start sm:justify-end">
+      <div className="sm:col-span-3 flex justify-start sm:justify-end mt-3 sm:mt-0">
         <MoreOptions
           workspaceId={workspaceId}
           userId={user.id}
