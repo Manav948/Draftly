@@ -32,7 +32,7 @@ const AssignedToMeItem = ({ info }: Props) => {
       >
         {/* Top subtle gradient line */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/0 via-red-500/50 to-red-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        
+
         <CardContent className="flex flex-col p-6 h-full relative z-10">
           <div className="flex justify-between items-start mb-5">
             <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest truncate max-w-[120px] bg-gray-100 dark:bg-[#1a1a1a] px-2.5 py-1 rounded-full">
@@ -51,12 +51,12 @@ const AssignedToMeItem = ({ info }: Props) => {
               />
             </div>
             <div>
-               <h3 className="font-bold text-lg leading-snug line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                 {title}
-               </h3>
-               <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
-                 Quickly view and manage this {type === 'tasks' ? 'task' : 'mind map'} assigned to you in the {workspaceName} workspace.
-               </p>
+              <h3 className="font-bold text-lg leading-snug line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                {title}
+              </h3>
+              <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
+                Quickly view and manage this {type === 'tasks' ? 'task' : 'mind map'} assigned to you in the {workspaceName} workspace.
+              </p>
             </div>
           </div>
 

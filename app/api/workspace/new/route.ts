@@ -63,17 +63,16 @@ export async function POST(request: Request) {
                 inviteCode: uuidv4(),
                 canEditCode: uuidv4(),
                 readOnlyCode: uuidv4(),
-                adminCode: uuidv4()
+                adminCode: uuidv4(),
+                Subscribers: {
+                    create: {
+                        userId: user.id,
+                        userRole: "OWNER"
+                    }
+                }
             }
         })
 
-        await db.subscription.create({
-            data: {
-                userId: user.id,
-                workspaceId: workspace.id,
-                userRole: "OWNER"
-            }
-        })
         return NextResponse.json(workspace, { status: 200 })
     } catch (error) {
         console.log("Error in db connection : ", error)

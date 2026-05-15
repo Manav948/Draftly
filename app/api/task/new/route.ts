@@ -56,16 +56,8 @@ export async function POST(request: Request) {
                 title: "",
                 creatorId: user.id,
                 workspaceId,
+                updatedUserId: session.user.id,
                 dateId: date.id
-            }
-        })
-
-        await db.task.update({
-            where : {
-                id : task.id
-            },
-            data : {
-                updatedUserId : session.user.id
             }
         })
 

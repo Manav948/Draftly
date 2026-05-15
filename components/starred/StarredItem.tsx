@@ -95,12 +95,12 @@ const StarredItem = ({ items, sortType, userId }: Props) => {
               />
             </div>
             <div>
-               <h3 className="font-bold text-lg leading-snug line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                 {title}
-               </h3>
-               <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
-                 Starred {type.toLowerCase()} located in the {workspaceName} workspace. Easily access it from here anytime.
-               </p>
+              <h3 className="font-bold text-lg leading-snug line-clamp-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                {title}
+              </h3>
+              <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
+                Starred {type.toLowerCase()} located in the {workspaceName} workspace. Easily access it from here anytime.
+              </p>
             </div>
           </div>
 

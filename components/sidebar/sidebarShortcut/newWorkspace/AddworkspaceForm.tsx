@@ -151,14 +151,14 @@ const AddworkspaceForm = ({ onSetOpen }: Props) => {
           {/* Button */}
           <div className="flex items-center justify-between w-full">
             <Button
-              disabled={!form.formState.isValid || isUploading || isPending}
+              disabled={!form.formState.isValid || isUploading || isPending || form.formState.isSubmitting}
               type="submit"
               className="w-full rounded-lg px-6 py-2 font-semibold tracking-wide 
                          bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 
                          text-white shadow-md hover:shadow-blue-400/40 hover:scale-[1.02] 
                          transition-all duration-300"
             >
-              {isUploading || isPending ? (
+              {isUploading || isPending || form.formState.isSubmitting ? (
                 <LoadingState loadingText="Creating Workspace..." />
               ) : (
                 t("BTN_ADD")

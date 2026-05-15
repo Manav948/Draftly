@@ -21,14 +21,6 @@ const NewMindMap = ({ workspaceId }: Props) => {
       })
       return data;
     },
-    onError: (err: AxiosError) => {
-      const error = err.response?.data ? err.response.data : "MindMap not Created"
-      toast.error("MindMap has not created")
-    },
-    onSuccess: (data: MindMap) => {
-      toast.success("MindMap has been created")
-      router.push(`/dashboard/workspace/${workspaceId}/mind_maps/mind_map/${data.id}/edit`)
-    },
     mutationKey: ["newMindMap"]
   })
   return (
@@ -36,7 +28,16 @@ const NewMindMap = ({ workspaceId }: Props) => {
       <Button
         disabled={isPending}
         onClick={() => {
-          newMindMap()
+          newMindMap(undefined, {
+            onError: (err: any) => {
+              const error = err.response?.data ? err.response.data : "MindMap not Created"
+              toast.error("MindMap has not created")
+            },
+            onSuccess: (data: MindMap) => {
+              toast.success("MindMap has been created")
+              router.push(`/dashboard/workspace/${workspaceId}/mind_maps/mind_map/${data.id}/edit`)
+            }
+          })
         }}
         className='justify-start items-center'
         variant={"ghost"}

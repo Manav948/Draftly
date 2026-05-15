@@ -21,14 +21,6 @@ const NewTask = ({ workspaceId }: Props) => {
       })
       return data;
     },
-    onError: (err: AxiosError) => {
-      const error = err.response?.data ? err.response.data : "task not Created"
-      toast.error("Task has not created")
-    },
-    onSuccess: (data: Task) => {
-      toast.success("Task has been created")
-      router.push(`/dashboard/workspace/${workspaceId}/tasks/task/${data.id}/edit`)
-    },
     mutationKey: ["newTask"]
   })
   return (
@@ -36,7 +28,16 @@ const NewTask = ({ workspaceId }: Props) => {
       <Button
         disabled={isPending}
         onClick={() => {
-          newTask()
+          newTask(undefined, {
+            onError: (err: any) => {
+              const error = err.response?.data ? err.response.data : "task not Created"
+              toast.error("Task has not created")
+            },
+            onSuccess: (data: Task) => {
+              toast.success("Task has been created")
+              router.push(`/dashboard/workspace/${workspaceId}/tasks/task/${data.id}/edit`)
+            }
+          })
         }}
         className='justify-start items-center'
         variant={"ghost"}

@@ -74,6 +74,7 @@ export const getTask = async (task_id: string, userId: string) => {
       Tag: true,
       date: true,
       assignedToTasks: { include: { user: true } },
+      savedTask: true,
       creator: {
         select: {
           id: true,
@@ -108,6 +109,7 @@ export const getMindMap = async (mind_map_id: string) => {
       workspace: true,
       tags: true,
       assignedToMindMaps: { include: { user: true } },
+      savedMindMaps: true,
       creator: {
         select: {
           id: true,

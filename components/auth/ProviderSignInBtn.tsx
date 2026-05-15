@@ -30,7 +30,7 @@ export const ProviderSignInBtn = ({ children, providerName, onLoading, ...props 
 
     }
     return (
-        <Button onClick={signInHandler} {...props} variant={"secondary"} type="button">
+        <Button disabled={props.disabled || showLoggedInfo} onClick={signInHandler} {...props} variant={"secondary"} type="button">
             {children}
         </Button>
     )
