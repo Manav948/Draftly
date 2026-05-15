@@ -23,14 +23,14 @@ const FromStep = () => {
               <motion.div
                 initial={false}
                 animate={{
-                  backgroundColor: isActive || isCompleted ? '#dc2626' : 'transparent', // red-600
-                  borderColor: isActive || isCompleted ? '#dc2626' : '#52525b', // zinc-600
+                  backgroundColor: isActive || isCompleted ? '#ef4444' : 'transparent', // red-500
+                  borderColor: isActive || isCompleted ? '#ef4444' : '#3f3f46', // zinc-700
                   scale: isActive ? 1.1 : 1,
                 }}
                 transition={{ duration: 0.3 }}
                 className={`
                   z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 
-                  ${isUpcoming ? "border-muted-foreground/30 bg-muted/20 text-muted-foreground" : "text-white shadow-lg"}
+                  ${isUpcoming ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-zinc-400" : "text-white shadow-sm"}
                 `}
               >
                 {isCompleted ? (
@@ -65,7 +65,7 @@ const FromStep = () => {
                     initial={{ width: "0%" }}
                     animate={{ width: isCompleted ? "100%" : "0%" }}
                     transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="absolute inset-y-0 left-0 bg-red-600 rounded"
+                    className="absolute inset-y-0 left-0 bg-red-500 rounded"
                   />
                 </div>
               </div>

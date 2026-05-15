@@ -20,6 +20,7 @@ import { signInSchema } from "@/schema/siginInSchema";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import toast from "react-hot-toast"
+import { LoadingState } from "../ui/LoadingState";
 
 type SignInValues = z.infer<typeof signInSchema>;
 
@@ -64,7 +65,7 @@ const SignInCardContent = () => {
     };
 
     return (
-        <CardContent className="p-6 md:p-3">
+        <CardContent className="p-2 sm:p-4 pt-0 sm:pt-0">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -85,7 +86,7 @@ const SignInCardContent = () => {
                                             placeholder={t("EMAIL")}
                                             type="email"
                                             {...field}
-                                            className="h-11"
+                                            className="h-11 bg-zinc-50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 focus-visible:ring-1 focus-visible:ring-red-500 rounded-xl"
                                         />
                                     </FormControl>
                                     <FormMessage className="text-xs text-red-500" />
@@ -103,7 +104,7 @@ const SignInCardContent = () => {
                                             type="password"
                                             placeholder={t("PASSWORD")}
                                             {...field}
-                                            className="h-11"
+                                            className="h-11 bg-zinc-50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 focus-visible:ring-1 focus-visible:ring-red-500 rounded-xl"
                                         />
                                     </FormControl>
                                     <FormMessage className="text-xs text-red-500" />
@@ -112,10 +113,10 @@ const SignInCardContent = () => {
                         />
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-3 mt-2">
                         {/* Submit Button */}
-                        <Button className="w-full font-medium">
-                            {t("SIGN_IN.SUBMIT")}
+                        <Button disabled={loading} className="w-full font-medium h-11 bg-red-500 hover:bg-red-600 text-white rounded-xl shadow-none transition-colors">
+                            {loading ? <LoadingState loadingText={t("SIGN_IN.PENDING.LOADING")} /> : t("SIGN_IN.SUBMIT")}
                         </Button>
                         <p className="text-sm text-center text-muted-foreground">
                             {t("SIGN_IN.FORGOT_PASSWORD")}

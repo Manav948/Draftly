@@ -8,8 +8,8 @@ const Onboarding = async () => {
   return (
     <OnboardingFormProvider session={session}>
       <main className="min-h-screen flex items-center justify-center px-4
-        bg-background dark:bg-[#0b0606]">
-        <div className="w-full max-w-2xl">
+        bg-white dark:bg-[#0c0c0c]">
+        <div className="w-full max-w-2xl py-8 mt-12 sm:mt-0">
           <AdditionalSetting />
         </div>
       </main>

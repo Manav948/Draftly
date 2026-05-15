@@ -19,6 +19,9 @@
         "GOOGLE": "Sign in with Google",
         "APPALE": "Sign in with Apple",
         "GITHUB": "Sign in with GitHub"
+      },
+      "PENDING": {
+        "LOADING": "कृपया प्रतीक्षा करें..."
       }
     },
     "SIGN_UP": {

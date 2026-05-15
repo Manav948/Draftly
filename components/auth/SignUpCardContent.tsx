@@ -80,7 +80,7 @@ const SignUpCardContent = () => {
   };
 
   return (
-    <CardContent className="p-6">
+    <CardContent className="p-2 sm:p-4 pt-0 sm:pt-0">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -101,7 +101,7 @@ const SignUpCardContent = () => {
                       placeholder={t("EMAIL")}
                       type="email"
                       {...field}
-                      className="h-11"
+                      className="h-11 bg-zinc-50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 focus-visible:ring-1 focus-visible:ring-red-500 rounded-xl"
                     />
                   </FormControl>
                   <FormMessage className="text-xs text-red-500" />
@@ -118,7 +118,7 @@ const SignUpCardContent = () => {
                     <Input
                       placeholder={t("USERNAME")}
                       {...field}
-                      className="h-11"
+                      className="h-11 bg-zinc-50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 focus-visible:ring-1 focus-visible:ring-red-500 rounded-xl"
                     />
                   </FormControl>
                   <FormMessage className="text-xs text-red-500" />
@@ -136,7 +136,7 @@ const SignUpCardContent = () => {
                       type="password"
                       placeholder={t("PASSWORD")}
                       {...field}
-                      className="h-11"
+                      className="h-11 bg-zinc-50 dark:bg-zinc-900/50 border-zinc-200 dark:border-white/5 focus-visible:ring-1 focus-visible:ring-red-500 rounded-xl"
                     />
                   </FormControl>
                   <FormMessage className="text-xs text-red-500" />
@@ -145,11 +145,11 @@ const SignUpCardContent = () => {
             />
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3 mt-2">
             {/* Submit Button */}
             <Button
               disabled={loading}
-              className="w-full font-bold"
+              className="w-full font-medium h-11 bg-red-500 hover:bg-red-600 text-white rounded-xl shadow-none transition-colors"
               type="submit"
             >
               {loading ? (
@@ -164,7 +164,7 @@ const SignUpCardContent = () => {
               {t("SIGN_UP.TERMS.FIRST")}{" "}
               <Link
                 href="/"
-                className="text-primary font-medium hover:underline transition-colors"
+                className="text-red-500 font-medium hover:text-red-400 hover:underline transition-colors"
               >
                 {t("SIGN_UP.TERMS.SECOND")}
               </Link>

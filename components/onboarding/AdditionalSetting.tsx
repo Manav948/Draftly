@@ -18,14 +18,13 @@ const AdditionalSetting = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="
         relative w-full max-w-2xl mx-auto
-        rounded-3xl border border-white/10 dark:border-red-900/20
-        bg-white/80 dark:bg-[#0f0505]/80 backdrop-blur-xl
-        shadow-2xl dark:shadow-red-900/10
-        p-8 sm:p-12
+        rounded-3xl border border-gray-200/60 dark:border-[#1f1f1f]
+        bg-gradient-to-br from-white to-gray-50 dark:from-[#111] dark:to-[#0a0a0a]
+        shadow-sm
+        p-6 sm:p-12
         flex flex-col
       "
     >
-      <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-red-500/10 to-transparent rounded-t-3xl pointer-events-none" />
       <header className="text-center space-y-3 z-10 mb-8 mt-2">
         <motion.div
           initial={{ y: -10, opacity: 0 }}

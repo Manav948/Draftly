@@ -25,7 +25,10 @@
         "GENERIC": "Unable to sign in. Please check your details and try again.",
         "NETWORK": "Network error. Please check your connection."
       },
-      "SUCCESS": "Successfully signed in! Redirecting..."
+      "SUCCESS": "Successfully signed in! Redirecting...",
+      "PENDING": {
+        "LOADING": "Signing in..."
+      }
     },
     "SIGN_UP": {
       "TITLE": "Create your Draftly account",

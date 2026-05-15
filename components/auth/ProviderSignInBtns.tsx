@@ -19,7 +19,7 @@ export const ProviderSignInBtns = ({
         onLoading={onLoading}
         providerName="google"
         disabled={disabled}
-        className="w-full flex items-center gap-2 rounded-[1.9rem] border text-sm h-12 sm:h-10 sm:text-base"
+        className="w-full flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-white/5 bg-transparent dark:hover:bg-zinc-900/50 text-sm h-11 sm:text-base transition-colors"
       >
         <Image
           src="/google.svg"
@@ -34,7 +34,7 @@ export const ProviderSignInBtns = ({
         onLoading={onLoading}
         disabled={disabled}
         providerName="github"
-        className="w-full flex items-center gap-2 rounded-[1.9rem] border text-sm h-12 sm:h-10 sm:text-base"
+        className="w-full flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-white/5 bg-transparent dark:hover:bg-zinc-900/50 text-sm h-11 sm:text-base transition-colors"
       >
         <Image
           src="/github.png"
