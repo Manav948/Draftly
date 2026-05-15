@@ -88,10 +88,10 @@ const StarredItem = ({ items, sortType, userId }: Props) => {
           </div>
 
           <div className="flex flex-col gap-4 flex-grow">
-            <div className="bg-white dark:bg-[#1a1a1a] shadow-sm dark:shadow-none border border-gray-100 dark:border-[#2a2a2a] rounded-xl p-2.5 w-14 h-14 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
+            <div className="p-2.5 w-10 h-10 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
               <ReadOnlyEmoji
                 selectedEmoji={emoji ?? undefined}
-                className="h-8 w-8"
+                className="h-10 w-10"
               />
             </div>
             <div>

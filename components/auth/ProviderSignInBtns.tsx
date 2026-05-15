@@ -39,8 +39,9 @@ export const ProviderSignInBtns = ({
         <Image
           src="/github.png"
           alt="GitHub"
-          width={20}
-          height={20}
+          width={30}
+          height={30}
+          className="dark:invert"
         />
         {SignInCard ? t("SIGN_IN.PROVIDERS.GITHUB") : t("SIGN_UP.PROVIDERS.GITHUB")}
       </ProviderSignInBtn>
