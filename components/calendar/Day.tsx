@@ -1,27 +1,24 @@
 "use client"
 
 import dayjs, { Dayjs } from "dayjs"
-import { CalendarItem } from "@/types/extended"
 import { cn } from "@/lib/utils"
-import CalendarTask from "./CalendarTask"
 
 interface Props {
   day: Dayjs
   monthIndex: number
-  calendarItems: CalendarItem[]
 }
 
-const Day = ({ day, monthIndex, calendarItems }: Props) => {
+const Day = ({ day, monthIndex }: Props) => {
   const isToday = day.isSame(dayjs(), "day")
   const isWeekend = day.day() === 0 || day.day() === 6
 
   return (
     <div
       className={cn(
-        "relative min-h-[140px] p-2",
+        "min-h-[100px] p-2",
         "border border-border",
         "dark:bg-[#0c0c0c]",
-        "cursor-pointer hover:bg-muted",
+        "cursor-pointer hover:bg-muted/50 transition-colors",
         isWeekend && "bg-muted/30"
       )}
     >
@@ -34,30 +31,6 @@ const Day = ({ day, monthIndex, calendarItems }: Props) => {
         >
           {day.date()}
         </span>
-      </div>
-
-      <div className="relative mt-1">
-        {calendarItems.map((item, index) => {
-          if (!item.date?.from) return null
-
-          const start = dayjs(item.date.from)
-          const end = item.date.to ? dayjs(item.date.to) : start
-
-          if (!start.isSame(day, "day")) return null
-
-          const span = Math.min(end.diff(start, "day") + 1, 7)
-          const startCol = day.day() === 0 ? 7 : day.day()
-
-          return (
-            <CalendarTask
-              key={item.taskId}
-              item={item}
-              span={span}
-              startCol={startCol}
-              top={index * 22}
-            />
-          )
-        })}
       </div>
     </div>
   )

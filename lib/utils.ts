@@ -47,26 +47,30 @@ export const topSidebarLinks = [
 
 export const getMonth = (month = dayjs().month()) => {
   const year = dayjs().year()
-  const firstDatOfMonth = dayjs(new Date(year, month, 1)).day()
-  let currentMonthCount = 1 - firstDatOfMonth
+  const firstOfMonth = dayjs(new Date(year, month, 1))
 
-  const daysMatrix = new Array(5).fill([]).map(() => {
-    return new Array(7).fill(null).map(() => {
-      currentMonthCount++;
-      return dayjs(new Date(year, month, currentMonthCount))
-    })
-  })
-  if (firstDatOfMonth === 1) {
-    const firstWeek = daysMatrix[0]
-    const previousMonth = month === 0 ? 12 : month - 1;
-    const previousYear = month === 0 ? year - 1 : year
-    const lastDayOfPreviousMonth = dayjs(new Date(year, previousMonth + 1, 0)).date()
+  // Convert to Monday-start: Mon=0, Tue=1, ... Sun=6
+  const startDow = (firstOfMonth.day() + 6) % 7
 
-    for (let i = 7 - firstWeek.length; i > 0; i--) {
-      const day = lastDayOfPreviousMonth - i - 1;
-      firstWeek.unshift(dayjs(new Date(previousYear, previousMonth, day)))
+  // First day shown on the grid (could be from previous month)
+  let current = firstOfMonth.subtract(startDow, "day")
+
+  // Determine number of rows needed (5 or 6)
+  const lastOfMonth = firstOfMonth.endOf("month")
+  const lastDow = (lastOfMonth.day() + 6) % 7
+  const totalDays = startDow + firstOfMonth.daysInMonth() + (6 - lastDow)
+  const numRows = Math.ceil(totalDays / 7)
+
+  const daysMatrix: dayjs.Dayjs[][] = []
+  for (let row = 0; row < numRows; row++) {
+    const week: dayjs.Dayjs[] = []
+    for (let col = 0; col < 7; col++) {
+      week.push(current)
+      current = current.add(1, "day")
     }
+    daysMatrix.push(week)
   }
+
   return daysMatrix
 }
 

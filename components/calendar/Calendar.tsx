@@ -42,7 +42,7 @@ const Calendar = ({ userId }: Props) => {
     })
     if (isLoading) return <LoadingScreen />
     if (isError)   return <ErrorPage onRetry={refetch} />
-    console.log("Calendar item : ", calendarItem)
+    
     return (
         <section className="w-full h-full px-2 sm:px-4 flex flex-col gap-8 mt-7 mb-2">
             <CalendarHeader
