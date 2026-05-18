@@ -72,7 +72,7 @@ const Step1 = () => {
                       </div>
                       <Input 
                         {...field} 
-                        placeholder="Manav" 
+                        placeholder="" 
                         className="pl-10 h-12 bg-white/50 dark:bg-black/40 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-red-500 dark:focus:ring-red-500 transition-all shadow-sm rounded-xl" 
                       />
                     </div>
@@ -95,7 +95,7 @@ const Step1 = () => {
                       </div>
                       <Input 
                         {...field} 
-                        placeholder="Valani" 
+                        placeholder="" 
                         className="pl-10 h-12 bg-white/50 dark:bg-black/40 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-red-500 dark:focus:ring-red-500 transition-all shadow-sm rounded-xl" 
                       />
                     </div>
