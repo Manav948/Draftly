@@ -103,29 +103,41 @@ export const authOptions: NextAuthOptions = {
             return session
         },
         async jwt({ token, user, trigger, session: triggerSession }) {
-            // On explicit update() calls (e.g. after onboarding), re-read from DB
-            if (trigger === "update" && triggerSession?.completeOnboarding !== undefined) {
-                token.completeOnboarding = triggerSession.completeOnboarding;
+            // 1. On explicit update() calls (e.g. after onboarding or profile edit),
+            //    merge the updated fields into the token without a DB round-trip.
+            if (trigger === "update" && triggerSession) {
+                if (triggerSession.completeOnboarding !== undefined) {
+                    token.completeOnboarding = triggerSession.completeOnboarding;
+                }
+                if (triggerSession.name !== undefined) token.name = triggerSession.name;
+                if (triggerSession.image !== undefined) token.picture = triggerSession.image;
+                if (triggerSession.username !== undefined) token.username = triggerSession.username;
                 return token;
             }
 
-            const dbUser = await db.user.findFirst({
-                where: {
-                    email: token.email as string
+            // 2. On first sign-in — `user` is only present during sign-in.
+            //    Populate the token from the DB user row once.
+            if (user) {
+                const dbUser = await db.user.findFirst({
+                    where: { email: token.email as string },
+                });
+                if (dbUser) {
+                    return {
+                        id: dbUser.id,
+                        name: dbUser.name,
+                        username: dbUser.username,
+                        email: dbUser.email,
+                        picture: dbUser.image,
+                        completeOnboarding: dbUser.completeOnboarding,
+                    };
                 }
-            })
-            if (!dbUser) {
-                token.id = user!.id;
-                return token
+                // Fallback for brand-new OAuth user (row may not exist yet)
+                token.id = user.id;
+                return token;
             }
-            return {
-                id: dbUser.id,
-                name: dbUser.name,
-                username: dbUser.username,
-                email: dbUser.email,
-                picture: dbUser.image,
-                completeOnboarding: dbUser.completeOnboarding,
-            };
+
+            // 3. All subsequent requests — return the cached token. NO DB call.
+            return token;
         },
     },
 };

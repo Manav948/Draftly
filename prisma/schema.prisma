@@ -70,6 +70,7 @@ model savedMindMaps {
   mindMap MindMap @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId  String
 
+  @@unique([userId, taskId])
   @@index([userId])
   @@index([taskId])
 }
@@ -149,6 +150,7 @@ model savedTask {
   task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId String
 
+  @@unique([userId, taskId])
   @@index([userId])
   @@index([taskId])
 }
@@ -158,6 +160,9 @@ model Date {
   from String?
   to   String?
   Task Task[]
+
+  @@index([from])
+  @@index([to])
 }
 
 model Tag {

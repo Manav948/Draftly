@@ -10,9 +10,7 @@ export async function POST(request: Request) {
         return new NextResponse("Unauthorized", { status: 400, statusText: "Unauthorized User" })
     }
     const body: unknown = await request.json();
-    console.log(body)
     const result = mindMapSchema.safeParse(body)
-    console.log("result", result)   
 
     if (!result.success) {
         return new NextResponse("Something went wrong", { status: 401 })
@@ -20,40 +18,22 @@ export async function POST(request: Request) {
     const { workspaceId, mindMapId, content } = result.data;    
 
     try {
-        const user = await db.user.findUnique({
+        // Single lightweight permission check via Subscription table
+        const subscription = await db.subscription.findFirst({
             where: {
-                id: session.user.id
+                userId: session.user.id,
+                workspaceId,
             },
-            include: {
-                subscriptions: {
-                    where: {
-                        workspaceId: workspaceId
-                    },
-                    select: {
-                        userRole: true
-                    }
-                }
-            }
-        })
+            select: { userRole: true },
+        });
 
-        if (!user) {
-            return new NextResponse("User Not Found", { status: 404, statusText: "User not Found" })
+        if (!subscription) {
+            return new NextResponse("No permission", { status: 403 })
         }
 
-        const mindmap = await db.mindMap.findUnique({
-            where: {
-                id: mindMapId
-            }
-        })
-
-        if (!mindmap) {
-            return NextResponse.json("mindmap not Found", { status: 403 })
-        }
-
+        // Direct update — Prisma will throw if mindMapId doesn't exist
         const updatedMindMap = await db.mindMap.update({
-            where: {
-                id: mindmap.id
-            },
+            where: { id: mindMapId },
             data: {
                 updatedUserId: session.user.id,
                 content
@@ -61,7 +41,7 @@ export async function POST(request: Request) {
         })
         return NextResponse.json(updatedMindMap, { status: 200 })
     } catch (error) {
-        console.log("Error in db connection : ", error)
-        return new NextResponse("Error during db connection", { status: 405 })
+        console.error("Error updating mind map:", error)
+        return new NextResponse("Server error", { status: 500 })
     }
-}
+}

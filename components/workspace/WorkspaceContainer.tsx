@@ -44,7 +44,7 @@ const WorkspaceContainer = ({
     queryKey: ["getWorkspaceDetails", userId, activeWorkspaceId],
     queryFn: async () => {
       const res = await fetch(
-        `/api/dashboard/getItem?workspace=${activeWorkspaceId}&userId=${userId}`
+        `/api/dashboard/getItem?workspace=${activeWorkspaceId}`
       )
       if (!res.ok) throw new Error("Failed to fetch workspace items")
       return res.json()

@@ -13,8 +13,6 @@ export const GET = async (request: Request, { params }: Props) => {
   const url = new URL(request.url);
   const userId = url.searchParams.get("userId");
 
-  console.log("User ID:", userId);
-  console.log("workspace id : " , workspace_id)
 
   if (!userId) {
     return NextResponse.json("User ID is missing. Please try again.", {

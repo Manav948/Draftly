@@ -2,6 +2,8 @@ import { db } from "@/lib/db"
 import { sortAssignedToMeDataByCreated } from "@/lib/sortAssignedToMe";
 import { AssignedToMeTasksAndMindMaps, AssignedToMeTypes } from "@/types/extended";
 import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 export const dynamic = "force-dynamic"
 
@@ -9,12 +11,14 @@ export const GET = async (request: Request) => {
     const url = new URL(request.url)
 
     const workspaceFilterParam = url.searchParams.get("workspace")
-    const userId = url.searchParams.get("userId")
     const currentType = url.searchParams.get("type")
 
-    if (!userId) {
-        return NextResponse.json("Error in user api function", { status: 404 })
+    // Use authenticated session instead of trusting query params
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+        return NextResponse.json("Unauthorized", { status: 401 })
     }
+    const userId = session.user.id
     try {
         // for type safety check prisma for understand
         const normalizeDate = (date?: { from?: string | null; to?: string | null } | Date) => {

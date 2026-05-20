@@ -17,49 +17,31 @@ export async function POST(request: Request) {
     return new NextResponse("Invalid payload", { status: 401 });
   }
 
-  const { workspaceId, taskId, content} = result.data;
+  const { workspaceId, taskId, content } = result.data;
 
   try {
-    // Check permissions
-    const user = await db.user.findUnique({
-      where: { id: session.user.id },
-      include: {
-        subscriptions: {
-          where: { workspaceId },
-          select: { userRole: true },
-        },
+    // Single lightweight permission check via Subscription table
+    const subscription = await db.subscription.findFirst({
+      where: {
+        userId: session.user.id,
+        workspaceId,
       },
+      select: { userRole: true },
     });
 
-    if (!user) {
-      return new NextResponse("User not found", { status: 404 });
-    }
-
-    const role = user.subscriptions[0]?.userRole;
-    if (role === "CAN_EDIT" || role === "READ_ONLY") {
+    if (!subscription || subscription.userRole === "READ_ONLY") {
       return new NextResponse("No permission", { status: 403 });
     }
 
-    // Fetch task with date relation
-    const task = await db.task.findUnique({
-      where: { id: taskId },
-      include: { date: true },
-    });
-
-    if (!task) {
-      return new NextResponse("Task not found", { status: 404 });
-    }
-
-
-    // Update task metadata
+    // Direct update — no need to fetch the task first
     const updatedTask = await db.task.update({
       where: { id: taskId },
-      data: { updatedUserId: session.user.id , content },
+      data: { updatedUserId: session.user.id, content },
     });
 
     return NextResponse.json(updatedTask, { status: 200 });
   } catch (error) {
-    console.error("Error updating task date:", error);
+    console.error("Error updating task content:", error);
     return new NextResponse("Server error", { status: 500 });
   }
 }

@@ -1,7 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { newTaskSchema } from "@/schema/newTaskSchema";
-import { updateTaskSchema } from "@/schema/updateTaskSchema";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -20,53 +19,39 @@ export async function POST(request: Request) {
     const { workspaceId } = result.data;
 
     try {
-        const user = await db.user.findUnique({
+        // Lightweight permission check via Subscription table
+        const subscription = await db.subscription.findFirst({
             where: {
-                id: session.user.id
+                userId: session.user.id,
+                workspaceId,
             },
-            include: {
-                subscriptions: {
-                    where: {
-                        workspaceId: workspaceId
-                    },
-                    select: {
-                        userRole: true
-                    }
+            select: { userRole: true },
+        });
+
+        if (!subscription) {
+            return new NextResponse("Not a member", { status: 404 })
+        }
+
+        if (subscription.userRole === "CAN_EDIT" || subscription.userRole === "READ_ONLY") {
+            return NextResponse.json("You don't have permission to create tasks", { status: 403 })
+        }
+
+        // Single query: nested create for task + date
+        const task = await db.task.create({
+            data: {
+                title: "",
+                creator: { connect: { id: session.user.id } },
+                workspace: { connect: { id: workspaceId } },
+                updatedBy: { connect: { id: session.user.id } },
+                date: {
+                    create: {}
                 }
             }
         })
 
-        if (!user) {
-            return new NextResponse("User Not Found", { status: 404, statusText: "User not Found" })
-        }
-
-        if (user.subscriptions[0].userRole === "CAN_EDIT" || user.subscriptions[0].userRole === "READ_ONLY") {
-            return NextResponse.json("You don't have permisson to delete a picture", { status: 403 })
-        }
-
-        const date = await db.date.create({
-            data: {
-                from: undefined,
-                to: undefined
-            }
-        })
-
-        const task = await db.task.create({
-            data: {
-                title: "",
-                creatorId: user.id,
-                workspaceId,
-                updatedUserId: session.user.id,
-                dateId: date.id
-            }
-        })
-
-        if (!task) {
-            return NextResponse.json("No Task Found", { status: 403 })
-        }
         return NextResponse.json(task, { status: 200 })
     } catch (error) {
-        console.log("Error in db connection : ", error)
-        return new NextResponse("Error during db connection", { status: 405 })
+        console.error("Error creating task:", error)
+        return new NextResponse("Server error", { status: 500 })
     }
-}
+}

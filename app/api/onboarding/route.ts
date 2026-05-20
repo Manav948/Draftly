@@ -3,7 +3,6 @@ import { db } from "@/lib/db";
 import { onboardingSchema } from "@/schema/onboardingSchema";
 import { UseCase as UseCaseType } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { z } from "zod";
 
 export async function POST(request: Request) {
     const session = await getAuthSession();
@@ -21,51 +20,41 @@ export async function POST(request: Request) {
 
     const { useCase, workspaceName, name, surname, workspaceImage } = result.data
     try {
-        const user = await db.user.findUnique({
-            where: {
-                id: session.user.id
-            }
-        })
-        if (!user) {
-            return new NextResponse("User Not Found", { status: 404, statusText: "User not Found" })
-        }
+        // Single transaction: all writes succeed or all fail, fewer round-trips
+        await db.$transaction(async (tx) => {
+            const updatedUser = await tx.user.update({
+                where: { id: session.user.id },
+                data: {
+                    completeOnboarding: true,
+                    name,
+                    surname,
+                    useCase: useCase as UseCaseType,
+                },
+            });
 
-        const updateUser = await db.user.update({
-            where: {
-                id: session.user.id
-            },
-            data: {
-                completeOnboarding: true,
-                name,
-                surname,
-                useCase: useCase as UseCaseType
-            }
-        })
+            // Nested create: workspace + subscription in one query
+            await tx.workspace.create({
+                data: {
+                    creatorId: updatedUser.id,
+                    name: workspaceName,
+                    image: workspaceImage,
+                    Subscribers: {
+                        create: {
+                            userId: updatedUser.id,
+                            userRole: "OWNER",
+                        },
+                    },
+                },
+            });
 
-        const workspace = await db.workspace.create({
-            data: {
-                creatorId: user.id,
-                name: workspaceName,
-                image: workspaceImage
-            }
-        })
+            await tx.pomodoroSettings.create({
+                data: { userId: updatedUser.id },
+            });
+        });
 
-        await db.subscription.create({
-            data: {
-                userId: user.id,
-                workspaceId: workspace.id,
-                userRole: "OWNER"
-            }
-        })
-
-        await db.pomodoroSettings.create ({
-            data : {
-                userId : user.id
-            }
-        })
-        return NextResponse.json("OK    ", { status: 200 })
+        return NextResponse.json("OK", { status: 200 })
     } catch (error) {
-        console.log("Error in db connection : ", error)
-        return new NextResponse("Error during db connection", { status: 405 })
+        console.error("Error during onboarding:", error)
+        return new NextResponse("Error during onboarding", { status: 500 })
     }
-}
+}
