@@ -14,12 +14,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String  @map("provider_account_id")
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
   user              User    @relation(fields: [userId], references: [id])
 
@@ -37,40 +37,39 @@ model Session {
 model User {
   id                 String              @id @default(cuid())
   name               String?
-  username           String              @unique
-  surname            String?
   email              String?             @unique
   emailVerified      DateTime?           @map("email_verified")
   hashedPassword     String?
   image              String?
-  language           String?
+  surname            String?
+  username           String              @unique
   completeOnboarding Boolean             @default(false)
-  accounts           Account[]
-  sessions           Session[]
-  createdWorkspaces  Workspace[]         @relation("CreatedBy")
-  subscriptions      Subscription[]
   useCase            UseCase?
-  createdTasks       Task[]              @relation("TaskCreatedByUser")
-  updatedTasks       Task[]              @relation("TaskUpdatedByUser")
-  savedTask          savedTask[]
+  language           String?
+  accounts           Account?
   createdMindMaps    MindMap[]           @relation("MindMapCreatedByUser")
   updatedMindMaps    MindMap[]           @relation("MindMapUpdatedByUser")
-  savedMindMaps      savedMindMaps[]
   pomodoroSettings   PomodoroSettings[]
-  assignedToTasks    assignedToTask[]
+  sessions           Session?
+  subscriptions      Subscription[]
+  createdTasks       Task[]              @relation("TaskCreatedByUser")
+  updatedTasks       Task[]              @relation("TaskUpdatedByUser")
+  createdWorkspaces  Workspace[]         @relation("CreatedBy")
   assignedToMindMaps assignedToMindMap[]
+  assignedToTasks    assignedToTask[]
+  savedMindMaps      savedMindMaps[]
+  savedTask          savedTask[]
 
   @@map("users")
 }
 
 model savedMindMaps {
   id      String  @id @default(cuid())
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String
-  mindMap MindMap @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId  String
+  mindMap MindMap @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, taskId])
   @@index([userId])
   @@index([taskId])
 }
@@ -84,6 +83,154 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
+model Workspace {
+  id           String             @id @default(cuid())
+  name         String
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  creatorId    String?
+  image        String?
+  color        WorkspaceIconColor @default(RED)
+  adminCode    String             @unique @default(uuid())
+  canEditCode  String             @unique @default(uuid())
+  inviteCode   String             @unique @default(uuid())
+  readOnlyCode String             @unique @default(uuid())
+  mindMaps     MindMap[]
+  Subscribers  Subscription[]
+  tags         Tag[]
+  Task         Task[]
+  Creator      User?              @relation("CreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([creatorId])
+}
+
+model Task {
+  id              String           @id @default(cuid())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  updatedUserId   String?
+  creatorId       String
+  workspaceId     String
+  title           String?
+  emoji           String?
+  content         Json?
+  dateId          String?
+  creator         User             @relation("TaskCreatedByUser", fields: [creatorId], references: [id], onDelete: Cascade)
+  date            Date?            @relation(fields: [dateId], references: [id], onDelete: Cascade)
+  updatedBy       User?            @relation("TaskUpdatedByUser", fields: [updatedUserId], references: [id], onDelete: Cascade)
+  workspace       Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  assignedToTasks assignedToTask[]
+  savedTask       savedTask[]
+  Tag             Tag[]            @relation("TagToTask")
+
+  @@index([updatedUserId])
+  @@index([creatorId])
+  @@index([workspaceId])
+  @@index([updatedAt])
+}
+
+model savedTask {
+  id     String @id @default(cuid())
+  userId String
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([taskId])
+}
+
+model Date {
+  id   String  @id @default(cuid())
+  from String?
+  to   String?
+  Task Task[]
+}
+
+model Tag {
+  id          String             @id @default(cuid())
+  name        String
+  color       WorkspaceIconColor
+  workspaceId String?
+  workspace   Workspace?         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  mindMaps    MindMap[]          @relation("MindMapToTag")
+  tasks       Task[]             @relation("TagToTask")
+
+  @@index([workspaceId])
+}
+
+model Subscription {
+  userId      String
+  workspaceId String
+  userRole    UserPermission @default(READ_ONLY)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@id([userId, workspaceId])
+  @@index([workspaceId])
+  @@index([userId])
+}
+
+model MindMap {
+  id                 String              @id @default(cuid())
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  creatorId          String
+  updatedUserId      String?
+  workspaceId        String
+  content            Json?
+  title              String
+  emoji              String              @default("🧠")
+  creator            User                @relation("MindMapCreatedByUser", fields: [creatorId], references: [id], onDelete: Cascade)
+  updatedBy          User?               @relation("MindMapUpdatedByUser", fields: [updatedUserId], references: [id], onDelete: Cascade)
+  workspace          Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  assignedToMindMaps assignedToMindMap[]
+  savedMindMaps      savedMindMaps[]
+  tags               Tag[]               @relation("MindMapToTag")
+
+  @@index([workspaceId])
+  @@index([updatedUserId])
+  @@index([creatorId])
+  @@index([updatedAt])
+}
+
+model PomodoroSettings {
+  id                 String              @id @default(cuid())
+  userId             String
+  workDuration       Int                 @default(25)
+  shortBreakDuration Int                 @default(5)
+  longBreakDuration  Int                 @default(15)
+  longBreakInterval  Int                 @default(2)
+  rounds             Int                 @default(3)
+  soundEffect        PomodoroSoundEffect @default(BELL)
+  soundEffectVolume  Float               @default(0.5)
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model assignedToTask {
+  id     String @id @default(cuid())
+  userId String
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([taskId])
+}
+
+model assignedToMindMap {
+  id        String  @id @default(cuid())
+  userId    String
+  mindMapId String
+  mindMap   MindMap @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([mindMapId])
+}
+
 enum UserPermission {
   ADMIN
   CAN_EDIT
@@ -95,86 +242,6 @@ enum UseCase {
   WORK
   STUDY
   PERSONAL_USE
-}
-
-model Workspace {
-  id           String             @id @default(cuid())
-  name         String
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
-  creatorId    String?
-  Creator      User?              @relation("CreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
-  Subscribers  Subscription[]
-  image        String?
-  color        WorkspaceIconColor @default(RED)
-  inviteCode   String             @unique @default(uuid())
-  adminCode    String             @unique @default(uuid())
-  canEditCode  String             @unique @default(uuid())
-  readOnlyCode String             @unique @default(uuid())
-  Task         Task[]
-  tags         Tag[]
-  mindMaps     MindMap[]
-
-  @@index([creatorId])
-}
-
-model Task {
-  id              String           @id @default(cuid())
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  updatedBy       User?            @relation(name: "TaskUpdatedByUser", fields: [updatedUserId], references: [id], onDelete: Cascade)
-  updatedUserId   String?
-  creator         User             @relation(name: "TaskCreatedByUser", fields: [creatorId], references: [id], onDelete: Cascade)
-  creatorId       String
-  workspace       Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId     String
-  title           String?
-  emoji           String?
-  content         Json?
-  Tag             Tag[]
-  date            Date?            @relation(fields: [dateId], references: [id], onDelete: Cascade)
-  dateId          String?
-  savedTask       savedTask[]
-  assignedToTasks assignedToTask[]
-
-  @@index([updatedUserId])
-  @@index([creatorId])
-  @@index([workspaceId])
-  @@index([updatedAt])
-}
-
-model savedTask {
-  id     String @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId String
-
-  @@unique([userId, taskId])
-  @@index([userId])
-  @@index([taskId])
-}
-
-model Date {
-  id   String  @id @default(cuid())
-  from String?
-  to   String?
-  Task Task[]
-
-  @@index([from])
-  @@index([to])
-}
-
-model Tag {
-  id          String             @id @default(cuid())
-  name        String
-  tasks       Task[]
-  color       WorkspaceIconColor
-  workspace   Workspace?         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String?
-  mindMaps    MindMap[]
-
-  @@index([workspaceId])
 }
 
 enum WorkspaceIconColor {
@@ -192,56 +259,6 @@ enum WorkspaceIconColor {
   FUCHSIA
 }
 
-model Subscription {
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
-  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String
-  userRole    UserPermission @default(READ_ONLY)
-
-  @@id([userId, workspaceId])
-  @@index([workspaceId])
-  @@index([userId])
-}
-
-model MindMap {
-  id                 String              @id @default(cuid())
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  updatedBy          User?               @relation(name: "MindMapUpdatedByUser", fields: [updatedUserId], references: [id], onDelete: Cascade)
-  creator            User                @relation(name: "MindMapCreatedByUser", fields: [creatorId], references: [id], onDelete: Cascade)
-  creatorId          String
-  updatedUserId      String?
-  workspace          Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId        String
-  content            Json?
-  title              String
-  tags               Tag[]
-  emoji              String              @default("🧠")
-  savedMindMaps      savedMindMaps[]
-  assignedToMindMaps assignedToMindMap[]
-
-  @@index([workspaceId])
-  @@index([updatedUserId])
-  @@index([creatorId])
-  @@index([updatedAt])
-}
-
-model PomodoroSettings {
-  id                 String              @id @default(cuid())
-  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId             String
-  workDuration       Int                 @default(25)
-  shortBreakDuration Int                 @default(5)
-  longBreakDuration  Int                 @default(15)
-  longBreakInterval  Int                 @default(2)
-  rounds             Int                 @default(3)
-  soundEffect        PomodoroSoundEffect @default(BELL)
-  soundEffectVolume  Float               @default(0.5)
-
-  @@index([userId])
-}
-
 enum PomodoroSoundEffect {
   ANALOG
   BIRD
@@ -249,26 +266,4 @@ enum PomodoroSoundEffect {
   DIGITAL
   FENCY
   BELL
-}
-
-model assignedToTask {
-  id     String @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId String
-
-  @@index([userId])
-  @@index([taskId])
-}
-
-model assignedToMindMap {
-  id        String  @id @default(cuid())
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  mindMap   MindMap @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
-  mindMapId String
-
-  @@index([userId])
-  @@index([mindMapId])
 }
