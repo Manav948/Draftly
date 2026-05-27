@@ -1,6 +1,6 @@
 "use client";
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import TextareaAutoSize from "react-textarea-autosize";
 import TagSelector from "@/components/common/tag/tagSelector/TagSelector";
 import LinkTag from "@/components/common/tag/LinkTag";
@@ -17,6 +17,7 @@ import { useSaveTaskState } from "@/context/TaskSavingContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useTags } from "@/hooks/useTags";
+import { CalendarIcon, Tag as TagIcon } from "lucide-react";
 
 interface Props {
     workspaceId: string;
@@ -28,6 +29,7 @@ interface Props {
     from?: Date;
     to?: Date;
 }
+
 const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to, content, emoji }: Props) => {
     const [isMounted, setIsMounted] = useState(false);
     const _titleRef = useRef<HTMLTextAreaElement | null>(null);
@@ -131,74 +133,110 @@ const TaskContainer = ({ workspaceId, initialActiveTags, taskId, title, from, to
         )
 
     return (
-        <Card className="dark:dark:bg-[#0c0c0c] dark:text-white border border-border/40 shadow-xl overflow-hidden rounded-none">
+        <div className="w-full flex-grow bg-slate-50/50 dark:bg-[#080808] min-h-[calc(100vh-64px)] px-4 sm:px-8 py-8">
             <form className="w-full">
-                <CardContent className="p-6">
-                    <div className="flex flex-col gap-4">
-                        <div className="flex items-start gap-4">
+                <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-6 items-start">
+                    {/* Left Column: Emoji, Title, and Main TipTap Editor */}
+                    <div className="flex-1 w-full bg-white dark:bg-[#0c0c0c] border border-border/40 rounded-xl  p-6 sm:p-10 flex flex-col ">
+                        {/* Icon trigger above the title */}
+                        <div className="flex items-center">
                             <Logo
                                 onFormSelect={onFormSelectHandler}
                                 emoji={form.watch("icon")}
                                 taskId={taskId}
                                 workspaceId={workspaceId}
                             />
-                            <div className="flex-1">
-                                <TextareaAutoSize
-                                    {...rest}
-                                    ref={(e) => {
-                                        titleRef(e);
-                                        _titleRef.current = e;
-                                    }}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") e.preventDefault();
-                                    }}
-                                    onChange={(e) => {
-                                        if (status === "unsaved") return onSetStatus("unsaved")
-                                        deboundedTitle(e.target.value)
-                                    }}
-                                    placeholder="Editor Content"
-                                    className="min-h-[56px] resize-none w-full bg-transparent text-lg placeholder:text-muted-foreground focus:outline-none"
+                        </div>
+
+                        {/* Bold Large Title */}
+                        <div className="w-full">
+                            <TextareaAutoSize
+                                {...rest}
+                                ref={(e) => {
+                                    titleRef(e);
+                                    _titleRef.current = e;
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") e.preventDefault();
+                                }}
+                                onChange={(e) => {
+                                    if (status === "unsaved") return onSetStatus("unsaved")
+                                    deboundedTitle(e.target.value)
+                                }}
+                                placeholder="Untitled task"
+                                className="resize-none w-full bg-transparent text-3xl font-bold tracking-tight text-foreground/90 placeholder:text-foreground/20 focus:outline-none leading-tight py-1"
+                            />
+                        </div>
+
+                        {/* Separator Line */}
+                        <hr className="border-border/30 my-1" />
+
+                        {/* TipTap Editor */}
+                        <div className="w-full min-h-[350px]">
+                            <EditorTask
+                                content={typeof content === "string" ? content : content ? JSON.stringify(content) : undefined}
+                                workspaceId={workspaceId}
+                                taskId={taskId}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Right Column: Properties Sidebar */}
+                    <div className="w-full lg:w-[320px] shrink-0 bg-white dark:bg-[#0c0c0c] border border-border/40 rounded-xl shadow-xs p-6 flex flex-col gap-6">
+                        <div>
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-3">
+                                Properties
+                            </h3>
+                            <hr className="border-border/30" />
+                        </div>
+
+                        {/* Date Property Block */}
+                        <div className="flex flex-col gap-2">
+                            <span className="text-xs font-medium text-muted-foreground/70 flex items-center gap-1.5">
+                                <CalendarIcon size={13} className="text-muted-foreground/60 flex-shrink-0" />
+                                <span>Date range</span>
+                            </span>
+                            <div className="flex">
+                                <TaskCalendar onUpdateForm={onUpdateSelectHandler}
+                                    workspaceId={workspaceId}
+                                    taskId={taskId}
+                                    from={from}
+                                    to={to}
                                 />
+                            </div>
+                        </div>
 
-                                <div className="mt-4 flex flex-wrap gap-3 items-center">
-                                    <TaskCalendar onUpdateForm={onUpdateSelectHandler}
-                                        workspaceId={workspaceId}
-                                        taskId={taskId}
-                                        from={from}
-                                        to={to}
-                                    />
-                                    <TagSelector
-                                        isLoading={isLoadingTags}
-                                        tags={tags ?? []}
-                                        currentActiveTags={currentActiveTags}
-                                        onSelectActiveTag={onSelectActiveTagHandler}
-                                        workspaceId={workspaceId}
-                                        onUpdateActiveTags={onUpdateActiveTagHandler}
-                                        onDeleteActiveTag={onDeleteActiveTagHandler}
-                                    />
-
-                                    {/* active tags */}
-                                    <div className="flex gap-2 flex-wrap">
-                                        {currentActiveTags.map((tag) => (
-                                            <div key={tag.id}>
-                                                <LinkTag tag={tag} disabled={false} />
-                                            </div>
-                                        ))}
+                        {/* Tags Property Block */}
+                        <div className="flex flex-col gap-2">
+                            <span className="text-xs font-medium text-muted-foreground/70 flex items-center gap-1.5">
+                                <TagIcon size={13} className="text-muted-foreground/60 flex-shrink-0" />
+                                <span>Tags</span>
+                            </span>
+                            
+                            <div className="flex flex-wrap gap-1.5 items-center">
+                                {/* active tags list */}
+                                {currentActiveTags.map((tag) => (
+                                    <div key={tag.id} className="flex-shrink-0">
+                                        <LinkTag tag={tag} disabled={false} />
                                     </div>
-                                </div>
+                                ))}
+
+                                {/* Add Tag Trigger */}
+                                <TagSelector
+                                    isLoading={isLoadingTags}
+                                    tags={tags ?? []}
+                                    currentActiveTags={currentActiveTags}
+                                    onSelectActiveTag={onSelectActiveTagHandler}
+                                    workspaceId={workspaceId}
+                                    onUpdateActiveTags={onUpdateActiveTagHandler}
+                                    onDeleteActiveTag={onDeleteActiveTagHandler}
+                                />
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <EditorTask
-                            content={typeof content === "string" ? content : content ? JSON.stringify(content) : undefined}
-                            workspaceId={workspaceId}
-                            taskId={taskId}
-                        />
-                    </div>
-                </CardContent>
+                </div>
             </form>
-        </Card>
+        </div>
     );
 };
 

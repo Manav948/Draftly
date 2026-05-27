@@ -30,44 +30,40 @@ const CommandTagItem = ({
 
   const TagColor = useMemo(() => {
     const map: Record<WorkspaceIconColor, string> = {
-      BLUE: isDarkMode ? "bg-blue-900" : "bg-blue-600",
-      RED: isDarkMode ? "bg-red-900" : "bg-red-600",
-      GREEN: isDarkMode ? "bg-green-900" : "bg-green-600",
-      YELLOW: isDarkMode ? "bg-yellow-900" : "bg-yellow-500",
-      CYAN: isDarkMode ? "bg-cyan-900" : "bg-cyan-600",
-      ORANGE: isDarkMode ? "bg-orange-900" : "bg-orange-600",
-      PURPLE: isDarkMode ? "bg-purple-900" : "bg-purple-600",
-      PINK: isDarkMode ? "bg-pink-900" : "bg-pink-600",
-      INDIGO: isDarkMode ? "bg-indigo-900" : "bg-indigo-600",
-      LIME: isDarkMode ? "bg-lime-900" : "bg-lime-500",
-      FUCHSIA: isDarkMode ? "bg-fuchsia-900" : "bg-fuchsia-600",
-      EMERALD: isDarkMode ? "bg-emerald-900" : "bg-emerald-600",
+      BLUE: "bg-blue-500 dark:bg-blue-400",
+      RED: "bg-red-500 dark:bg-red-400",
+      GREEN: "bg-green-500 dark:bg-green-400",
+      YELLOW: "bg-amber-500 dark:bg-amber-400",
+      CYAN: "bg-cyan-500 dark:bg-cyan-400",
+      ORANGE: "bg-orange-500 dark:bg-orange-400",
+      PURPLE: "bg-purple-500 dark:bg-purple-400",
+      PINK: "bg-pink-500 dark:bg-pink-400",
+      INDIGO: "bg-indigo-500 dark:bg-indigo-400",
+      LIME: "bg-lime-500 dark:bg-lime-400",
+      FUCHSIA: "bg-fuchsia-500 dark:bg-fuchsia-400",
+      EMERALD: "bg-emerald-500 dark:bg-emerald-400",
     };
     return map[tag.color];
-  }, [tag.color, isDarkMode]);
+  }, [tag.color]);
 
   return (
     <CommandItem
-      className="relative px-2 py-1"
+      className="relative p-0 flex items-center w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* TAG BUTTON */}
       <Button
         type="button"
         variant="ghost"
         size="sm"
         onClick={() => onSelectActiveTag(tag)}
-        className={cn(
-          "flex w-full items-center justify-between pr-10",
-          TagColor
-        )}
+        className="w-full flex items-center justify-between px-2.5 py-1.5 h-8 hover:bg-muted/65 text-left text-foreground bg-transparent border-none rounded-md"
       >
         <div className="flex items-center gap-2">
-          <TagIcon size={14} />
-          <span>{tag.name}</span>
+          <span className={cn("w-2 h-2 rounded-full flex-shrink-0 shadow-sm/5", TagColor)} />
+          <span className="text-[13px] font-medium text-foreground/80">{tag.name}</span>
         </div>
-        {isActive && <Check size={14} />}
+        {isActive && <Check size={13} className="text-muted-foreground/80 flex-shrink-0" />}
       </Button>
 
       {/* EDIT ICON */}
@@ -76,13 +72,13 @@ const CommandTagItem = ({
           type="button"
           size="icon"
           variant="ghost"
-          className="absolute right-1 top-1/2 -translate-y-1/2"
+          className="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 rounded-md hover:bg-muted text-muted-foreground/80"
           onClick={(e) => {
             e.stopPropagation();
             onEditTagInfo(tag);
           }}
         >
-          <Pencil size={14} />
+          <Pencil size={12} />
         </Button>
       )}
     </CommandItem>

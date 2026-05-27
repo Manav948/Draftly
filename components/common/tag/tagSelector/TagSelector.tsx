@@ -40,21 +40,22 @@ const TagSelector = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={cn(`flex items-center gap-2 rounded-md transition-all hover:bg-accent`, className)}
+        <button
+          type="button"
+          className={cn(
+            "inline-flex items-center justify-center gap-1.5 px-3 py-1.5 h-8 text-[13px] font-medium text-foreground/80 hover:text-foreground bg-secondary/30 hover:bg-secondary/70 border border-border/40 hover:border-border/80 rounded-md transition-all shadow-xs/5 cursor-pointer focus:outline-none",
+            className
+          )}
         >
-          <Plus size={plusIconSize} />
-          <span className="hidden sm:inline">New Tag</span>
-          <span className="sm:hidden">Tag</span>
-        </Button>
+          <Plus size={13} className="text-muted-foreground flex-shrink-0" />
+          <span>Add tag</span>
+        </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         side="bottom"
         align="start"
-        className="rounded-lg shadow-lg p-1 animate-in fade-in-0 scale-in-95"
+        className="rounded-xl border border-border/60 shadow-xl p-1 bg-popover text-popover-foreground overflow-hidden"
       >
         {isLoading ? (
           <div className="p-3 justify-center items-center">

@@ -40,12 +40,12 @@ const EmojiSelector = ({ asChild, children, onSelectedEmoji }: Props) => {
         <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 
-            <DropdownMenuContent className="p-2 w-[320px] sm:w-[360px] rounded-xl shadow-lg bg-white dark:bg-[#0c0c0c] dark:text-red-500">
-                <div className="rounded-md overflow-hidden">
+            <DropdownMenuContent className="p-1 min-w-[320px] max-w-[360px] rounded-xl shadow-xl bg-popover border border-border/60 overflow-hidden">
+                <div className="rounded-lg overflow-hidden">
                     <Picker
                         data={data}
-                        emojiSize={20}
-                        emojiButtonSize={32}
+                        emojiSize={18}
+                        emojiButtonSize={30}
                         theme={emojiTheme}
                         locale={locale as any}
                         onEmojiSelect={(emoji: any) => {

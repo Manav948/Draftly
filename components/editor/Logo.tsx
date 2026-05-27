@@ -52,13 +52,14 @@ const Logo = ({ onFormSelect, emoji, taskId, workspaceId }: Props) => {
 
   return (
     <EmojiSelector onSelectedEmoji={selectedEmojiHandler}>
-      <span
+      <button
+        type="button"
         role="img"
         aria-label="emoji"
-        className="text-2xl sm:text-3xl cursor-pointer inline-flex items-center justify-center w-12 h-12 rounded-xl bg-muted hover:bg-muted/70 transition-colors shadow-sm"
+        className="text-3xl cursor-pointer inline-flex items-center justify-center w-14 h-14 rounded-xl bg-secondary/30 hover:bg-secondary/70 border border-border/40 hover:border-border/80 transition-all duration-200 shadow-xs hover:scale-[1.03] active:scale-[0.97] focus:outline-none"
       >
         {selectedEmoji}
-      </span>
+      </button>
     </EmojiSelector>
   );
 };

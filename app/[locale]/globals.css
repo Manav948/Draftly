@@ -947,11 +947,28 @@
 /* Images */
 .task-editor-image {
   max-width: 100%;
+  max-height: 380px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   border-radius: 8px;
   border: 1px solid rgba(0,0,0,0.08);
-  margin: 1em 0;
+  margin: 1.5rem auto;
+  display: block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.dark .task-editor-image { border-color: rgba(255,255,255,0.08); }
+.dark .task-editor-image {
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+.task-editor-image:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}
+.dark .task-editor-image:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
 
 /* Placeholder */
 .task-editor-content p.is-editor-empty:first-child::before,

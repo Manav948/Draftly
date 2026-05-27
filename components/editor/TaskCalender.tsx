@@ -62,17 +62,22 @@ const TaskCalendar = ({ className, onUpdateForm, from, to, workspaceId, taskId }
     <div className={className}>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm">
-            <CalendarIcon size={16} className="mr-2" />
-            {date?.from
-              ? date?.to
-                ? `${format(date.from, "dd LLL yyyy", { locale: enUS })} → ${format(date.to, "dd LLL yyyy", { locale: enUS })}`
-                : format(date.from, "dd LLL yyyy", { locale: enUS })
-              : "Pick a date"}
-          </Button>
+          <button
+            type="button"
+            className="inline-flex items-center justify-center gap-2 px-3 py-1.5 h-8 text-[13px] font-medium text-foreground/80 hover:text-foreground bg-secondary/30 hover:bg-secondary/70 border border-border/40 hover:border-border/80 rounded-md transition-all shadow-xs/5 cursor-pointer focus:outline-none"
+          >
+            <CalendarIcon size={14} className="text-muted-foreground flex-shrink-0" />
+            <span>
+              {date?.from
+                ? date?.to
+                  ? `${format(date.from, "dd MMM yyyy", { locale: enUS })} — ${format(date.to, "dd MMM yyyy", { locale: enUS })}`
+                  : format(date.from, "dd MMM yyyy", { locale: enUS })
+                : "Add date range"}
+            </span>
+          </button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-auto p-0">
+        <PopoverContent className="w-auto p-0 rounded-xl shadow-xl border border-border/60 bg-popover overflow-hidden" align="start">
           <Calendar
             initialFocus
             mode="range"
