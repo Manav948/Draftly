@@ -1,90 +1,130 @@
-import { Editor } from '@tiptap/react'
-import { FloatingMenu } from '@tiptap/react/menus'
-import React from 'react'
-import OptionBtn from './OptionBtn'
-import { Heading1, Heading2, Heading3, Heading4, Heading4Icon, HeadingIcon, Link, List, ListOrdered } from 'lucide-react'
-import { Separator } from '@/components/ui/separator'
-import AddImage from './addImage/AddImage'
+"use client";
 
+import { Editor } from "@tiptap/react";
+import { FloatingMenu } from "@tiptap/react/menus";
+import React from "react";
+import {
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  List,
+  ListOrdered,
+  ListChecks,
+  Quote,
+  Minus,
+  ImageIcon,
+} from "lucide-react";
+import AddImage from "./addImage/AddImage";
 
 interface Props {
-  editor: Editor
+  editor: Editor;
 }
+
+interface FloatBtnProps {
+  onClick: () => void;
+  active?: boolean;
+  title: string;
+  children: React.ReactNode;
+}
+
+const FloatBtn = ({ onClick, active, title, children }: FloatBtnProps) => (
+  <button
+    type="button"
+    title={title}
+    onClick={onClick}
+    className={`task-float-btn ${active ? "task-float-btn-active" : ""}`}
+  >
+    {children}
+  </button>
+);
 
 const FloatingContainer = ({ editor }: Props) => {
   return (
-    <FloatingMenu editor={editor} className="bg-white dark:bg-gray-900 rounded-lg shadow-md flex gap-1 px-1 py-1">
-      <OptionBtn
-        type="button"
+    <FloatingMenu
+      editor={editor}
+      className="task-floating-menu"
+    >
+      <FloatBtn
+        title="Heading 1 (F1)"
+        active={editor.isActive("heading", { level: 1 })}
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${editor.isActive("heading", { level: 1 })
-          ? "bg-gray-300 dark:bg-gray-700 text-blue-600 dark:text-blue-400 text-6xl"
-          : ""
-          }`}
       >
-        <Heading1 size={18} />
-      </OptionBtn>
-      <OptionBtn
-        type="button"
+        <Heading1 size={15} />
+      </FloatBtn>
+
+      <FloatBtn
+        title="Heading 2 (F2)"
+        active={editor.isActive("heading", { level: 2 })}
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${editor.isActive("heading", { level: 2 })
-          ? "bg-gray-300 dark:bg-gray-700 text-blue-600 dark:text-blue-400"
-          : ""
-          }`}
       >
-        <Heading2 size={18} />
-      </OptionBtn>
+        <Heading2 size={15} />
+      </FloatBtn>
 
-      <OptionBtn
-        type="button"
+      <FloatBtn
+        title="Heading 3 (F3)"
+        active={editor.isActive("heading", { level: 3 })}
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${editor.isActive("heading", { level: 3 })
-          ? "bg-gray-300 dark:bg-gray-700 text-blue-600 dark:text-blue-400"
-          : ""
-          }`}
       >
-        <Heading3 size={18} />
-      </OptionBtn>
+        <Heading3 size={15} />
+      </FloatBtn>
 
-      <OptionBtn
-        type="button"
+      <FloatBtn
+        title="Heading 4 (F4)"
+        active={editor.isActive("heading", { level: 4 })}
         onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${editor.isActive("heading", { level: 4 })
-          ? "bg-gray-300 dark:bg-gray-700 text-blue-600 dark:text-blue-400"
-          : ""
-          }`}
       >
-        <Heading4 size={18} />
-      </OptionBtn>
+        <Heading4 size={15} />
+      </FloatBtn>
 
+      <div className="task-float-divider" />
 
-      <OptionBtn
-        type="button"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${editor.isActive("orderList")
-          ? "bg-gray-300 dark:bg-gray-700 text-blue-600 dark:text-blue-400"
-          : ""
-          }`}
-      >
-        <ListOrdered size={18} />
-      </OptionBtn>
-
-      <OptionBtn
-        type="button"
+      <FloatBtn
+        title="Bullet list"
+        active={editor.isActive("bulletList")}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${editor.isActive("bulletList")
-          ? "bg-gray-300 dark:bg-gray-700 text-blue-600 dark:text-blue-400"
-          : ""
-          }`}
       >
-        <List size={18} />
-      </OptionBtn>
+        <List size={15} />
+      </FloatBtn>
 
-      <Separator className='h-6' orientation='vertical' />
-      <AddImage editor={editor} />
+      <FloatBtn
+        title="Numbered list"
+        active={editor.isActive("orderedList")}
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+      >
+        <ListOrdered size={15} />
+      </FloatBtn>
 
+      <FloatBtn
+        title="Task list"
+        active={editor.isActive("taskList")}
+        onClick={() => editor.chain().focus().toggleTaskList().run()}
+      >
+        <ListChecks size={15} />
+      </FloatBtn>
+
+      <FloatBtn
+        title="Blockquote"
+        active={editor.isActive("blockquote")}
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+      >
+        <Quote size={14} />
+      </FloatBtn>
+
+      <FloatBtn
+        title="Divider"
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+      >
+        <Minus size={14} />
+      </FloatBtn>
+
+      <div className="task-float-divider" />
+
+      <div className="task-float-image-wrap">
+        <AddImage editor={editor} />
+      </div>
     </FloatingMenu>
-  )
-}
+  );
+};
 
-export default FloatingContainer
+export default FloatingContainer;

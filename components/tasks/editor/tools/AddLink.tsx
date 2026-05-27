@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { linkSchema, LinkSchema } from "@/schema/linkSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tiptap/react";
-import { Link2, Trash, Save } from "lucide-react";
+import { Link2, Trash2, Check } from "lucide-react";
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -73,68 +73,74 @@ const AddLink = ({ editor }: Props) => {
           variant="ghost"
           type="button"
           onClick={setLink}
-          className="rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
+          title="Insert link"
+          className="w-full h-full rounded-none bg-transparent border-none shadow-none p-0"
         >
-          <Link2 size={17} />
+          <Link2 size={14} />
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="rounded-xl shadow-2xl border border-gray-300/40 dark:border-gray-700/40 
-      bg-white/90 dark:bg-black/70 backdrop-blur-xl transition-all max-w-md">
+      <DialogContent
+        className="max-w-sm rounded-xl border"
+        style={{
+          background: "var(--popover)",
+          borderColor: "var(--border)",
+          boxShadow: "0 16px 48px rgba(0,0,0,0.4)",
+        }}
+      >
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold tracking-wide">
-            Insert or Edit Link
+          <DialogTitle className="text-sm font-semibold tracking-tight">
+            Insert Link
           </DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
-          <form className="space-y-5">
+          <form className="space-y-4">
             <FormField
               control={form.control}
               name="link"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">Link URL</FormLabel>
-
+                  <FormLabel className="text-xs text-muted-foreground font-medium">
+                    URL
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="https://example.com"
+                      autoFocus
                       {...field}
-                      className="rounded-lg bg-muted/40 focus:ring-2 focus:ring-primary/60 
-                      border border-gray-300 dark:border-gray-700"
+                      className="h-9 text-sm rounded-lg bg-muted/30 border-border/60 focus:border-indigo-500/50"
                     />
                   </FormControl>
-
-                  <FormMessage />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex gap-2 pt-1">
               <Button
-                variant="secondary"
+                variant="ghost"
                 type="button"
-                className="rounded-lg py-3 flex items-center gap-2 justify-center 
-                bg-red-500/90 hover:bg-red-600 text-white transition-all 
-                shadow-md disabled:opacity-40"
+                size="sm"
+                className="flex-1 h-8 text-xs rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 gap-1.5"
                 onClick={removeLink}
                 disabled={!editor?.getAttributes("link").href}
               >
-                <Trash size={16} />
+                <Trash2 size={12} />
                 Remove
               </Button>
 
               <Button
                 type="button"
-                className="rounded-lg py-3 flex items-center gap-2 justify-center 
-                bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-md"
+                size="sm"
+                className="flex-1 h-8 text-xs rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white gap-1.5"
                 onClick={() => {
                   form.handleSubmit(saveLink)();
                   setIsOpen(false);
                 }}
               >
-                <Save size={16} />
-                Save Link
+                <Check size={12} />
+                Apply
               </Button>
             </div>
           </form>

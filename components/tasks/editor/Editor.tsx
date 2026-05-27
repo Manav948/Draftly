@@ -1,34 +1,58 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useEditor } from "@tiptap/react";
+import React, { useEffect, useCallback } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
-import { BubbleMenu } from "@tiptap/react/menus";
-import { EditorContent } from "@tiptap/react";
-import ToolsContainer from "./tools/ToolsContainer";
 import { Color } from "@tiptap/extension-color";
 import { TextStyle } from "@tiptap/extension-text-style";
 import Image from "@tiptap/extension-image";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
-import FloatingContainer from "./tools/FloatingContainer";
-import { Button } from "@/components/ui/button";
 import Heading from "@tiptap/extension-heading";
-import { useDebounce, useDebouncedCallback } from "use-debounce";
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
+import { useDebouncedCallback } from "use-debounce";
 import { useSaveTaskState } from "@/context/TaskSavingContext";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import PersistentToolbar from "./tools/PersistentToolbar";
+import InlineBubbleMenu from "./tools/InlineBubbleMenu";
+import FloatingContainer from "./tools/FloatingContainer";
 
 interface Props {
-  content?: string
-  taskId: string
-  workspaceId: string
+  content?: string;
+  taskId: string;
+  workspaceId: string;
 }
+
 const EditorTask = ({ content, taskId, workspaceId }: Props) => {
-  const [version, setVersion] = useState(0);
-  const { onSetStatus, status } = useSaveTaskState();
+  const { onSetStatus } = useSaveTaskState();
+
+  const { mutate: updateTaskContent } = useMutation({
+    mutationFn: async (htmlContent: string) => {
+      await axios.post(`/api/task/update/content`, {
+        workspaceId,
+        taskId,
+        content: htmlContent,
+      });
+    },
+    onSuccess: () => {
+      onSetStatus("saved");
+    },
+    onError: () => {
+      onSetStatus("unsaved");
+    },
+  });
+
+  const debouncedSave = useDebouncedCallback(() => {
+    if (!editor) return;
+    onSetStatus("pending");
+    // Save full HTML to preserve ALL formatting: colors, bold, italic, headings, etc.
+    updateTaskContent(editor.getHTML());
+  }, 2000);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -36,92 +60,108 @@ const EditorTask = ({ content, taskId, workspaceId }: Props) => {
     editorProps: {
       attributes: {
         class:
-          "prose dark:prose-invert min-h-[300px] p-6 rounded-xl bg-white dark:bg-[#0c0c0c] " +
-          "border shadow-md dark:border-gray-800 dark:shadow-lg focus:outline-none",
+          "task-editor-content focus:outline-none min-h-[420px] leading-relaxed",
+        spellcheck: "false",
+      },
+      handleKeyDown(view, event) {
+        // F1–F4 for headings
+        if (event.key === "F1") {
+          event.preventDefault();
+          editor?.chain().focus().toggleHeading({ level: 1 }).run();
+          return true;
+        }
+        if (event.key === "F2") {
+          event.preventDefault();
+          editor?.chain().focus().toggleHeading({ level: 2 }).run();
+          return true;
+        }
+        if (event.key === "F3") {
+          event.preventDefault();
+          editor?.chain().focus().toggleHeading({ level: 3 }).run();
+          return true;
+        }
+        if (event.key === "F4") {
+          event.preventDefault();
+          editor?.chain().focus().toggleHeading({ level: 4 }).run();
+          return true;
+        }
+        return false;
       },
     },
 
     onUpdate: () => {
-      setVersion(v => v + 1)
-      if (status === "unsaved") onSetStatus("unsaved")
-      deboundedEditor()
+      onSetStatus("unsaved");
+      debouncedSave();
     },
+
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: false, // handled by Heading extension below
+      }),
       Heading.configure({
         levels: [1, 2, 3, 4],
-        HTMLAttributes: {
-          class: "scroll-mt-20",
-        },
       }),
       Underline,
-      Link.configure({ openOnClick: true }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: "task-editor-link",
+          rel: "noopener noreferrer",
+          target: "_blank",
+        },
+      }),
       Color,
       TextStyle,
-      Image,
-      CharacterCount.configure({ limit: 1000 }),
+      Image.configure({
+        inline: false,
+        allowBase64: true,
+        HTMLAttributes: {
+          class: "task-editor-image",
+        },
+      }),
+      TaskList,
+      TaskItem.configure({ nested: true }),
+      CharacterCount.configure({ limit: 50000 }),
       Placeholder.configure({
-        placeholder: "Start writing your task content here...",
-        emptyNodeClass:
-          "before:content-[attr(data-placeholder)] before:absolute before:italic before:text-gray-400 dark:before:text-gray-600",
+        placeholder: "Start writing… Press / for commands, or use the toolbar above.",
+        emptyNodeClass: "task-editor-placeholder",
       }),
     ],
 
-    content: content ? content : "",
+    // Load stored HTML to restore ALL formatting on revisit
+    content: content || "",
   });
 
-  const { mutate: updateTaskContent } = useMutation({
-    mutationFn: async (content: string) => {
-      await axios.post(`/api/task/update/content`, {
-        workspaceId,
-        taskId,
-        content
-      })
-    },
-    onSuccess: () => {
-      onSetStatus("saved")
-    },
-    onError: () => {
-      onSetStatus("unsaved")
-    }
-  })
-
-
-  const deboundedEditor = useDebouncedCallback(() => {
-    if(!editor) return
-    onSetStatus("pending")
-    const text = editor?.getText()
-    updateTaskContent(text)
-  }, 5000)
-
   return (
-    <div className="w-full flex justify-center items-center mt-5">
-      <div className="w-full max-w-[1020px] relative space-y-6">
-        <h1 className="text-2xl font-semibold">Here you can Edit and save your Tasks.</h1>
-        {editor && (
-          <BubbleMenu editor={editor} className="p-1 flex gap-1 rounded-xl bg-white dark:bg-gray-900 border shadow-lg">
-            <ToolsContainer editor={editor} />
-          </BubbleMenu>
-        )}
-        {editor && <FloatingContainer editor={editor} />}
+    <div className="task-editor-root">
+      <PersistentToolbar editor={editor} />
 
-        <div className="relative">
-          <EditorContent editor={editor} spellCheck={false} />
-        </div>
+      {editor && (
+        <BubbleMenu
+          editor={editor}
+          className="task-bubble-menu"
+        >
+          <InlineBubbleMenu editor={editor} />
+        </BubbleMenu>
+      )}
 
-        {editor && (
-          <div className="flex items-center justify-between pt-4 border-t border-gray-300 dark:border-gray-700">
+      {editor && <FloatingContainer editor={editor} />}
 
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              <span><strong>{editor.storage.characterCount.words()}</strong> words</span>
-              <br />
-              <span>
-                Characters: <strong>{editor.storage.characterCount.characters()} / 1000</strong>
-              </span>
-            </div>
-          </div>
-        )}
+      <div className="task-editor-body">
+        <EditorContent editor={editor} />
       </div>
+
+      {editor && (
+        <div className="task-editor-footer">
+          <span className="task-editor-meta">
+            {editor.storage.characterCount.words()} words
+          </span>
+          <span className="task-editor-meta-sep">·</span>
+          <span className="task-editor-meta">
+            {editor.storage.characterCount.characters()} chars
+          </span>
+        </div>
+      )}
     </div>
   );
 };
