@@ -179,7 +179,8 @@
     "DASHBOARD": "Home",
     "SETTINGS": "Settings",
     "THEME": "Theme",
-    "SECURITY": "Security"
+    "SECURITY": "Security",
+    "EDIT": "Edit"
   },
   "EDIT_WORKSPACE": {
     "PICTURE": {

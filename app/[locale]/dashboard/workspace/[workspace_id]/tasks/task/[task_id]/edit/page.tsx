@@ -42,7 +42,26 @@ const EditTasks = async ({ params }: Params) => {
 
   return (
     <SaveTaskStateProvider>
-      <DashboardHeader>
+      <DashboardHeader addManualRoutes={[
+        {
+          name: "DASHBOARD",
+          href: "/dashboard",
+          useTranslate: true
+        },
+        {
+          name: workspace.name,
+          href: `/dashboard/workspace/${workspace_id}`
+        },
+        {
+          name: `${task?.emoji || "📝"} ${task?.title || "Untitled Task"}`,
+          href: `/dashboard/workspace/${workspace_id}/tasks/task/${task_id}`
+        },
+        {
+          name: "EDIT",
+          href: `/dashboard/workspace/${workspace_id}/tasks/task/${task_id}/edit`,
+          useTranslate: true
+        }
+      ]}>
         {(
           <InviteUsers workspace={workspace} />
         )}

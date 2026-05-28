@@ -37,7 +37,26 @@ const EditMindMapPage = async ({ params }: Params) => {
   return (
     <SaveTaskStateProvider>
       <AutoSaveMindMapProvider>
-        <DashboardHeader>
+        <DashboardHeader addManualRoutes={[
+          {
+            name: "DASHBOARD",
+            href: "/dashboard",
+            useTranslate: true
+          },
+          {
+            name: workspace.name,
+            href: `/dashboard/workspace/${workspace_id}`
+          },
+          {
+            name: mindMap.title || "Untitled Mind Map",
+            href: `/dashboard/workspace/${workspace_id}/mind_maps/mind_map/${mind_map_id}`
+          },
+          {
+            name: "EDIT",
+            href: `/dashboard/workspace/${workspace_id}/mind_maps/mind_map/${mind_map_id}/edit`,
+            useTranslate: true
+          }
+        ]}>
           {canEdit && <InviteUsers workspace={workspace} />}
           {(userRole !== "OWNER" && <LeaveWorkspace workspace={workspace} />)}
         </DashboardHeader>
