@@ -1,134 +1,62 @@
 "use client"
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { pathsToSoundEffect } from "@/lib/utils"
 import { PomodoroSettings } from "@prisma/client"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { Howl } from "howler"
+import React, { useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { SkipForward, Play, Pause, RotateCcw, Brain, Coffee } from "lucide-react"
 import clsx from "clsx"
+import { usePomodoro } from "@/context/PomodoroContext"
 
 interface Props {
     pomodoroSettings: PomodoroSettings
 }
 
 const PomodoroContainer = ({
-    pomodoroSettings: {
-        workDuration,
-        shortBreakDuration,
-        longBreakDuration,
-        longBreakInterval,
-        rounds,
-        soundEffect,
-        soundEffectVolume,
-    },
+    pomodoroSettings
 }: Props) => {
-    const [timer, setTimer] = useState({ minute: workDuration, seconds: 0 })
-    const [isTimerRunning, setIsTimerRunning] = useState(false)
-    const [completedIntervals, setCompletedIntervals] = useState(1)
-    const [isBreakTime, setIsBreakTime] = useState(false)
-    const [currentRounds, setCurrentRounds] = useState(1)
-
-    const handleTimer = useCallback(() => {
-        setIsTimerRunning(false)
-
-        if (isBreakTime) {
-            setTimer({ minute: workDuration, seconds: 0 })
-            setIsBreakTime(false)
-            setCompletedIntervals((prev) => prev + 1)
-            completedIntervals === 0 && setCurrentRounds((prev) => prev + 1)
-        } else {
-            setIsBreakTime(true)
-
-            if (completedIntervals === longBreakInterval) {
-                setTimer({ minute: longBreakDuration, seconds: 0 })
-                setCompletedIntervals(0)
-            } else {
-                setTimer({ minute: shortBreakDuration, seconds: 0 })
-            }
-        }
-
-        const sound = new Howl({
-            src: pathsToSoundEffect[soundEffect],
-            html5: true,
-            volume: soundEffectVolume,
-        })
-
-        sound.play()
-    }, [
-        isBreakTime,
-        completedIntervals,
+    const {
+        workDuration,
         shortBreakDuration,
         longBreakDuration,
-        longBreakInterval,
-        workDuration,
-        soundEffect,
-        soundEffectVolume,
-    ])
+        rounds,
+    } = pomodoroSettings
 
-    useEffect(() => {
-        if (!isTimerRunning) return
-
-        const interval = setInterval(() => {
-            setTimer((prev) => {
-                if (prev.minute === 0 && prev.seconds === 0) {
-                    clearInterval(interval)
-                    handleTimer()
-                    return prev
-                }
-
-                if (prev.seconds === 0) {
-                    return { minute: prev.minute - 1, seconds: 59 }
-                }
-
-                return { ...prev, seconds: prev.seconds - 1 }
-            })
-        }, 1000)
-
-        return () => clearInterval(interval)
-    }, [isTimerRunning,
-        handleTimer,
-        timer,
+    const {
+        timeLeft,
+        isTimerRunning,
+        completedIntervals,
         isBreakTime,
         currentRounds,
-        completedIntervals,
-        shortBreakDuration,
-        longBreakDuration,
-        longBreakInterval,
-        workDuration,
-        rounds
-    ])
+        startTimer,
+        pauseTimer,
+        resetTimer,
+        skipTimer,
+        syncSettings,
+    } = usePomodoro()
+
+    // Sync settings to the global context whenever they change from the database fetch
+    useEffect(() => {
+        syncSettings(pomodoroSettings)
+    }, [pomodoroSettings, syncSettings])
+
+    const minute = Math.floor(timeLeft / 60)
+    const seconds = timeLeft % 60
 
     const formattedMinutes = useMemo(
-        () => String(Math.max(timer.minute, 0)).padStart(2, "0"),
-        [timer.minute]
+        () => String(Math.max(minute, 0)).padStart(2, "0"),
+        [minute]
     )
 
     const formattedSeconds = useMemo(
-        () => String(Math.max(timer.seconds, 0)).padStart(2, "0"),
-        [timer.seconds]
+        () => String(Math.max(seconds, 0)).padStart(2, "0"),
+        [seconds]
     )
-
-    const resetPomodoro = useCallback(() => {
-        setTimer({ minute: workDuration, seconds: 0 })
-        setIsBreakTime(false)
-        setCurrentRounds(1)
-        setCompletedIntervals(1)
-        setIsTimerRunning(false)
-    }, [workDuration])
 
     // Calculate progress for the SVG circle
     const totalDuration = isBreakTime
-        ? (completedIntervals === 0 ? longBreakDuration : shortBreakDuration) // Note: completedIntervals is 0 before long break because of line 52
+        ? (completedIntervals === 0 ? longBreakDuration : shortBreakDuration)
         : workDuration;
-    const currentSeconds = timer.minute * 60 + timer.seconds;
+    const currentSeconds = timeLeft;
     const totalSeconds = totalDuration * 60;
     const progress = totalSeconds > 0 ? currentSeconds / totalSeconds : 0;
     
@@ -205,7 +133,7 @@ const PomodoroContainer = ({
                         <Button
                             size="icon"
                             variant="ghost"
-                            onClick={resetPomodoro}
+                            onClick={resetTimer}
                             className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#1a1a1a] text-gray-500 dark:text-gray-400"
                             disabled={isTimerRunning && !isBreakTime}
                         >
@@ -214,7 +142,13 @@ const PomodoroContainer = ({
 
                         <Button
                             size="icon"
-                            onClick={() => setIsTimerRunning((p) => !p)}
+                            onClick={() => {
+                                if (isTimerRunning) {
+                                    pauseTimer()
+                                } else {
+                                    startTimer()
+                                }
+                            }}
                             className={clsx(
                                 "h-14 w-14 rounded-full transition-colors duration-200",
                                 isTimerRunning
@@ -232,7 +166,7 @@ const PomodoroContainer = ({
                         <Button
                             size="icon"
                             variant="ghost"
-                            onClick={handleTimer}
+                            onClick={skipTimer}
                             className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#1a1a1a] text-gray-500 dark:text-gray-400"
                         >
                             <SkipForward className="h-4 w-4" />
@@ -265,4 +199,3 @@ const PomodoroContainer = ({
 }
 
 export default PomodoroContainer
-

@@ -115,7 +115,6 @@ const WorkspaceHeader = ({
               </div>
               <DropdownMenuSeparator className="dark:bg-[#222]" />
               <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:text-red-500 dark:focus:text-red-500 dark:focus:bg-red-500/10 cursor-pointer">
-                <Trash2 size={14} className="mr-2" />
                 <LeaveWorkspace workspace={workspace} />
               </DropdownMenuItem>
             </DropdownMenuContent>
