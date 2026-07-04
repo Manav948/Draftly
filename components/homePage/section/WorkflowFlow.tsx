@@ -10,7 +10,6 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-/* ─── Custom animated dashed bezier edge ───────────────────────── */
 function AnimatedDashedEdge({
   id,
   sourceX,
@@ -68,7 +67,6 @@ function AnimatedDashedEdge({
 
 const edgeTypes = { animatedDash: AnimatedDashedEdge };
 
-/* ─── Nodes ─────────────────────────────────────────────────────── */
 const baseStyle: React.CSSProperties = {
   border: 'none',
   borderRadius: '8px',
@@ -83,43 +81,42 @@ const baseStyle: React.CSSProperties = {
 const nodes: Node[] = [
   {
     id: '1',
-    data: { label: '📌 Main Branch' },
+    data: { label: 'Main Branch' },
     position: { x: 190, y: 20 },
     style: { ...baseStyle, background: '#1d4ed8', color: 'white' },
   },
   {
     id: '2',
-    data: { label: '📁 Working with files' },
+    data: { label: 'Working with files' },
     position: { x: 30, y: 140 },
     style: { ...baseStyle, background: '#15803d', color: 'white' },
   },
   {
     id: '3',
-    data: { label: '📖 Reading files' },
+    data: { label: 'Reading files' },
     position: { x: 350, y: 140 },
     style: { ...baseStyle, background: '#7c3aed', color: 'white' },
   },
   {
     id: '4',
-    data: { label: '💾 Writing & saving' },
+    data: { label: 'Writing & saving' },
     position: { x: 30, y: 270 },
     style: { ...baseStyle, background: '#c2410c', color: 'white' },
   },
   {
     id: '5',
-    data: { label: '✏️ Edit file content' },
+    data: { label: ' Edit file content' },
     position: { x: 350, y: 270 },
     style: { ...baseStyle, background: '#b91c1c', color: 'white' },
   },
   {
     id: '6',
-    data: { label: '🚀 Upload on social' },
+    data: { label: ' Upload on social' },
     position: { x: 190, y: 400 },
     style: { ...baseStyle, background: '#7c3aed', color: 'white' },
   },
 ];
 
-/* ─── Edges ─────────────────────────────────────────────────────── */
 const edges: Edge[] = [
   {
     id: 'e1-2',
@@ -165,7 +162,6 @@ const edges: Edge[] = [
   },
 ];
 
-/* ─── Component ──────────────────────────────────────────────────── */
 export default function WorkflowFlow() {
   return (
     <div className="w-full h-[520px] bg-[#0e0e10] rounded-xl border border-[#262626] relative overflow-hidden">

@@ -1,65 +1,73 @@
 "use client";
-import { homePageHeaderImgs, homePageHeaderLinks } from "@/lib/constants";
-import {ImagesCarousel} from "../carousel/ImageCarousel";
-import { HeaderLink } from "./HeaderLinks";
-import { useIsVisible } from "@/hooks/useIsVisible";
+
+import Link from "next/link";
+import Image from "next/image";
+import { useLocale } from "next-intl";
+import { Github, Star } from "lucide-react";
+import { homePageTasksImgs } from "@/lib/constants";
+import SpotlightBeam from "../SpotlightBeam";
+
+const logos = ["BET A AI", "VENTO...", "REFR...", "GENIX", "VRE A D", "ZAP"];
 
 export const Header = () => {
-  const { isVisible, ref } = useIsVisible();
+  const locale = useLocale();
+  const signUpPath = locale ? `/${locale}/sign-up` : "/sign-up";
+
   return (
-    <header className="flex flex-col items-center mt-20 w-full relative isolate group">
-      <h1
-        ref={ref}
-        className="font-bold text-5xl sm:text-6xl lg:text-8xl max-w-2xl text-center"
-      >
-        Your Ultimate Productive App
-      </h1>
-      <div className="w-full flex flex-wrap items-center justify-center mt-12 gap-2 sm:gap-4">
-        {homePageHeaderLinks.map((link, i) => (
-          <HeaderLink
-            key={i}
-            Icon={link.Icon}
-            href={link.href}
-            title={link.title}
-          />
-        ))}
-      </div>
+    <>
+      <section className="flex flex-col items-center text-center pt-32 pb-24 relative overflow-hidden w-full">
+        <div className="absolute inset-0 bg-[#0a0a0a] bg-[linear-gradient(to_right,#2a2a2a_1px,transparent_1px),linear-gradient(to_bottom,#2a2a2a_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_80%,transparent_100%)] opacity-100 z-0 pointer-events-none" />
+        <SpotlightBeam />
 
-      <ImagesCarousel
-        images={homePageHeaderImgs}
-        className="mt-28 h-[40rem] z-20 relative bg-background"
-      />
+        <div className="relative z-10 flex flex-wrap justify-center items-center gap-3 mb-8">
+          <div className="hero-badge inline-flex items-center gap-2 bg-[#111] border border-[#333] shadow-[0_0_15px_rgba(255,255,255,0.05)] rounded-full px-4 py-2 hover:border-[#555] transition-colors cursor-default">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[#a1a1aa] text-xs font-semibold tracking-wider uppercase" style={{ fontFamily: "JetBrains Mono, monospace" }}>
+              Draftly is live in beta
+            </span>
+          </div>
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-      >
-        <div
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-          className={`relative left-[calc(50%+11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#e74b4b] to-[#a50505]  sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] group-hover:opacity-80 dark:group-hover:opacity-60 transition-opacity duration-500 ${isVisible
-              ? "opacity:80 dark:opacity-60"
-              : "opacity-40 dark:opacity-30"
-            }`}
-        />
+          <a
+            href="https://github.com/Manav948/Draftly"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-badge inline-flex items-center gap-2 bg-[#111] border border-[#333] hover:border-[#555] hover:bg-[#161616] text-[#a1a1aa] hover:text-white transition-all duration-200 rounded-full px-4 py-2 cursor-pointer group shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+          >
+            <Github className="w-3.5 h-3.5" />
+            <span className="text-xs font-semibold tracking-wider uppercase" style={{ fontFamily: "JetBrains Mono, monospace" }}>
+              Star on GitHub
+            </span>
+            <span className="flex items-center gap-0.5 text-xs text-[#525252] group-hover:text-amber-400 transition-colors pl-1.5 border-l border-[#222]">
+              <Star className="w-3.5 h-3.5 fill-current" />
+            </span>
+          </a>
+        </div>
+
+        <h1 className="relative z-10 hero-h1 font-extrabold text-5xl sm:text-7xl lg:text-[80px] max-w-5xl leading-[1.05] tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 mt-2 pb-2 drop-shadow-sm">
+          The unified workspace for <br className="hidden md:block" /> tasks & mind maps.
+        </h1>
+        <p className="relative z-10 hero-desc text-[#888] text-lg sm:text-xl mt-6 max-w-2xl leading-relaxed font-medium">
+          Draftly is a modern productivity platform that combines structured task management with visual planning and focused workflows — all in one place.
+        </p>
+
+        <div className="relative z-10 hero-btns mt-12 flex flex-wrap justify-center gap-4">
+          <Link href={signUpPath} className="bg-white text-black px-8 py-3.5 rounded-full font-semibold hover:bg-white/90 transition-all duration-200 hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+            Start Shipping Today
+          </Link>
+          <button className="bg-transparent text-white border border-[#333] px-8 py-3.5 rounded-full font-medium hover:bg-[#111] hover:border-[#555] transition-all duration-200 hover:scale-105 backdrop-blur-sm">
+            View Documentation
+          </button>
+        </div>
+
+        <div className="relative z-10 hero-image mt-20 w-full max-w-[1000px] bg-[#0c0c0c] p-2 rounded-2xl border border-[#222] shadow-[0_0_60px_-15px_rgba(255,255,255,0.1)] transition-transform duration-500 hover:scale-[1.01] mx-auto">
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none" />
+          <Image src={homePageTasksImgs[0].src} alt="Draftly Dashboard" width={1200} height={750} className="rounded-xl w-full border border-[#1a1a1a]" priority />
+        </div>
+      </section>
+
+      <div className="logo-bar flex justify-between items-center text-[#404040] font-mono text-sm uppercase mb-32 border-t border-b border-[#1d1d1d] py-5 w-full">
+        {logos.map((l) => <span key={l} className="tracking-widest">{l}</span>)}
       </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-36 "
-      >
-        <div
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-          className={`relative left-[calc(50%+11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#e74b4b] to-[#a50505]  sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] group-hover:opacity-80 dark:group-hover:opacity-60 transition-opacity duration-500 ${isVisible
-              ? "opacity:80 dark:opacity-60"
-              : "opacity-40 dark:opacity-30"
-            }`}
-        />
-      </div>
-    </header>
+    </>
   );
 };
