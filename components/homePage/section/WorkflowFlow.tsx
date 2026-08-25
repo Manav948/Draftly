@@ -164,14 +164,9 @@ const edges: Edge[] = [
 
 export default function WorkflowFlow() {
   return (
-    <div className="w-full h-[520px] bg-[#0e0e10] rounded-xl border border-[#262626] relative overflow-hidden">
-      {/* Subtle dot grid */}
+    <div className="w-full h-[520px] bg-slate-100/90 dark:bg-[#0e0e10] rounded-xl border border-slate-200 dark:border-[#262626] relative overflow-hidden transition-colors duration-300 shadow-xl dark:shadow-none">
       <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: 'radial-gradient(circle, #333 1px, transparent 1px)',
-          backgroundSize: '22px 22px',
-        }}
+        className="absolute inset-0 opacity-40 dark:opacity-20 bg-[radial-gradient(circle,#94a3b8_1px,transparent_1px)] dark:bg-[radial-gradient(circle,#333_1px,transparent_1px)] bg-[size:22px_22px]"
       />
 
       <ReactFlow

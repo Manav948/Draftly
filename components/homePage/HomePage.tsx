@@ -18,7 +18,7 @@ function HomeContent() {
   useHomeAnimations();
 
   return (
-    <div className="bg-[#0a0a0a] text-white min-h-screen selection:bg-white/20" style={{ fontFamily: "Geist, Inter, sans-serif" }}>
+    <div className="bg-[#fafafa] dark:bg-[#0a0a0a] text-slate-900 dark:text-white min-h-screen selection:bg-primary/20 transition-colors duration-300" style={{ fontFamily: "Geist, Inter, sans-serif" }}>
       <Nav />
 
       <main className="w-full mx-auto max-w-[1800px] px-6 md:px-12">
