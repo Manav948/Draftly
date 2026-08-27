@@ -21,19 +21,15 @@ const AssignedToMeItem = ({ info }: Props) => {
       <Card
         className="
           relative h-full overflow-hidden
-          transition-all duration-300
-          hover:-translate-y-1
-          bg-gradient-to-br from-white to-gray-50 dark:from-[#111] dark:to-[#0a0a0a]
+          transition-all duration-200
+          bg-white dark:bg-[#111]
           text-gray-900 dark:text-[#f0f0f0]
-          border border-gray-200/60 dark:border-[#1f1f1f] 
-          shadow-sm hover:shadow-xl hover:shadow-red-500/10
+          border border-gray-200/80 dark:border-[#1f1f1f] 
+          shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-[#2a2a2a]
           rounded-2xl flex flex-col group
         "
       >
-        {/* Top subtle gradient line */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/0 via-red-500/50 to-red-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-        <CardContent className="flex flex-col p-6 h-full relative z-10">
+        <CardContent className="flex flex-col p-6 h-full">
           <div className="flex justify-between items-start mb-5">
             <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest truncate max-w-[120px] bg-gray-100 dark:bg-[#1a1a1a] px-2.5 py-1 rounded-full">
               {workspaceName}

@@ -4,9 +4,7 @@ import { Terminal, CheckCircle } from "lucide-react"
 
 const FocusCard = () => {
   return (
-    <div className="relative overflow-hidden h-full min-h-[200px] bg-[#131313] border border-[#1f1f1f] rounded-xl group hover:border-[#2a2a2a] transition-all">
-      {/* Subtle top accent */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red-700/40 to-transparent" />
+    <div className="relative overflow-hidden h-full min-h-[200px] bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1f1f1f] rounded-xl hover:border-gray-300 dark:hover:border-[#2a2a2a] transition-all duration-200">
 
       <div className="p-6 flex flex-col h-full justify-between">
         <div className="flex items-center justify-between">

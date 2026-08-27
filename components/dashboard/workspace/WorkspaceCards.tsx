@@ -106,24 +106,21 @@ export default function WorkspaceCards({ workspaces }: Props) {
               key={ws.id}
               href={`/dashboard/workspace/${ws.id}`}
               className="
-                group relative flex flex-col gap-4 p-5 
-                bg-gradient-to-br from-white to-gray-50 dark:from-[#111] dark:to-[#0a0a0a]
-                border border-gray-200/60 dark:border-[#1f1f1f] 
+                group flex flex-col gap-4 p-5 
+                bg-white dark:bg-[#111]
+                border border-gray-200/80 dark:border-[#1f1f1f] 
                 rounded-2xl overflow-hidden
-                shadow-sm hover:shadow-xl hover:shadow-red-500/10 hover:-translate-y-0.5
-                transition-all duration-300 cursor-pointer
+                shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-[#2a2a2a]
+                transition-all duration-200 cursor-pointer
               "
             >
-              {/* Top subtle gradient line */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/0 via-red-500/50 to-red-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
               {/* Avatar + name row */}
-              <div className="flex items-center gap-3 relative z-10">
-                <div className="group-hover:scale-105 transition-transform duration-300 ring-2 ring-white dark:ring-[#111] rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="group-hover:scale-105 transition-transform duration-200 ring-2 ring-gray-100 dark:ring-[#222] rounded-lg">
                   <WorkspaceAvatar ws={ws} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-bold text-gray-900 dark:text-[#f0f0f0] group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors truncate">
+                  <p className="text-[13px] font-bold text-gray-900 dark:text-[#f0f0f0] group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors truncate">
                     {ws.name}
                   </p>
                   <p className={`text-[10px] mt-0.5 font-bold tracking-widest uppercase ${colorText(ws.color)}`}>
@@ -133,7 +130,7 @@ export default function WorkspaceCards({ workspaces }: Props) {
               </div>
 
               {/* Stats + arrow */}
-              <div className="mt-2 pt-4 border-t border-gray-100 dark:border-[#1f1f1f] flex items-center justify-between text-xs text-muted-foreground font-medium relative z-10">
+              <div className="mt-2 pt-4 border-t border-gray-100 dark:border-[#1f1f1f] flex items-center justify-between text-xs text-muted-foreground font-medium">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1.5 hover:text-gray-900 dark:hover:text-gray-200 transition-colors bg-gray-50 dark:bg-[#141414] px-2 py-1 rounded-md border border-gray-100 dark:border-[#222]">
                     <Layers size={12} className="text-gray-400" />
@@ -144,8 +141,8 @@ export default function WorkspaceCards({ workspaces }: Props) {
                     {ws._count.Subscribers} Members
                   </span>
                 </div>
-                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-full p-1.5 border border-gray-100 dark:border-[#222] group-hover:bg-red-50 dark:group-hover:bg-red-500/10 group-hover:border-red-100 dark:group-hover:border-red-500/20 transition-colors">
-                  <ArrowUpRight size={12} className="text-gray-400 dark:text-[#444] group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors" />
+                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-full p-1.5 border border-gray-100 dark:border-[#222] group-hover:bg-gray-100 dark:group-hover:bg-[#222] transition-colors">
+                  <ArrowUpRight size={12} className="text-gray-400 dark:text-[#555] group-hover:text-gray-900 dark:group-hover:text-white transition-colors" />
                 </div>
               </div>
             </Link>

@@ -12,9 +12,9 @@ export default function RecentActivity({ activity }: Props) {
   const format = useFormatter()
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-200/60 dark:border-[#1f1f1f] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+    <div className="flex flex-col h-full bg-white dark:bg-[#111] border border-gray-200/80 dark:border-[#1f1f1f] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-[#1a1a1a] bg-gradient-to-r from-gray-50/50 to-transparent dark:from-[#0a0a0a] dark:to-transparent">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-[#1a1a1a] bg-gray-50/50 dark:bg-[#111]">
         <div>
           <h3 className="text-[13px] font-bold text-gray-900 dark:text-[#f0f0f0] tracking-wide">Recent Activity</h3>
           <p className="text-[11px] text-gray-500 dark:text-[#555] mt-0.5 font-medium">Latest updates across workspaces</p>

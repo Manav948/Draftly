@@ -3,8 +3,7 @@ import { Card, CardContent } from "./card"
 
 const InsightCard = () => {
     return (
-        <Card className="bg-white dark:bg-[#131313] border border-gray-100 dark:border-[#1f1f1f] mt-6 relative overflow-hidden group shadow-sm dark:shadow-none">
-            <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-red-600 via-red-500 to-orange-500"></div>
+        <Card className="bg-white dark:bg-[#111] border border-gray-200 dark:border-[#1f1f1f] mt-6 relative overflow-hidden shadow-sm dark:shadow-none">
             <CardContent className="p-6 flex items-start gap-4 text-gray-900 dark:text-white">
                 <div className="mt-1 p-2 rounded-full bg-red-500/10 text-red-500">
                     <Lightbulb size={20} className="animate-pulse" />

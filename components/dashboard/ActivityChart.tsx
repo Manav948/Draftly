@@ -23,10 +23,7 @@ const mockData = [
 
 export default function ActivityChart() {
   return (
-    <Card className="dark:bg-[#0a0505] dark:text-white border border-red-900/30 shadow-lg rounded-xl overflow-hidden relative">
-      {/* Subtle red glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.05),transparent_70%)] pointer-events-none" />
-      
+    <Card className="bg-white dark:bg-[#111] text-gray-900 dark:text-white border border-gray-200 dark:border-[#1f1f1f] shadow-sm rounded-xl overflow-hidden relative">
       <CardContent className="p-6">
         <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] inline-block animate-pulse"></span>

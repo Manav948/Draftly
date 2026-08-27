@@ -21,7 +21,7 @@ export const AuthCard = ({ SignInCard }: Props) => {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <Card className="w-full shadow-sm rounded-2xl p-4 bg-gradient-to-br from-white to-gray-50 dark:from-[#111] dark:to-[#0a0a0a] border border-gray-200/60 dark:border-[#1f1f1f]">
+      <Card className="w-full shadow-sm rounded-2xl p-4 bg-white dark:bg-[#111] border border-gray-200/80 dark:border-[#1f1f1f]">
         <CardHeader className="flex flex-col items-center text-center space-y-2">
           <Image
             className="rounded-full object-cover shadow-sm ring-1 ring-black/5 dark:ring-white/10"
