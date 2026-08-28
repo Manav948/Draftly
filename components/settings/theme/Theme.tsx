@@ -16,32 +16,30 @@ const Theme = () => {
 
     if (!isMounted) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <LoadingState className="w-12 h-12" />
+            <div className="flex justify-center items-center min-h-screen bg-white dark:bg-[#0c0c0c]">
+                <LoadingState className="w-12 h-12 text-red-500" />
             </div>
         );
     }
 
     return (
-        <div className="flex justify-center items-start h-full w-full  
-                        bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-red-500
-                        py-16 px-4 sm:px-8 transition-all">
+        <div className="flex justify-center items-start h-full w-full min-h-screen  
+                        bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-white
+                        py-12 px-4 sm:px-8 transition-colors duration-200">
 
-            <Card className="w-full max-w-5xl bg-white dark:bg-[#0c0c0c] text-gray-900 dark:text-[#f0f0f0]
-                             border border-gray-100 dark:border-[#1f1f1f] rounded-2xl shadow-2xl 
-                             transition-all duration-500 hover:shadow-primary/10">
+            <Card className="w-full max-w-4xl bg-white dark:bg-[#111] text-gray-900 dark:text-[#f0f0f0]
+                             border border-gray-200/80 dark:border-[#1f1f1f] rounded-2xl shadow-sm hover:shadow-md 
+                             transition-all duration-300">
 
                 <CardHeader className="space-y-2 text-center py-8">
-                    <CardTitle className="text-3xl font-extrabold 
-                                         bg-clip-text text-transparent 
-                                         bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+                    <CardTitle className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
                         Theme Preferences
                     </CardTitle>
-                    <CardDescription className="text-gray-500 dark:text-[#444] text-sm max-w-md mx-auto">
-                        Customize your interface look and feel. You can switch between{" "}
-                        <span className="text-primary font-semibold">Light</span>,{" "}
-                        <span className="text-pink-500 font-semibold">Dark</span>, or{" "}
-                        <span className="text-blue-400 font-semibold">System</span> mode.
+                    <CardDescription className="text-gray-500 dark:text-[#666] text-sm max-w-md mx-auto">
+                        Customize your interface look and feel. Switch seamlessly between{" "}
+                        <span className="text-red-500 font-semibold">Light</span>,{" "}
+                        <span className="text-red-500 font-semibold">Dark</span>, or{" "}
+                        <span className="text-red-500 font-semibold">System</span> mode.
                     </CardDescription>
                 </CardHeader>
 
